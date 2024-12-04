@@ -1,0 +1,23 @@
+{
+  "name": "a-novel-approach-for-finding",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "formidable": "^3.5.2",
+    "fs": "^0.0.1-security",
+    "mysql": "^2.18.1",
+    "path": "^0.12.7",
+    "stripe": "^17.2.1"
+  }
+}

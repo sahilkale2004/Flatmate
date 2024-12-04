@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="icon" href="/Images/profile.png" type="image/x-icon">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100%;
+            background-image: url(/Images/loginpage.jpg);
+            background-size: cover;
+            background-size: 1536px 695px; 
+            background-repeat: no-repeat;
+        }
+        
+        .profile-class {
+            background-color: snow;
+            font-family: 'Arial';
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 800px; /* Adjusted width to accommodate two columns */
+            display: flex;
+            height: 370px;
+            justify-content: space-between; /* Ensure the two columns are spaced out */
+            position: relative;
+            top: 65px;
+            left: 350px;
+            bottom: 180px;
+        }
+        
+        h1 {
+            color: black;
+            position: relative;
+            left: 350px;
+            top: 70px;
+        }
+        
+        .profile-class label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        
+        .profile-class  input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        select {
+            width: 106.5%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .profile-class button {
+            width: 50%;
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+        
+        .profile-class button:hover {
+            background-color: #0056b3;
+        }
+        
+        .container-1, .container-2 {
+            flex: 1;
+            padding: 10px;
+        }
+        
+        .container-2 {
+            padding-left: 45px;
+            padding-right: 30px; /* Added padding to separate the two containers visually */
+        }
+        
+    </style>  
+    <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <h1>Edit Profile</h1>
+
+    <!-- First Container (Profile Form 1) -->
+    <div class="profile-class">
+        <div class="container-1">
+            <form id="profileForm1">
+                <div class="form-group">
+                    <label for="businessName">Business name:</label>
+                    <input type="text" id="businessName" name="businessName" placeholder="Enter business name" required
+                        disabled>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" placeholder="Enter your Email" id="email" name="email" required disabled>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required
+                        disabled>
+                </div>
+                <div class="form-group">
+                    <label for="address">Business Address:</label>
+                    <input type="text" placeholder="Enter your business address" id="address" name="address" required
+                        disabled>
+                </div>
+            </form>
+        </div>
+
+        <!-- Second Container (Profile Form 2) -->
+        <div class="container-2" style="position: relative; top: 50px; right: 70px;">
+            <form id="profileForm2">
+                <div class="form-group">
+                    <label for="contactNumber" style="position: relative; top: -50px; right: -70px;">Contact
+                        number:</label>
+                    <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber"
+                        required style="position: relative; top: -50px; right: -70px;" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="service" style="position: relative; top: -50px; right: -70px;">Select Service
+                        type:</label>
+                    <select id="service" name="service" required style="position: relative; top: -50px; right: -70px;"
+                        disabled>
+                        <option value="Food">Food</option>
+                        <option value="Laundry">Laundry</option>
+                        <option value="Broker">Broker</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="priceChartLink" style="position: relative; top: -50px; right: -70px;">Price Chart Link:</label>
+                    <input type="url" id="priceChartLink" name="priceChartLink"
+                        style="background-color:white; position: relative; top: -50px; right: -70px;" disabled>
+                </div>
+
+                <button type="button" id="saveBtn" style="position: relative; top: 29px; right: -100px;">Save
+                    Changes</button>
+                <br><br>
+                <button type="button" id="editBtn" style="position: relative; left: -170px; top: -25px;">Edit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript for Profile Handling -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Using placeholders directly since they are already rendered in the HTML
+            const service = {
+                business_Name: '{{businessName}}',
+                email: '{{email}}',
+                address: '{{address}}',
+                contact_number: '{{contactNumber}}',
+                service: '{{service}}',
+                password: '{{password}}',
+                price_chart_link: '{{priceChartLink}}' 
+            };
+
+            console.log(service);
+
+            // Populate the fields
+            document.getElementById('businessName').value = service.business_Name || '';
+            document.getElementById('email').value = service.email || '';
+            document.getElementById('address').value = service.address || '';
+            document.getElementById('contactNumber').value = service.contact_number || '';
+            document.getElementById('service').value = service.service || '';
+            document.getElementById('password').value = service.password || '';
+            document.getElementById('priceChartLink').src = service.price_chart_link || '';
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+                const editBtn = document.getElementById('editBtn');
+                const saveBtn = document.getElementById('saveBtn');
+                const profileForm1 = document.getElementById('profileForm1');
+                const profileForm2 = document.getElementById('profileForm2');
+
+                editBtn.addEventListener('click', function () {
+                    Array.from(profileForm1.elements).forEach(el => el.disabled = false);
+                    Array.from(profileForm2.elements).forEach(el => el.disabled = false);
+                });
+
+                saveBtn.addEventListener('click', function () {
+                    const formData = new FormData();
+
+                    Array.from(profileForm1.elements).forEach(el => formData.append(el.name, el.value));
+                    Array.from(profileForm2.elements).forEach(el => formData.append(el.name, el.value));
+
+                    // Send data to the server
+                    fetch('/profile/update', {
+                        method: 'POST',
+                        body: formData, 
+                    })
+                        .then(response => response.text())
+                        .then(data => {
+                            if (data === 'Profile updated successfully') {
+                                alert('Profile updated successfully!');
+                                // Disable form fields again after saving
+                                Array.from(profileForm1.elements).forEach(el => el.disabled = true);
+                                Array.from(profileForm2.elements).forEach(el => el.disabled = true);
+                            } else {
+                                alert('Failed to update profile.');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+    </script>
+
+</body>
+</html> 

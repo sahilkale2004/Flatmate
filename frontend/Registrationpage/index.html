@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In</title>
+  <link rel="icon" href="/Images/signup.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <style>
+    body {
+      background-image: url(/Images/loginpage.jpg);
+      background-size: 1536px 690px !important; 
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      margin: 0;
+  }
+  
+  .registration-container {
+      background-color: snow;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 800px; /* Adjusted width to accommodate two columns */
+      display: flex;
+      height: 530px;
+      justify-content: space-between; /* Ensure the two columns are spaced out */
+  }
+  
+  .registration-container h1 {
+      margin-bottom: 20px;
+      text-align: center;
+  }
+  
+  .registration-container label {
+      display: block;
+      margin-bottom: 5px;
+      text-align: left;
+  }
+  
+  .registration-container .container-1  input {
+      width: 100%;
+      padding: 10px;
+      margin: 7px 2px;
+      border: 1px solid #ccc;
+      background-color: white;
+      border-radius: 5px;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .registration-container .container-2  input {
+      width: 100%;
+      padding: 10px;
+      margin: 7px 2px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .registration-container input:focus {
+      border: 1px solid #f39c12;
+      box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
+  }
+    
+  
+  .container-2 select {
+      width: 107.5%;
+      padding: 10px;
+      margin: 7px 2px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+  }
+  
+  .container-2 select:focus{
+      border: 1px solid #f39c12;
+      box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
+  }
+
+  .password-container {
+         position: relative;
+         width: 100%;
+        }
+
+  #togglePassword {
+        position: absolute;
+        top: 50%;
+        right: -10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #D0B8A8;
+    }
+  .image-container {
+         position: relative;
+         width: 100%;
+        }
+
+  #trashImage {
+        position: absolute;
+        top: 50%;
+        right: -10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #D0B8A8;
+    }
+
+  .registration-container button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 75px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .registration-container button:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+  }
+  
+  .container-1, .container-2 {
+      flex: 1;
+      padding: 10px;
+  }
+  
+  .container-2 {
+      padding-left: 20px; /* Added padding to separate the two containers visually */
+  }
+  
+  .registered-user  p {
+      position: relative;
+      bottom: -30px;
+      left: -160px;
+      font-family: 'Arial';
+      font-weight: 700;
+  }
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    .overlay.show {
+        display: flex;
+        opacity: 1;
+    }
+    .modal-content {
+        background: #fff;
+        padding: 20px;
+        width: 300px;
+        border-radius: 8px;
+        text-align: center;
+        position: relative;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.5s ease;
+    }
+    .modal-content img {
+        width: 50px;
+        height: 50px;
+    }
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+        color: #888;
+    }
+
+    @keyframes fadeIn {
+        from { transform: scale(0.9); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+  
+<body>
+  <div class="registration-container">
+    <h1 style="position: relative;top: -30px; left: 290px;">Enter Details</h1>
+    <div class="container-1" style="position: relative;top: 50px;right: 150px;">
+        <form action="http://localhost:3000/register-user" method="post" id="registrationForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="fullName">Full name:</label>
+          <input type="text" id="fullName" name="fullName" placeholder="Enter full name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email address:</label>
+          <input type="email" placeholder="Enter your Email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <div class="password-container">
+            <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
+            <i class="fas fa-eye" id="togglePassword"></i>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="address">Home Address:</label>
+          <input type="text" placeholder="Enter your address" id="address" name="address" required>
+        </div>
+        <div class="form-group">
+          <label for="profileImage">Profile Image:</label>
+          <div class="image-container">
+          <input type="file" id="profileImage" name="profileImage">
+          <i class="fas fa-trash" id="trashImage"></i>
+        </div>
+    </div>
+  </div>
+
+    <div class="container-2" style="position: relative;top: 50px; right: 70px;">
+        <div class="form-group">
+          <label for="contactNumber">Contact number:</label>
+          <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required>
+        </div>
+
+        <div class="form-group">
+          <label for="Year">Select your Year:</label>
+          <select id="Year" name="Year" required>
+              <option value="FE">First Year (FE)</option>
+              <option value="SE">Second Year (SE)</option>
+              <option value="TE">Third Year (TE)</option>
+              <option value="BE">Fourth Year (BE)</option>
+          </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="Branch">Select your Branch:</label>
+        <select id="Branch" name="Branch" required>
+            <option value="CMPN">Computer Science</option>
+            <option value="INFT">Information Technology</option>
+            <option value="EXTC">Electronics & Telecommunication</option>
+            <option value="ELEC">Electrical</option>
+            <option value="ECS">Electronics & CS</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="AboutYourself">About Yourself:</label>
+      <input type="text" placeholder="Describe yourself" id="AboutYourself" name="AboutYourself" required>
+    </div>
+    
+    <button onclick="myFunction()" style="position: relative;top: 20px;right: 190px;" type="submit">Register</button>
+    
+    <div class="registered-user">
+    <p>Already registered?</p>
+    <a href="/loginpage" style="position: relative;bottom: 5px; right: 5px; font-weight: 400;">Login</a>
+    </div>
+  </form>
+</div>
+<!-- Overlay and Modal -->
+<div class="overlay" id="successModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" alt="Success Icon">
+        <h2>Success!</h2>
+        <p>Your details have been submitted successfully.</p>
+    </div>
+</div>
+
+<script>
+  const togglePassword = document.querySelector('#togglePassword');
+  const passwordInput = document.querySelector('#password');
+
+  togglePassword.addEventListener('click', () => {
+
+    const type = passwordInput.type === 'password' ? 'text' : 'password';
+    passwordInput.type = type;
+
+    togglePassword.classList.toggle('fa-eye');
+    togglePassword.classList.toggle('fa-eye-slash');
+  });
+
+    const trashButton = document.querySelector('#trashImage'); 
+    const fileInput = document.querySelector('#profileImage'); 
+
+    trashButton.addEventListener('click', () => {
+      // Clear the file input value
+      fileInput.value = '';
+
+      // Remove the selected file
+      const fileContainer = fileInput.parentNode; 
+      const imageContainer = fileContainer.parentNode; 
+      imageContainer.innerHTML = ''; 
+      imageContainer.appendChild(fileInput);
+    });
+
+    //Script for modal hide & display 
+    function myFunction() {
+        const modal = document.getElementById("successModal");
+        modal.classList.add("show");
+
+        setTimeout(() => {
+            closeModal();
+            // Redirect to login page
+            window.location.href = "/loginpage";
+        }, 3000); 
+    }
+    function closeModal() {
+        const modal = document.getElementById("successModal");
+        modal.classList.remove("show");
+    }
+</script>
+
+</body>
+</html>

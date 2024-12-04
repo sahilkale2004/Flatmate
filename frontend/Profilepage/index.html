@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="icon" href="/Images/profile.png" type="image/x-icon">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100%;
+            background-image: url(/Images/loginpage.jpg);
+            background-size: 1536px 695px !important; 
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        
+        .profile-class {
+            background-color: snow;
+            font-family: 'Arial';
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 800px; /* Adjusted width to accommodate two columns */
+            display: flex;
+            height: 370px;
+            justify-content: space-between; /* Ensure the two columns are spaced out */
+            position: relative;
+            top: -230px;
+            left: 450px; 
+            bottom: 180px;
+        }
+        
+        h1 {
+            color: black;
+            position: relative;
+            left: 452px;
+            top: -230px;
+        }
+        
+        .profile-class label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        
+        .profile-class  input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        select {
+            width: 106.5%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+         .password-container {
+         position: relative;
+         width: 100%;
+        }
+
+        #togglePassword {
+        position: absolute;
+        top: 40%;
+        right: -10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #D0B8A8;
+        }
+
+        .profile-class button {
+            width: 50%;
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+        
+        .profile-class button:hover {
+            background-color: #0056b3;
+        }
+        
+        .container-1, .container-2 {
+            flex: 1;
+            padding: 10px;
+        }
+        
+        .container-2 {
+            padding-left: 45px;
+            padding-right: 30px; /* Added padding to separate the two containers visually */
+        }
+        
+    </style>  
+    <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="profile">
+         <!-- Profile Picture Display -->
+<img src="{{profileImage}}" aria-label="Profile photo" id="profilePic" 
+onerror="this.src='/Images/User.png';" 
+style="top: 100px; width: 200px; height: 200px; border-radius: 50%; margin-left: 210px; position: relative; border: 4px solid snow;">
+
+    <!-- Profile Picture Upload Label -->
+    <label for="input-file" style="color: black; display: block; width: 20px; background-color: white; padding: 10px; margin-left: 370px; margin-top: 44px; border-radius: 10px; cursor: pointer; transform: translateX(-50%);">
+    <i class="fas fa-camera fa-lg"></i>
+    </label>
+
+    <!-- Hidden File Input -->
+    <input type="file" accept="image/jpeg, image/png, image/jpg" id="input-file" name="profilePic" style="display: none;">
+    </div>
+    
+    <h1>Edit Profile</h1>
+    <div class="profile-class">
+        <div class="container-1">
+            <form id="profileForm1">
+                <div class="form-group">
+                    <label for="fullName">Full name:</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter full name" required disabled>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" placeholder="Enter your Email" id="email" name="email" required disabled>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
+                        <i class="fas fa-eye" id="togglePassword"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Home Address:</label>
+                    <input type="text" placeholder="Enter your address" id="address" name="address" required disabled>
+                </div>
+            </form>
+        </div>
+        <div class="container-2">
+            <form id="profileForm2">
+                <div class="form-group">
+                    <label for="contactNumber">Contact number:</label>
+                    <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required disabled>
+                </div>
+                <div class="form-group">
+                    <label for="Year">Select your Year:</label>
+                    <select id="Year" name="Year" required disabled>
+                        <option value="FE">First Year (FE)</option>
+                        <option value="SE">Second Year (SE)</option>
+                        <option value="TE">Third Year (TE)</option>
+                        <option value="BE">Fourth Year (BE)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Branch">Select your Branch:</label>
+                    <select id="Branch" name="Branch" required disabled>
+                        <option value="CMPN">Computer Science</option>
+                        <option value="INFT">Information Technology</option>
+                        <option value="EXTC">Electronics & Telecommunication</option>
+                        <option value="ELEC">Electrical</option>
+                        <option value="ECS">Electronics & CS</option>
+                        <option value="CIV">Civil</option>
+                        <option value="MECH">Mechanical</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="AboutYourself">About Yourself:</label>
+                    <input type="text" placeholder="Describe about yourself" id="AboutYourself" name="AboutYourself" required disabled>
+                </div>
+                <button type="button" id="saveBtn" style="position: relative; top: 29px; right: -30px;">Save Changes</button><br><br>
+                <button type="button" id="editBtn" style="position: relative; left: -240px; top: -25px;">Edit</button>
+        </div>
+    </div>
+       <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userData = JSON.parse('{{userData}}'); // Ensure this is a valid JSON string
+
+            // Log userData to the console to verify it
+            console.log(userData);
+    
+            document.getElementById('fullName').value = userData.fULL_name || '';
+            document.getElementById('email').value = userData.email || '';
+            document.getElementById('password').value = userData.password || '';
+            document.getElementById('contactNumber').value = userData.contact_number || '';
+            document.getElementById('address').value = userData.address || '';
+            document.getElementById('Year').value = userData.year || '';
+            document.getElementById('Branch').value = userData.branch || '';
+            document.getElementById('AboutYourself').value = userData.about_yourself || '';
+            document.getElementById('profilePic').value = userData.profile_pic || '/Images/defaultProfile.png'; //Dynamically set the profile image
+        });
+    </script>
+       
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+    const editBtn = document.getElementById('editBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const profileForm1 = document.getElementById('profileForm1');
+    const profileForm2 = document.getElementById('profileForm2');
+    const profilePicInput = document.getElementById('input-file'); // Profile picture input
+    const profileImageDisplay = document.getElementById('profilePic'); // Profile image display
+
+    // Enable all form fields for editing
+    editBtn.addEventListener('click', function () {
+        Array.from(profileForm1.elements).forEach(el => el.disabled = false);
+        Array.from(profileForm2.elements).forEach(el => el.disabled = false);
+        profilePicInput.disabled = false;
+    });
+
+    // Automatically save profile picture when a new file is selected
+    profilePicInput.addEventListener('change', function () {
+        const formData = new FormData();
+        if (profilePicInput.files.length > 0) {
+            formData.append('profileImage', profilePicInput.files[0]); // Add profile picture file
+        }
+
+        // Send data to the server
+        fetch('/saveProfile', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            if (data === 'Profile updated successfully') {
+                alert('Profile picture updated successfully!');
+                // Update the displayed profile picture
+                const imageUrl = URL.createObjectURL(profilePicInput.files[0]);
+                profileImageDisplay.src = imageUrl;
+            } else {
+                alert('Failed to update profile picture.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Save action for other profile fields
+    saveBtn.addEventListener('click', function () {
+        const formData = new FormData();
+
+        // Collect data from both forms
+        Array.from(profileForm1.elements).forEach(el => {
+            if (el.name) formData.append(el.name, el.value);
+        });
+        Array.from(profileForm2.elements).forEach(el => {
+            if (el.name) formData.append(el.name, el.value);
+        });
+
+        // Send data to the server for other profile fields
+        fetch('/saveProfile', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            if (data === 'Profile updated successfully') {
+                alert('Profile updated successfully!');
+                // Disable form fields after saving
+                Array.from(profileForm1.elements).forEach(el => el.disabled = true);
+                Array.from(profileForm2.elements).forEach(el => el.disabled = true);
+                profilePicInput.disabled = true;
+            } else {
+                alert('Failed to update profile.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+
+    </script>
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', () => {
+
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+
+            togglePassword.classList.toggle('fa-eye');
+            togglePassword.classList.toggle('fa-eye-slash');
+        });
+    </script>
+</body>
+</html> 

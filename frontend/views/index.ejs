@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <title>Pricing Card</title>
+    <link rel="icon" href="/img/crown.png" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Rubik&display=swap');
+*{
+    box-sizing: border-box;
+    padding:0;
+    margin:0;
+}
+
+body{
+    font-family: 'Lato', sans-serif;
+    font-size: 0.938rem;
+    background-color: hsl(250, 100%, 99%);
+    color: hsl(250, 12%, 35%);
+}
+
+ul{
+    list-style: none;
+}
+
+img{
+    max-width: 100%;
+    height: auto;
+}
+
+/* reusable css classes */
+
+.container{
+    width: 1600px;
+    max-width: 1024px;
+    margin-left: 600px !important;
+}
+
+.grid{
+    display:grid;   
+}
+
+/* Card Pricing */
+.card{
+    padding: 3rem 0;
+}
+
+.card_container{
+    gap: 3rem 1.25rem;
+}
+
+.card_content{
+    position: relative;
+    background-color: #fff;
+    padding:2rem 1.5rem 2.5rem;
+    border-radius: 1.75rem;
+    box-shadow: 0 12px 24px hsl(250, 61%, 16%, .1);
+    transition: .4s;
+}
+
+.card_content:hover{
+    box-shadow: 0 16px 24px hsl(250, 61%, 16%, .15);
+}
+
+.card_header-img{
+    width: 30px;
+    height: 30px;
+}
+
+.card_header-circle{
+    width: 40px;
+    height: 40px;
+    background-color: hsl(250, 14%, 96%);
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    place-items: center;
+}
+
+.card_header-subtitle{
+    display:block;
+    font-size: 0.813rem;
+    color: hsl(250, 12%, 65%);
+    text-transform: uppercase; 
+    margin-bottom: 0.25rem;
+}
+
+.card_header-title{
+    font-size: 1.75rem;
+    color: hsl(250, 12%, 15%);
+    margin-bottom:1rem;
+}
+
+.card_pricing{
+    position:absolute;
+    background:linear-gradient(157deg, hsl(250, 96%, 69%) -12%, hsl(250, 96%, 54%) 109%);
+    width: 60px;
+    height: 88px;
+    right: 1.5rem;
+    top:-1rem;
+    padding-top: 1.25rem;
+    text-align: center;
+}
+
+.card_pricing-number{
+    font-family: 'Rubik', sans-serif;
+    font-size: 1.25rem;
+}
+
+.card_pricing-symbol{
+    font-size: 0.813rem;
+}
+.card_pricing-month{
+    display: block;
+    font-size: 0.625rem;
+}
+
+.card_pricing-month,
+.card_pricing-number{
+    color: #fff;
+}
+
+.card_pricing::after,
+.card_pricing::before{
+    content: '';
+    position: absolute;
+}
+
+.card_pricing::after{
+    width: 100%;
+    height: 14px;
+    background-color: #fff;
+    left:0;
+    bottom:0;
+    clip-path: polygon(0 100%, 50% 0,100% 100%);
+}
+
+.card_pricing::before{
+    width: 14px;
+    height: 16px;
+    background-color: hsl(250, 96%, 37%);
+    top: 0;
+    left: -14px;
+    clip-path: polygon(0 100%,100% 0, 100% 100%);
+}
+
+.card_list{
+    row-gap: .5rem;
+    margin-bottom:2rem;
+}
+
+.card_list-item{
+    display: flex;
+    align-items: center;
+}
+
+.card_list-icon{
+    font-size: 1.5rem;
+    color: hsl(250, 96%, 54%);
+    margin-right: 0.5rem;
+}
+
+.button{
+    width: 100%;
+    height: 60px;
+    padding: 1.25rem;
+    border: none;
+    font-size: 0.938rem;
+    border-radius: .8rem;
+    background: linear-gradient(157deg, hsl(250, 96%, 69%) -12% , hsl(250, 96%, 54%) 109%);
+    color:white;
+    cursor: pointer;
+    transition:.4s;
+}
+
+.button:hover{
+    box-shadow: 0 12px 24px hsla(250, 97%, 54%, .2)
+}
+
+/* MEDIA QUERIES */
+/* For Small Devices*/
+@media screen and (max-width: 320px){
+    .container{
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+    .card_content{
+        padding: 2rem 1.25rem;
+        border-radius:1rem;
+    }
+}
+
+/* For Medium devices */
+@media screen and (min-width: 568px) {
+    .card_container{
+        grid-template-columns: repeat(2 , 1fr);
+    }
+    .card_content{
+        grid-template-rows: repeat(2 , max-content);
+    }
+    .card_button{
+        align-self: flex-end;
+    }
+}
+
+@media screen and (min-width: 968px){
+    .container{
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .card{
+        height: 100vh;
+        align-items: center;
+    }
+    .card_container{
+        grid-template-columns: repeat(3,1fr);
+    }
+    .card_header-circle{
+        margin-bottom: 1.25rem;
+    }
+    .card_header-subtitle{
+        font-size: 0.875rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <section class="card container grid">
+        <div class="card_container grid">
+            <!-- ================= Card 1 =====================-->
+            <article class="card_content grid">
+                <div class="card_pricing">
+                    <div class="card_pricing-number">
+                        <span class="card_pricing-symbol">$</span>25
+                    </div>
+                    <span class="card_pricing-month">/month</span>
+                </div>
+                <header class="card_header">
+                    <div class="card_header-circle grid">
+                        <img src="/img/dollar.png" alt="" class="card_header-img">
+                    </div>
+                    <span class="card_header-subtitle">Subscribe to register</span>
+                    <h3 class="card_header-title">Regular Plan</h3>
+                </header>
+
+                <ul class="card_list grid">
+                    <li class="card_list-item">
+                        <i class="uil uil-check card_list-icon"></i>
+                        <p class="card_list-description">Access to Student profiles</p>
+                    </li>
+                    <li class="card_list-item">
+                        <i class="uil uil-check card_list-icon"></i>
+                        <p class="card_list-description">Search & Filter options available</p>
+                    </li>
+                    <li class="card_list-item">
+                        <i class="uil uil-check card_list-icon"></i>
+                        <p class="card_list-description">Editable profiles</p>
+                    </li>
+                </ul>
+
+                <!-- Step 3: Checkout form that posts to /create-checkout-session -->
+                <form action="/create-checkout-session" method="post" style="text-align: center;">
+                    <!-- Hidden input to pass sessionFileName (set dynamically with server-side logic) -->
+                    <input type="hidden" name="sessionFileName" value="<%= sessionFileName %>">
+                    <button type="submit" class="button">Choose this Plan</button>
+                </form>
+            </article>
+        </div>
+    </section>
+</body>
+
+</html>
+
+
