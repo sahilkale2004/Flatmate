@@ -338,7 +338,7 @@ app.post('/saveProfile', (req, res) => {
             fields.Year,
             fields.Branch,
             fields.AboutYourself,
-            null, // Placeholder for the profile picture blob
+            fields.profilePic,
             fields.email
         ];
 
@@ -579,7 +579,7 @@ app.get('/complete', (req, res) => {
 
 // Payment cancellation
 app.get('/cancel', (req, res) => {
-    res.redirect('/mainpage');
+    res.redirect('http://localhost:3000/mainpage');
 });
 
 // update the service profile
