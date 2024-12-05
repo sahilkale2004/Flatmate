@@ -301,97 +301,90 @@ app.post('/register-user', (req, res) => {
     });
 });
 
-
-// Save profile functionality
+//Save profile functionality 
 app.post('/saveProfile', (req, res) => {
     const form = new formidable.IncomingForm();
-    form.uploadDir = path.join(__dirname, '../frontend/public', 'uploads'); // Directory for temporary uploads
+    form.uploadDir = path.join(__dirname, '../frontend/public', 'uploads');
     form.keepExtensions = true;
+
+    if (!fs.existsSync(form.uploadDir)) {
+        fs.mkdirSync(form.uploadDir, { recursive: true });
+    }
 
     form.parse(req, (err, fields, files) => {
         if (err) {
-            console.error('Form parsing error:', err);
-            return res.status(500).send('Internal Server Error');
+            return res.status(500).send('Error parsing form data');
         }
-        // Set up query and data array for profile update
-        const query = `
-            UPDATE STUDENTS SET 
-            full_name = ?, 
-            email = ?, 
-            password = ?, 
-            address = ?, 
-            contact_number = ?, 
-            year = ?, 
-            branch = ?, 
-            about_yourself = ?, 
-            profile_pic = ?
-            WHERE email = ?
-        `;
 
-        // Prepare data for other fields
-        const profileData = [
-            fields.fullName,
-            fields.email,
-            fields.password,
-            fields.address,
-            fields.contactNumber,
-            fields.Year,
-            fields.Branch,
-            fields.AboutYourself,
-            fields.profilePic,
-            fields.email
-        ];
-
-        // Check if a profile picture was uploaded and meets size criteria
-        if (files.profileImage && files.profileImage.size > 0) {
-            if (files.profileImage.size > 5000000) { 
-                console.error('Image size exceeds limit:', files.profileImage.size);
-                return res.status(400).send('Image size exceeds 5MB limit');
-            }
-            
-            // Rename the file and move it to the permanent directory
-            const oldPath = files.profileImage.filepath;
-            const newFileName = Date.now() + '_' + files.profileImage.originalFilename;  
-            const newPath = path.join(form.uploadDir, newFileName);
-
-            fs.rename(oldPath, newPath, (err) => {
-                if (err) {
-                    console.error('Error moving uploaded file:', err);
-                    return res.status(500).send('Internal Server Error');
-                }
-
-                // Read the image file as binary data to store in the database
-                fs.readFile(newPath, (err, data) => {
-                    if (err) {
-                        console.error('Error reading image file:', err);
-                        return res.status(500).send('Internal Server Error');
+        const processImageUpload = () => {
+            return new Promise((resolve, reject) => {
+                if (files.profileImage && files.profileImage.size > 0) {
+                    if (files.profileImage.size > 5000000) {
+                        return reject('Image size exceeds 5MB limit');
                     }
 
-                    // Add image binary data to profile data array
-                    profileData[8] = data;
+                    const oldPath = files.profileImage.filepath;
+                    const fileExtension = path.extname(files.profileImage.originalFilename);
+                    const newFileName = Date.now() + '_' + files.profileImage.originalFilename;
+                    const newPath = path.join(form.uploadDir, newFileName);
 
-                    // Execute the database query to update profile with all fields and image
-                    pool.query(query, profileData, (err, result) => {
+                    fs.rename(oldPath, newPath, (err) => {
                         if (err) {
-                            console.error('Database update error:', err);
-                            return res.status(500).send('Error updating profile');
-                        } else {
-                            res.status(200).send('Profile updated successfully');
+                            return reject('Error moving uploaded file');
                         }
+
+                        fs.readFile(newPath, (err, data) => {
+                            if (err) {
+                                return reject('Error reading image file');
+                            }
+                            resolve({ imagePath: newPath, imageData: data });
+                        });
                     });
-                });
-            });
-        } else {
-            // Execute the query without profile picture if no image is provided
-            pool.query(query, profileData, (err, result) => {
-                if (err) {
-                    console.error('Database update error:', err);
-                    return res.status(500).send('Error updating profile');
                 } else {
-                    res.status(200).send('Profile updated successfully');
+                    resolve({ imagePath: null, imageData: null });
                 }
             });
-        }
+        };
+
+        processImageUpload()
+            .then(({ imagePath, imageData }) => {
+                const updateQuery = `
+                    UPDATE STUDENTS 
+                    SET 
+                        full_name = ?, 
+                        email = ?, 
+                        password = ?, 
+                        address = ?, 
+                        contact_number = ?, 
+                        year = ?, 
+                        branch = ?, 
+                        about_yourself = ?, 
+                        profile_pic = ? 
+                    WHERE email = ?
+                `;
+
+                pool.query(updateQuery, [
+                    fields.fullName,
+                    fields.email,
+                    fields.password,
+                    fields.address,
+                    fields.contactNumber,
+                    fields.Year,
+                    fields.Branch,
+                    fields.AboutYourself,
+                    imageData,
+                    fields.email
+                ], (err, result) => {
+                    if (err) {
+                        return res.status(500).send('Error updating profile');
+                    }
+
+                    res.send('Profile updated successfully.');
+                });
+            })
+            .catch((error) => {
+                res.status(400).send(error);
+            });
     });
 });
 

@@ -205,80 +205,81 @@ style="top: 100px; width: 200px; height: 200px; border-radius: 50%; margin-left:
             document.getElementById('Year').value = userData.year || '';
             document.getElementById('Branch').value = userData.branch || '';
             document.getElementById('AboutYourself').value = userData.about_yourself || '';
-            document.getElementById('profilePic').value = userData.profile_pic || '/Images/defaultProfile.png'; //Dynamically set the profile image
+            document.getElementById('profilePic').value = userData.profile_pic || ''; 
         });
 
     document.addEventListener('DOMContentLoaded', function () {
     const editBtn = document.getElementById('editBtn');
     const saveBtn = document.getElementById('saveBtn');
-    const profileForm1 = document.getElementById('profileForm1');
-    const profileForm2 = document.getElementById('profileForm2');
-    const profilePicInput = document.getElementById('input-file'); 
-    const profileImageDisplay = document.getElementById('profilePic'); 
+    const profilePicInput = document.getElementById('input-file');
+    const profileImageDisplay = document.getElementById('profilePic');
 
-    // Enable all form fields for editing
+    // Enable editing
     editBtn.addEventListener('click', function () {
-        Array.from(profileForm1.elements).forEach(el => el.disabled = false);
-        Array.from(profileForm2.elements).forEach(el => el.disabled = false);
+        document.querySelectorAll('input, select').forEach((el) => el.disabled = false);
         profilePicInput.disabled = false;
     });
 
+    // Handle profile image upload
     profilePicInput.addEventListener('change', function () {
-        const formData = new FormData();
         if (profilePicInput.files.length > 0) {
-            formData.append('profileImage', profilePicInput.files[0]); 
-        }
+            const formData = new FormData();
+            formData.append('profileImage', profilePicInput.files[0]);
 
-        // Send data to the server
-        fetch('/saveProfile', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.text())
-        .then(data => {
-            if (data === 'Profile updated successfully') {
-                alert('Profile picture updated successfully!');
-                // Update the displayed profile picture
-                const imageUrl = URL.createObjectURL(profilePicInput.files[0]);
-                profileImageDisplay.src = imageUrl;
-            } else {
-                alert('Failed to update profile picture.');
-            }
-        })
-        .catch(error => console.error('Error:', error));
+            fetch('/saveProfile', {
+                method: 'POST',
+                body: formData
+            })
+            .then((response) => response.text())
+            .then((data) => {
+                if (data === 'Profile updated successfully.') {
+                    alert('Profile picture updated successfully!');
+                    const imageUrl = URL.createObjectURL(profilePicInput.files[0]);
+                    profileImageDisplay.src = imageUrl;
+                } else {
+                    alert('Failed to update profile picture.');
+                }
+            })
+            .catch((error) => console.error('Error:', error));
+        }
     });
 
+    // Save other profile fields
     saveBtn.addEventListener('click', function () {
         const formData = new FormData();
 
-        // Collect data from both forms
-        Array.from(profileForm1.elements).forEach(el => {
-            if (el.name) formData.append(el.name, el.value);
-        });
-        Array.from(profileForm2.elements).forEach(el => {
+        // Append data from profileForm1
+        const profileForm1 = document.getElementById('profileForm1');
+        Array.from(profileForm1.elements).forEach((el) => {
             if (el.name) formData.append(el.name, el.value);
         });
 
-        // Send data to the server for other profile fields
+        // Append data from profileForm2
+        const profileForm2 = document.getElementById('profileForm2');
+        Array.from(profileForm2.elements).forEach((el) => {
+            if (el.name) formData.append(el.name, el.value);
+        });
+
+        // Send the merged data
         fetch('/saveProfile', {
             method: 'POST',
             body: formData
         })
-        .then(response => response.text())
-        .then(data => {
-            if (data === 'Profile updated successfully') {
+        .then((response) => response.text())
+        .then((data) => {
+            if (data === 'Profile updated successfully.') {
                 alert('Profile updated successfully!');
-                // Disable form fields after saving
-                Array.from(profileForm1.elements).forEach(el => el.disabled = true);
-                Array.from(profileForm2.elements).forEach(el => el.disabled = true);
+                // Disable fields after saving
+                document.querySelectorAll('input, select').forEach((el) => el.disabled = true);
                 profilePicInput.disabled = true;
             } else {
                 alert('Failed to update profile.');
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch((error) => console.error('Error:', error));
     });
 });
+
 
         const togglePassword = document.querySelector('#togglePassword');
         const passwordInput = document.querySelector('#password');
