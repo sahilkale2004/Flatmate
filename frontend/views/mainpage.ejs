@@ -207,7 +207,6 @@
             top: 0;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.1);
-            /* scale(0.1) */
             text-align: center;
             padding: 0 30px 35px;
             color: #333;
@@ -219,7 +218,6 @@
             visibility: visible;
             top: 50%;
             transform: translate(-50%, -50%) scale(1);
-            /*scale(1) */
         }
 
         .popup p {
@@ -1011,9 +1009,9 @@ function resetFilters() {
                                 <li style="font-size: 18px;">
                                     Email: <%= service.email %>
                                 </li>
-                                <li onclick="showPriceChart()" style="font-size: 18px;">
-                                    View Price Chart:
-                                    <i class="fas fa-eye view-icon" style="cursor: pointer;"></i>
+                                <li onclick="window.location.href='<%= service.price_chart_link %>';" style="font-size: 18px;">
+                                View Price Chart:
+                                <i class="fas fa-eye view-icon" style="cursor: pointer;"></i>
                                 </li>
                             </ul>
                             <button type="button" style="background: #D0B8A8;" onclick="closePopup(this)">OK</button>
@@ -1046,14 +1044,6 @@ function resetFilters() {
         },
     });
 });    
-    function showPriceChart() {
-        document.getElementById('priceChartModal').style.display = 'block';
-        document.body.style.overflow = 'hidden';  // Prevent background scrolling
-    }
-    function closeModal() {
-        document.getElementById('priceChartModal').style.display = 'none';
-        document.body.style.overflow = 'auto';  // Re-enable background scrolling
-    }
      function openPopup(button) {
                     const popup = button.nextElementSibling;
                     popup.classList.add("open-popup");
@@ -1097,7 +1087,7 @@ font-style: normal;  position: relative; top: 50px;">
                                 <li style="font-size: 18px;">
                                     Email: <%= service.email %>
                                 </li>
-                                <li onclick="showPriceChart()" style="font-size: 18px;">
+                                <li onclick="window.location.href='<%= service.price_chart_link %>';" style="font-size: 18px;">
                                     View Price Chart:
                                     <i class="fas fa-eye view-icon" style="cursor: pointer;"></i>
                                 </li>
@@ -1132,15 +1122,6 @@ font-style: normal;  position: relative; top: 50px;">
         },
     });
 });    
-
-    function showPriceChart() {
-        document.getElementById('priceChartModal').style.display = 'block';
-        document.body.style.overflow = 'hidden';  // Prevent background scrolling
-    }
-    function closeModal() {
-        document.getElementById('priceChartModal').style.display = 'none';
-        document.body.style.overflow = 'auto';  // Re-enable background scrolling
-    }
      function openPopup(button) {
                     const popup = button.nextElementSibling;
                     popup.classList.add("open-popup");
@@ -1183,7 +1164,7 @@ font-style: normal;  position: relative; top: 50px;">
                                 <li style="font-size: 18px;">
                                     Email: <%= service.email %>
                                 </li>
-                                <li onclick="showPriceChart()" style="font-size: 18px;">
+                                <li onclick="window.location.href='<%= service.price_chart_link %>';" style="font-size: 18px;">
                                     View Price Chart:
                                     <i class="fas fa-eye view-icon" style="cursor: pointer;"></i>
                                 </li>
@@ -1218,14 +1199,6 @@ font-style: normal;  position: relative; top: 50px;">
         },
     });
 });    
-    function showPriceChart() {
-        document.getElementById('priceChartModal').style.display = 'block';
-        document.body.style.overflow = 'hidden';  // Prevent background scrolling
-    }
-    function closeModal() {
-        document.getElementById('priceChartModal').style.display = 'none';
-        document.body.style.overflow = 'auto';  // Re-enable background scrolling
-    }
      function openPopup(button) {
                     const popup = button.nextElementSibling;
                     popup.classList.add("open-popup");

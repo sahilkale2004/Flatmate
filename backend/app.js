@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Route to render the main page with both services and profiles data
 app.get('/mainpage', (req, res) => {
-    const servicesQuery = 'SELECT business_Name, contact_number, email, service FROM services';
+    const servicesQuery = 'SELECT business_Name, contact_number, email, service, price_chart_link FROM services';
     const profilesQuery = 'SELECT full_name, year, branch, contact_number, email, profile_pic FROM STUDENTS';
 
     Promise.all([
@@ -444,7 +444,7 @@ app.get('/serviceprofile', (req, res) => {
                     .replace('{{contactNumber}}', service.contact_number)
                     .replace('{{service}}', service.service)
                     .replace('{{password}}', service.password)
-                    .replace('{{priceChartLink}}', service.price_chart_link ? `<a href="${service.price_chart_link}" target="_blank">View Price Chart</a>` : 'No Price Chart Uploaded');
+                    .replace('{{priceChartLink}}', service.price_chart_link);
 
                 return res.status(200).send(modifiedContent);
             });
@@ -582,39 +582,17 @@ app.get('/cancel', (req, res) => {
     res.redirect('/mainpage');
 });
 
-// Profile updates (with price chart upload)
-app.post('/profile/update', (req, res) => {
+// update the service profile
+app.post('/profile-update', (req, res) => {
     const form = new formidable.IncomingForm();
-    form.uploadDir = path.join(__dirname, 'public', 'uploads'); 
-    form.keepExtensions = true; 
-
     form.parse(req, (err, fields, files) => {
         if (err) {
             console.error('Error parsing form:', err);
             return res.status(500).send('Error processing form');
         }
-
-        const email = req.cookies.email;
+        const email = fields.email; 
         if (!email) {
-            return res.redirect('/loginpage'); 
-        }
-
-        let priceChartPaths = fields.existingPriceChartPaths; 
-
-        // Handle new price chart upload if present
-        if (files.priceChart && files.priceChart.size > 0) {
-            const oldPath = files.priceChart.path;
-            const newFileName = `${Date.now()}_${files.priceChart.name}`; 
-            const newPath = path.join(form.uploadDir, newFileName);
-
-            fs.rename(oldPath, newPath, (err) => {
-                if (err) {
-                    console.error('Error moving uploaded file:', err);
-                    return res.status(500).send('Error saving price chart');
-                }
-            });
-
-            priceChartPath = `/uploads/${newFileName}`; 
+            return res.status(400).send('Email is required');
         }
 
         const query = `
@@ -624,21 +602,34 @@ app.post('/profile/update', (req, res) => {
                 contact_number = ?,
                 address = ?,
                 service = ?,
-                price_chart = ?
+                price_chart_link = ?
             WHERE email = ?
         `;
 
-        // Execute the query with new data
-        pool.query(query, [fields.businessName, fields.password, fields.contactNumber, fields.address, fields.service, priceChartPaths, email], (err, result) => {
-            if (err) {
-                console.error('Error updating profile:', err);
-                return res.status(500).send('Error updating profile');
-            }
+        // Execute the query with updated data
+        pool.query(
+            query, 
+            [
+                fields.businessName,
+                fields.password,
+                fields.contactNumber,
+                fields.address,
+                fields.service,
+                fields.priceChartLink,
+                email
+            ],
+            (err, result) => {
+                if (err) {
+                    console.error('Error updating profile:', err);
+                    return res.status(500).send('Error updating profile');
+                }
 
-            return res.send('Profile updated successfully'); 
-        });
+                return res.send('Profile updated successfully'); 
+            }
+        );
     });
 });
+
 // Logout and clear the cookie
 app.post('/logout', (req, res) => {
     res.clearCookie('email');

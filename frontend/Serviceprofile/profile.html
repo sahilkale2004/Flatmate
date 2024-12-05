@@ -159,7 +159,7 @@
     <!-- JavaScript for Profile Handling -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Using placeholders directly since they are already rendered in the HTML
+
             const service = {
                 business_Name: '{{businessName}}',
                 email: '{{email}}',
@@ -179,7 +179,7 @@
             document.getElementById('contactNumber').value = service.contact_number || '';
             document.getElementById('service').value = service.service || '';
             document.getElementById('password').value = service.password || '';
-            document.getElementById('priceChartLink').src = service.price_chart_link || '';
+            document.getElementById('priceChartLink').value = service.price_chart_link || '';
         });
     </script>
 
@@ -202,7 +202,7 @@
                     Array.from(profileForm2.elements).forEach(el => formData.append(el.name, el.value));
 
                     // Send data to the server
-                    fetch('/profile/update', {
+                    fetch('/profile-update', {
                         method: 'POST',
                         body: formData, 
                     })
@@ -210,7 +210,7 @@
                         .then(data => {
                             if (data === 'Profile updated successfully') {
                                 alert('Profile updated successfully!');
-                                // Disable form fields again after saving
+
                                 Array.from(profileForm1.elements).forEach(el => el.disabled = true);
                                 Array.from(profileForm2.elements).forEach(el => el.disabled = true);
                             } else {
