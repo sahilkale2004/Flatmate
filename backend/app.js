@@ -67,6 +67,10 @@ app.get('/mainpage', (req, res) => {
         res.status(500).send('Internal Server Error');
     });
 });
+// Server teamprofiles page
+app.get('/teampage', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/teampage', 'index.html'));
+});
 // Serve homepage
 app.get('/homepage', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/homepage', 'index.html'));
