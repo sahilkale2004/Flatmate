@@ -1,10 +1,10 @@
 const { createPool } = require('mysql');
 
 const pool = createPool({
-  host: "localhost",
-  user: "root",
-  password: "123456",
-  database: "FLATMATES",
+  host: process.env.host,
+  user: process.env.user,
+  password: process.env.password,
+  database: process.env.database,
   connectionLimit: 10
 });
 
