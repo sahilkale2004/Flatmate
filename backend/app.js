@@ -27,7 +27,7 @@ app.get('/mainpage', (req, res) => {
         new Promise((resolve, reject) => {
             pool.query(servicesQuery, (err, results) => {
                 if (err) {
-                    console.error('Error fetching services:', err);
+                    console.error(err);
                     reject(err);
                 } else {
                     resolve(results);
@@ -37,7 +37,7 @@ app.get('/mainpage', (req, res) => {
         new Promise((resolve, reject) => {
             pool.query(profilesQuery, (err, results) => {
                 if (err) {
-                    console.error('Error fetching profiles:', err);
+                    console.error(err);
                     reject(err);
                 } else {
                     // Map and format profile data
@@ -263,9 +263,9 @@ app.post('/register-user', (req, res) => {
             var newPath = path.join(form.uploadDir, newFileName);
 
             // Move the file to the final location
-            fs.rename(oldPath, newPath, (err) => {
-                if (err) {
-                    console.error('Error moving uploaded file:', err);
+            fs.rename(oldPath, newPath, (error) => {
+                if (error) {
+                    console.error(error);
                     return res.status(500).send('Internal Server Error');
                 }
 
@@ -532,7 +532,7 @@ app.post('/create-checkout-session', (req, res) => {
             fs.writeFileSync(`../frontend/public/uploads/${stripeSession.id}.json`, JSON.stringify(sessionData));
             res.redirect(stripeSession.url);
         } catch (error) {
-            console.error('Error creating Stripe session:', error);
+            console.error(error);
             res.status(500).send('Error processing payment');
         }
     });
