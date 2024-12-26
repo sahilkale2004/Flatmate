@@ -109,9 +109,20 @@
     .search-box:focus{
       width: 500px;
     }
-     .navbar-center button {
+     .navbar-center #search-button {
+        height: 35px;
         padding: 5px 10px;
         font-size: 16px;
+        color: #333;
+        border: none;
+        border-radius: 10px; /* Rounded corners */
+        cursor: pointer;
+    }
+    .navbar-center #clear-button {
+        height: 35px;
+        padding: 5px 10px;
+        font-size: 16px;
+        color: #333;
         border: none;
         border-radius: 10px; /* Rounded corners */
         cursor: pointer;
@@ -655,48 +666,60 @@ h2 {
 </head>
 
 <body>
-
 <div class="navbar">
     <div class="navbar-left">
         <h1 style="position: relative; right: -20px; font-size: 50px;">Flatmate</h1>
 </div>
- <div class="navbar-center">
-            <input type="text" class="search-box" id="search-input" placeholder="Search for flatmates">
-            <button id="search-button"  style="height: 35px; 
-            color: black;" class="icon-link search icon">
-            <i class="fas fa-search"></i></button>
-        </div>
+<div class="navbar-center" style="position: relative;">
+    <input type="text" class="search-box" id="search-input" placeholder="Search for flatmates" style="padding-right: 35px;">
+    <button id="search-button" class="icon-link search icon">
+        <i class="fas fa-search"></i>
+    </button>
+    <button id="clear-button" class="icon-link clear icon">
+        <i class="fas fa-times"></i>
+    </button>
+</div>
 <script>
-    document.getElementById('search-button').addEventListener('click', function () {
+document.getElementById('search-button').addEventListener('click', function () {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
     let firstMatchFound = false;
 
     const swiperSections = [
         {
-            selector: '.swiper.mySwiper.container', 
+            selector: '.profilesSwiper',
             filter: user => user.getAttribute('data-type') === 'profiles',
-            scrollClass: '.swiper.mySwiper.container' 
+            scrollClass: '.profilesSwiper'
         },
         {
-            selector: '.swiper.mySwiper.container',
+            selector: '.foodSwiper',
             filter: service => service.getAttribute('data-type') === 'Food',
-            scrollClass: '.swiper.mySwiper.container'
+            scrollClass: '.foodSwiper'
         },
         {
-            selector: '.swiper.mySwiper.container',
+            selector: '.laundrySwiper',
             filter: service => service.getAttribute('data-type') === 'Laundry',
-            scrollClass: '.laundry-section'
+            scrollClass: '.laundrySwiper'
         },
         {
-            selector: '.swiper.mySwiper.container',
+            selector: '.brokerSwiper',
             filter: service => service.getAttribute('data-type') === 'Broker',
-            scrollClass: '.broker-section'
+            scrollClass: '.brokerSwiper'
         }
     ];
 
     swiperSections.forEach(section => {
         const swiperContainer = document.querySelector(section.selector);
         const slides = swiperContainer.querySelectorAll('.swiper-slide');
+
+        if (searchQuery === '') {
+            // If search input is empty, reset all slides to be visible
+            slides.forEach(slide => {
+                slide.style.display = 'block';
+            });
+            swiperContainer.swiper.update();
+            return;
+        }
+
         let hasMatch = false;
 
         slides.forEach(slide => {
@@ -719,6 +742,25 @@ h2 {
             document.querySelector(section.scrollClass).scrollIntoView({ behavior: 'smooth' });
             firstMatchFound = true;
         }
+    });
+});
+
+document.getElementById('clear-button').addEventListener('click', function () {
+    document.getElementById('search-input').value = '';
+    const swiperSections = [
+        '.profilesSwiper',
+        '.foodSwiper',
+        '.laundrySwiper',
+        '.brokerSwiper'
+    ];
+
+    swiperSections.forEach(selector => {
+        const swiperContainer = document.querySelector(selector);
+        const slides = swiperContainer.querySelectorAll('.swiper-slide');
+        slides.forEach(slide => {
+            slide.style.display = 'block';
+        });
+        swiperContainer.swiper.update();
     });
 });
 </script>
@@ -873,409 +915,306 @@ h2 {
         }
 </script>
 
-<section id="profiles" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; 
-font-style: normal; position: relative; top: -25px;">
+<section id="profiles" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: -25px;">
     <h1 style="position: relative; left: 690px;">Profiles</h1>
 
     <div style="text-align: right; margin-bottom: 20px; position: relative;"></div>
-    <button id="filterButton"
-        style="background-color: #D0B8A8; padding: 10px; cursor: pointer; font-size: 16px; display: inline-flex;
-         align-items: center; position:relative; left: 10px; top: -80px; border-radius: 5px;">
+    <button id="filterButton" style="background-color: #D0B8A8; padding: 10px; cursor: pointer; font-size: 16px; display: inline-flex; align-items: center; position:relative; left: 10px; top: -80px; border-radius: 5px;">
         <i class="fas fa-filter" style="margin-right: 5px;"></i> Filter
     </button>
     
-<div id="filterDropdown" style="display: none; background-color: #fff; padding: 10px; border: 0.5px solid #ccc; width: 140px; 
-    height: 200px; position: absolute; top: 70px; right: 1355px; z-index: 1;">
-    <label for="yearFilter" style="font-size: 16px;">Year:</label>
-    <select id="yearFilter" style="margin-bottom: 5px; width: 100%; padding: 5px; border-radius: 5px;">
-        <option value="All Years">All Years</option>
-        <option value="FE">FE</option>
-        <option value="SE">SE</option>
-        <option value="TE">TE</option>
-        <option value="BE">BE</option>
-    </select>
-    <br>
-    <label for="branchFilter" style="font-size: 16px;">Branch:</label>
-    <select id="branchFilter" style="margin-bottom: 5px; width: 100%; padding: 5px; border-radius: 5px;">
-        <option value="All Branches">All Branches</option>
-        <option value="INFT">INFT</option>
-        <option value="CMPN">CMPN</option>
-        <option value="ELEC">ELEC</option>
-        <option value="EXTC">EXTC</option>
-        <option value="ECS">ECS</option>
-    </select>
-    <br>
-    <button id="applyFilters" style="background-color: #D0B8A8; padding: 5px; margin-top: 10px; width: 100%; cursor: pointer; border-radius: 5px;">Apply Filters</button>
-</div>
+    <div id="filterDropdown" style="display: none; background-color: #fff; padding: 10px; border: 0.5px solid #ccc; width: 140px; height: 200px; position: absolute; top: 70px; right: 1355px; z-index: 1;">
+        <label for="yearFilter" style="font-size: 16px;">Year:</label>
+        <select id="yearFilter" style="margin-bottom: 5px; width: 100%; padding: 5px; border-radius: 5px;">
+            <option value="All Years">All Years</option>
+            <option value="FE">FE</option>
+            <option value="SE">SE</option>
+            <option value="TE">TE</option>
+            <option value="BE">BE</option>
+        </select>
+        <br>
+        <label for="branchFilter" style="font-size: 16px;">Branch:</label>
+        <select id="branchFilter" style="margin-bottom: 5px; width: 100%; padding: 5px; border-radius: 5px;">
+            <option value="All Branches">All Branches</option>
+            <option value="INFT">INFT</option>
+            <option value="CMPN">CMPN</option>
+            <option value="ELEC">ELEC</option>
+            <option value="EXTC">EXTC</option>
+            <option value="ECS">ECS</option>
+        </select>
+        <br>
+        <button id="applyFilters" style="background-color: #D0B8A8; padding: 5px; margin-top: 10px; width: 100%; cursor: pointer; border-radius: 5px;">Apply Filters</button>
+    </div>
+
     <!-- Include Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
-    <div class="swiper mySwiper container">
+    <div class="swiper profilesSwiper container">
         <div class="swiper-wrapper content">
-            <% profiles.forEach(user=> { %> <!-- Loop through profiles passed from the server -->
+            <% profiles.forEach(user => { %>
                 <div class="swiper-slide card">
                     <div class="card-content">
                         <div class="image">
                             <img src="<%= user.profile_pic %>" alt="User pic">
-                            <!-- Use dynamic image path -->
                         </div>
                         <div class="name-profession">
-                            <span class="name" style="font-size: 24px;">
-                                <%= user.full_name %>
-                            </span>
-                            <span class="profession" style="font-weight: 800; font-size: 20px;">
-                                <%= user.year %>-<%= user.branch %>
-                            </span>
+                            <span class="name" style="font-size: 24px;"><%= user.full_name %></span>
+                            <span class="profession" style="font-weight: 800; font-size: 20px;"><%= user.year %>-<%= user.branch %></span>
                         </div>
-                        <button class="message-button" onclick="openPopup(this)" 
-                        style="background-color: #D0B8A8; font-family: DM Serif Display, serif;
-                         font-size: 20px; font-weight: 400; 
-                        font-style: normal; margin-top: 30px;">Contact Me</button>
+                        <button class="message-button" onclick="openPopup(this)" style="background-color: #D0B8A8; font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 30px;">Contact Me</button>
                         <div class="popup">
                             <h5>Thank You for visiting My Profile!</h5>
                             <h5>Here are my contact details:</h5>
                             <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                                <li style="font-size: 18px;">
-                                    <p>Contact No: <%= user.contact_number %>
-                                    </p>
-                                </li>
-                                <li style="font-size: 18px;">
-                                    <p>Email: <%= user.email %>
-                                        </p>
-                                </li>
+                                <li style="font-size: 18px;">Contact No: <%= user.contact_number %></li>
+                                <li style="font-size: 18px;">Email: <%= user.email %></li>
                             </ul>
                             <button type="button" onclick="closePopup(this)" style="margin-top: 20px;">OK</button>
                         </div>
                     </div>
                 </div>
-                <% }) %> <!-- End of profiles loop -->
+            <% }) %>
         </div>
     </div>
 
     <!-- Pagination and navigation -->
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-pagination"></div>
-
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-                const swiper = new Swiper(".mySwiper", {
-                    slidesPerView: 3,
-                    spaceBetween: 40,
-                    slidesPerGroup: 3,
-                    loop: true,
-                    loopFillGroupWithBlank: true,
-                    pagination: {
-                        el: ".swiper-pagination",
-                        clickable: true,
-                    },
-                    navigation: {
-                        nextEl: ".swiper-button-next",
-                        prevEl: ".swiper-button-prev",
-                    },
-                });
-
-                function openPopup(button) {
-                    const popup = button.nextElementSibling;
-                    popup.classList.add("open-popup");
-                    popup.style.display = 'block';
-                }
-
-                function closePopup(button) {
-                    const popup = button.parentElement;
-                    popup.classList.remove("open-popup");
-                    popup.style.display = 'none';
-                }
-
-                     // Toggle filter dropdown visibility
-document.getElementById('filterButton').addEventListener('click', () => {
-    const dropdown = document.getElementById('filterDropdown');
-    if (dropdown.style.display === 'none') {
-        dropdown.style.display = 'block';
-    } else {
-        dropdown.style.display = 'none';
-        resetFilters(); 
-    }
-});
-// Apply filters
-document.getElementById('applyFilters').addEventListener('click', () => {
-    const selectedYear = document.getElementById('yearFilter').value;
-    const selectedBranch = document.getElementById('branchFilter').value;
-
-    const profileContainer = document.querySelector('.swiper-wrapper');
-
-    profileContainer.querySelectorAll('.swiper-slide.card').forEach(card => {
-        const professionText = card.querySelector('.profession').textContent.trim();
-        const [userYear, userBranch] = professionText.split('-').map(str => str.trim());
-
-        const yearMatch = selectedYear === "All Years" || userYear === selectedYear;
-        const branchMatch = selectedBranch === "All Branches" || userBranch === selectedBranch;
-
-        card.style.display = (yearMatch && branchMatch) ? "block" : "none";
-    });
-    // Reset Swiper slider to the first position after filtering
-    if (typeof swiper !== 'undefined') {
-        swiper.update();
-        swiper.slideTo(0);
-    }
-    document.getElementById('filterDropdown').style.display = 'none';
-});
-
-// Function to reset filters when closing the filter dropdown
-function resetFilters() {
-    document.getElementById('yearFilter').value = "All Years";
-    document.getElementById('branchFilter').value = "All Branches";
-
-    document.querySelectorAll('.swiper-wrapper .swiper-slide.card').forEach(card => {
-        card.style.display = "block";
-    });
-    // Reset Swiper slider to show the first card
-    if (typeof swiper !== 'undefined') {
-        swiper.update();
-        swiper.slideTo(0);
-    }
-}
-});
-</script>
+    <div class="swiper-button-next profiles-next"></div>
+    <div class="swiper-button-prev profiles-prev"></div>
+    <div class="swiper-pagination profiles-pagination"></div>
 </section>
 
-<section id="services" style="font-family: DM Serif Display, serif;  
-    letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; 
-    font-style: normal; position: relative; top: 50px;">
-    
+<section id="services" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: 50px;">
     <h1 style="position: relative; left: 685px; top: -35px;">Services</h1>
     <h3 style="position: relative; left: 720px; top: -20px;">Food</h3>
-    <div class="swiper mySwiper container">
-    <div class="swiper-wrapper content">
-         <% services.filter(service => service.service === 'Food').forEach(service => { %>
-            <div class="swiper-slide card">
-                <div class="card-content">
-                    <div class="image">
-                        <img src="/Images/foodservice.jpg" alt="food-service">
-                    </div>
-                    <div class="name-profession">
-                        <span class="name" style="font-size: 24px;"><%= service.business_Name %></span>
-                    </div>
-                         <button class="message-button" onclick="openPopup(this)" 
-                        style="background-color: #D0B8A8; font-family: DM Serif Display, serif;
-                         font-size: 20px; font-weight: 400; 
-                        font-style: normal; margin-top: 40px;">Contact Us</button>
-
-                         <div class="popup" style="margin-top: 20px;">
-                            <h5>Thank you for visiting our Service!</h4>
+    <div class="swiper foodSwiper container">
+        <div class="swiper-wrapper content">
+            <% services.filter(service => service.service === 'Food').forEach(service => { %>
+                <div class="swiper-slide card">
+                    <div class="card-content">
+                        <div class="image">
+                            <img src="/Images/foodservice.jpg" alt="food-service">
+                        </div>
+                        <div class="name-profession">
+                            <span class="name" style="font-size: 24px;"><%= service.business_Name %></span>
+                        </div>
+                        <button class="message-button" onclick="openPopup(this)" style="background-color: #D0B8A8; font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 40px;">Contact Us</button>
+                        <div class="popup" style="margin-top: 20px;">
+                            <h5>Thank you for visiting our Service!</h5>
                             <h5 style="text-align: left;">Connect with us using the details:</h5>
                             <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                                <li style="font-size: 18px;">
-                                    Contact No: <%= service.contact_number %>
-                                </li>
-                                <li style="font-size: 18px;">
-                                    Email: <%= service.email %>
-                                </li>
-                                <li onclick="window.location.href='<%= service.price_chart_link %>';" style="font-size: 18px;">
-                                View Price Chart:
-                                <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i>
-                                </li>
+                                <li style="font-size: 18px;">Contact No: <%= service.contact_number %></li>
+                                <li style="font-size: 18px;">Email: <%= service.email %></li>
+                                <li onclick="window.location.href='<%= service.price_chart_link %>';" style="font-size: 18px;">View Price Chart: <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i></li>
                             </ul>
                             <button type="button" style="background: #D0B8A8;" onclick="closePopup(this)">OK</button>
                         </div>
+                    </div>
                 </div>
-            </div>
-        <% }) %>
+            <% }) %>
+        </div>
     </div>
-</div>
-        <!-- Swiper Navigation Buttons -->
-        <div class="swiper-button-next" style="position: relative; top: -230px !important; left: 1480px !important;"></div>
-        <div class="swiper-button-prev" style="position: relative; top: -250px !important;"></div>
-        <div class="swiper-pagination"></div>
-    </div>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    var swiper = new Swiper(".mySwiper", {
-        slidesPerView: 3,
-        spaceBetween: 40,
-        slidesPerGroup: 3,
-        loop: true,
-        loopFillGroupWithBlank: true,
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-        },
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-    });
-});    
-     function openPopup(button) {
-                    const popup = button.nextElementSibling;
-                    popup.classList.add("open-popup");
-                    popup.style.display = 'block';
-                }
-    function closePopup(button) {
-                    const popup = button.parentElement;
-                    popup.classList.remove("open-popup");
-                    popup.style.display = 'none';
-                }
-</script>
+    <div class="swiper-button-next food-next" style="position: relative; top: -230px !important; left: 1480px !important;"></div>
+    <div class="swiper-button-prev food-prev" style="position: relative; top: -250px !important;"></div>
+    <div class="swiper-pagination food-pagination"></div>
 </section>
 
-<section id="services" style="font-family: DM Serif Display, serif; 
- letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; 
-font-style: normal;  position: relative; top: 50px;">
-<h3 style="position: relative; left: 700px; top: -35px;">Laundry</h3>
-    <div class="swiper mySwiper container">
-    <div class="swiper-wrapper content">
-         <% services.filter(service => service.service === 'Laundry').forEach(service => { %>
-            <div class="swiper-slide card">
-                <div class="card-content">
-                    <div class="image">
-                        <img src="/Images/laundryservice.jpg" alt="food-service">
-                    </div>
-                     <div class="name-profession">
-                        <span class="name" style="font-size: 24px;"><%= service.business_Name %></span>
-                    </div>
-                         <button class="message-button" onclick="openPopup(this)" 
-                        style="background-color: #D0B8A8; font-family: DM Serif Display, serif;
-                         font-size: 20px; font-weight: 400; 
-                        font-style: normal; margin-top: 40px;">Contact Us</button>
-
-                         <div class="popup" style="margin-top: 20px;">
-                            <h5>Thank you for visiting our Service!</h4>
+<section id="services" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: 50px;">
+    <h3 style="position: relative; left: 700px; top: -35px;">Laundry</h3>
+    <div class="swiper laundrySwiper container">
+        <div class="swiper-wrapper content">
+            <% services.filter(service => service.service === 'Laundry').forEach(service => { %>
+                <div class="swiper-slide card">
+                    <div class="card-content">
+                        <div class="image">
+                            <img src="/Images/laundryservice.jpg" alt="food-service">
+                        </div>
+                        <div class="name-profession">
+                            <span class="name" style="font-size: 24px;"><%= service.business_Name %></span>
+                        </div>
+                        <button class="message-button" onclick="openPopup(this)" style="background-color: #D0B8A8; font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 40px;">Contact Us</button>
+                        <div class="popup" style="margin-top: 20px;">
+                            <h5>Thank you for visiting our Service!</h5>
                             <h5 style="text-align: left;">Connect with us using the details:</h5>
                             <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                                <li style="font-size: 18px;">
-                                    Contact No: <%= service.contact_number %>
-                                </li>
-                                <li style="font-size: 18px;">
-                                    Email: <%= service.email %>
-                                </li>
-                                <li onclick="window.location.href='<%= service.price_chart_link %>';" style="font-size: 18px;">
-                                    View Price Chart:
-                                <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i>
-                                </li>
+                                <li style="font-size: 18px;">Contact No: <%= service.contact_number %></li>
+                                <li style="font-size: 18px;">Email: <%= service.email %></li>
+                                <li onclick="window.location.href='<%= service.price_chart_link %>';" style="font-size: 18px;">View Price Chart: <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i></li>
                             </ul>
                             <button type="button" style="background: #D0B8A8;" onclick="closePopup(this)">OK</button>
                         </div>
+                    </div>
                 </div>
-            </div>
-        <% }) %>
+            <% }) %>
+        </div>
     </div>
-</div>
-        <!-- Swiper Navigation Buttons -->
-        <div class="swiper-button-next" style="position: relative; top: -230px !important; left: 1480px !important;"></div>
-        <div class="swiper-button-prev" style="position: relative; top: -250px !important;"></div>
-        <div class="swiper-pagination"></div>
+    <div class="swiper-button-next laundry-next" style="position: relative; top: -230px !important; left: 1480px !important;"></div>
+    <div class="swiper-button-prev laundry-prev" style="position: relative; top: -250px !important;"></div>
+    <div class="swiper-pagination laundry-pagination"></div>
+</section>
+
+<section id="services" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: 50px;">
+    <h3 style="position: relative; left: 700px; top: -35px;">Brokers</h3>
+    <div class="swiper brokerSwiper container">
+        <div class="swiper-wrapper content">
+            <% services.filter(service => service.service === 'Broker').forEach(service => { %>
+                <div class="swiper-slide card">
+                    <div class="card-content">
+                        <div class="image">
+                            <img src="/Images/brokerservice.jpg" alt="food-service">
+                        </div>
+                        <div class="name-profession">
+                            <span class="name" style="font-size: 24px;"><%= service.business_Name %></span>
+                        </div>
+                        <button class="message-button" onclick="openPopup(this)" style="background-color: #D0B8A8; font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 40px;">Contact Us</button>
+                        <div class="popup" style="margin-top: 20px;">
+                            <h5>Thank you for visiting our Service!</h5>
+                            <h5 style="text-align: left;">Connect with us using the details:</h5>
+                            <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
+                                <li style="font-size: 18px;">Contact No: <%= service.contact_number %></li>
+                                <li style="font-size: 18px;">Email: <%= service.email %></li>
+                                <li onclick="window.location.href='<%= service.price_chart_link %>';" style="font-size: 18px;">View Price Chart: <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i></li>
+                            </ul>
+                            <button type="button" style="background: #D0B8A8;" onclick="closePopup(this)">OK</button>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
     </div>
+    <div class="swiper-button-next broker-next" style="position: relative; top: -230px !important; left: 1480px !important;"></div>
+    <div class="swiper-button-prev broker-prev" style="position: relative; top: -250px !important;"></div>
+    <div class="swiper-pagination broker-pagination"></div>
+</section>
+
+<!-- Include Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    var swiper = new Swiper(".mySwiper", {
+document.addEventListener('DOMContentLoaded', function () {
+    const profilesSwiper = new Swiper(".profilesSwiper", {
         slidesPerView: 3,
         spaceBetween: 40,
         slidesPerGroup: 3,
         loop: true,
         loopFillGroupWithBlank: true,
         pagination: {
-            el: ".swiper-pagination",
+            el: ".profiles-pagination",
             clickable: true,
         },
         navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
+            nextEl: ".profiles-next",
+            prevEl: ".profiles-prev",
         },
     });
-});    
-     function openPopup(button) {
-                    const popup = button.nextElementSibling;
-                    popup.classList.add("open-popup");
-                    popup.style.display = 'block';
-                }
-    function closePopup(button) {
-                    const popup = button.parentElement;
-                    popup.classList.remove("open-popup");
-                    popup.style.display = 'none';
-                }
-</script>
-</section>
 
-<section id="services" style="font-family: DM Serif Display, serif;  letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; 
-font-style: normal;  position: relative; top: 50px;">
- <h3 style="position: relative; left: 700px; top: -35px;">Brokers</h3>
-    <div class="swiper mySwiper container">
-    <div class="swiper-wrapper content">
-         <% services.filter(service => service.service === 'Broker').forEach(service => { %>
-            <div class="swiper-slide card">
-                <div class="card-content">
-                    <div class="image">
-                        <img src="/Images/brokerservice.jpg" alt="food-service">
-                    </div>
-                    <div class="name-profession">
-                        <span class="name" style="font-size: 24px;"><%= service.business_Name %></span>
-                    </div>
-                         <button class="message-button" onclick="openPopup(this)" 
-                        style="background-color: #D0B8A8; font-family: DM Serif Display, serif;
-                         font-size: 20px; font-weight: 400; 
-                        font-style: normal; margin-top: 40px;">Contact Us</button>
-
-                         <div class="popup" style="margin-top: 20px;">
-                            <h5>Thank you for visiting our Service!</h4>
-                            <h5 style="text-align: left;">Connect with us using the details:</h5>
-                            <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                                <li style="font-size: 18px;">
-                                    Contact No: <%= service.contact_number %>
-                                </li>
-                                <li style="font-size: 18px;">
-                                    Email: <%= service.email %>
-                                </li>
-                                <li onclick="window.location.href='<%= service.price_chart_link %>';" style="font-size: 18px;">
-                                    View Price Chart:
-                                <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i>
-                                </li>
-                            </ul>
-                            <button type="button" style="background: #D0B8A8;" onclick="closePopup(this)">OK</button>
-                        </div>
-                </div>
-            </div>
-        <% }) %>
-    </div>
-</div>
-        <!-- Swiper Navigation Buttons -->
-        <div class="swiper-button-next" style="position: relative; top: -230px !important; left: 1480px !important;"></div>
-        <div class="swiper-button-prev" style="position: relative; top: -250px !important;"></div>
-        <div class="swiper-pagination"></div>
-    </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-    var swiper = new Swiper(".mySwiper", {
+    const foodSwiper = new Swiper(".foodSwiper", {
         slidesPerView: 3,
         spaceBetween: 40,
         slidesPerGroup: 3,
         loop: true,
         loopFillGroupWithBlank: true,
         pagination: {
-            el: ".swiper-pagination",
+            el: ".food-pagination",
             clickable: true,
         },
         navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
+            nextEl: ".food-next",
+            prevEl: ".food-prev",
         },
     });
-});    
-     function openPopup(button) {
-                    const popup = button.nextElementSibling;
-                    popup.classList.add("open-popup");
-                    popup.style.display = 'block';
-                }
-    function closePopup(button) {
-                    const popup = button.parentElement;
-                    popup.classList.remove("open-popup");
-                    popup.style.display = 'none';
-                }
-</script>
 
-</section>
+    const laundrySwiper = new Swiper(".laundrySwiper", {
+        slidesPerView: 3,
+        spaceBetween: 40,
+        slidesPerGroup: 3,
+        loop: true,
+        loopFillGroupWithBlank: true,
+        pagination: {
+            el: ".laundry-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: ".laundry-next",
+            prevEl: ".laundry-prev",
+        },
+    });
+
+    const brokerSwiper = new Swiper(".brokerSwiper", {
+        slidesPerView: 3,
+        spaceBetween: 40,
+        slidesPerGroup: 3,
+        loop: true,
+        loopFillGroupWithBlank: true,
+        pagination: {
+            el: ".broker-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: ".broker-next",
+            prevEl: ".broker-prev",
+        },
+    });
+
+    function openPopup(button) {
+        const popup = button.nextElementSibling;
+        popup.classList.add("open-popup");
+        popup.style.display = 'block';
+    }
+
+    function closePopup(button) {
+        const popup = button.parentElement;
+        popup.classList.remove("open-popup");
+        popup.style.display = 'none';
+    }
+
+    document.getElementById('filterButton').addEventListener('click', () => {
+        const dropdown = document.getElementById('filterDropdown');
+        if (dropdown.style.display === 'none') {
+            dropdown.style.display = 'block';
+        } else {
+            dropdown.style.display = 'none';
+            resetFilters();
+        }
+    });
+
+    document.getElementById('applyFilters').addEventListener('click', () => {
+        const selectedYear = document.getElementById('yearFilter').value;
+        const selectedBranch = document.getElementById('branchFilter').value;
+
+        const profileContainer = document.querySelector('.profilesSwiper .swiper-wrapper');
+
+        profileContainer.querySelectorAll('.swiper-slide.card').forEach(card => {
+            const professionText = card.querySelector('.profession').textContent.trim();
+            const [userYear, userBranch] = professionText.split('-').map(str => str.trim());
+
+            const yearMatch = selectedYear === "All Years" || userYear === selectedYear;
+            const branchMatch = selectedBranch === "All Branches" || userBranch === selectedBranch;
+
+            card.style.display = (yearMatch && branchMatch) ? "block" : "none";
+        });
+
+        if (typeof profilesSwiper !== 'undefined') {
+            profilesSwiper.update();
+            profilesSwiper.slideTo(0);
+        }
+        document.getElementById('filterDropdown').style.display = 'none';
+    });
+
+    function resetFilters() {
+        document.getElementById('yearFilter').value = "All Years";
+        document.getElementById('branchFilter').value = "All Branches";
+
+        document.querySelectorAll('.profilesSwiper .swiper-wrapper .swiper-slide.card').forEach(card => {
+            card.style.display = "block";
+        });
+
+        if (typeof profilesSwiper !== 'undefined') {
+            profilesSwiper.update();
+            profilesSwiper.slideTo(0);
+        }
+    }
+});
+</script>
 
 <section id="footer" style="position: relative; bottom: -50px;">
 <footer>
@@ -1346,5 +1285,4 @@ document.getElementById('scrollTopBtn').onclick = function () {
 </script>
 </section>
 </body>
-
 </html>

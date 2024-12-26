@@ -86,9 +86,8 @@ app.get('/registrationpage', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/registrationpage', 'index.html'));
 });
 
-// Route to fetch both services and user profiles
 app.get('/data', (req, res) => {
-    const servicesQuery = 'SELECT business_Name, contact_number, email, service FROM services';
+    const servicesQuery = 'SELECT business_Name, contact_number, email, service, price_chart_link FROM services';
     const profilesQuery = 'SELECT full_name, year, branch, contact_number, email, profile_pic FROM STUDENTS';
 
     Promise.all([
@@ -125,7 +124,6 @@ app.get('/data', (req, res) => {
         })
     ])
     .then(([services, profiles]) => {
-        // Send combined results as JSON response
         res.status(200).json({ services, profiles });
     })
     .catch(err => {
