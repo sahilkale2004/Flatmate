@@ -91,12 +91,11 @@ app.get('/data', (req, res) => {
     const servicesQuery = 'SELECT business_Name, contact_number, email, service FROM services';
     const profilesQuery = 'SELECT full_name, year, branch, contact_number, email, profile_pic FROM STUDENTS';
 
-    // Run both queries in parallel
     Promise.all([
         new Promise((resolve, reject) => {
             pool.query(servicesQuery, (err, results) => {
                 if (err) {
-                    console.error('Error fetching services:', err);
+                    console.error(err);
                     reject(err);
                 } else {
                     resolve(results);
@@ -106,7 +105,7 @@ app.get('/data', (req, res) => {
         new Promise((resolve, reject) => {
             pool.query(profilesQuery, (err, results) => {
                 if (err) {
-                    console.error('Error fetching profiles:', err);
+                    console.error(err);
                     reject(err);
                 } else {
                     const profiles = results.map(user => {
@@ -130,7 +129,7 @@ app.get('/data', (req, res) => {
         res.status(200).json({ services, profiles });
     })
     .catch(err => {
-        console.error('Error fetching data:', err);
+        console.error(err);
         res.status(500).send('Internal Server Error');
     });
 });
