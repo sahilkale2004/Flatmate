@@ -120,7 +120,7 @@
     <div class="profile">
          <!-- Profile Picture Display -->
 <img src="{{profileImage}}" aria-label="Profile photo" id="profilePic" 
-onerror="this.src='/Images/User.png';" 
+onerror="this.src='/img/User.png';" 
 style="top: 100px; width: 200px; height: 200px; border-radius: 50%; margin-left: 210px; position: relative; border: 4px solid snow;">
 
     <label for="input-file" style="color: black; display: block; 
@@ -190,12 +190,9 @@ style="top: 100px; width: 200px; height: 200px; border-radius: 50%; margin-left:
                 <button type="button" id="editBtn" style="position: relative; left: -240px; top: -25px;">Edit</button>
         </div>
     </div>
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', function() {
-            const userData = JSON.parse('{{userData}}'); // Ensure this is a valid JSON string
-
-            // Log userData to the console to verify it
-            console.log(userData);
+            const userData = JSON.parse('{{userData}}');
     
             document.getElementById('fullName').value = userData.fULL_name || '';
             document.getElementById('email').value = userData.email || '';
@@ -292,6 +289,6 @@ style="top: 100px; width: 200px; height: 200px; border-radius: 50%; margin-left:
             togglePassword.classList.toggle('fa-eye');
             togglePassword.classList.toggle('fa-eye-slash');
         });
-    </script>
+</script>
 </body>
 </html> 

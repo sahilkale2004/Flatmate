@@ -1,11 +1,8 @@
 require('dotenv').config();
-const http = require('http');
 const pool = require('./database'); 
 const formidable = require('formidable');
 const fs = require('fs');
 const path = require('path');
-const url = require('url');
-const querystring = require('querystring');
 const cookieparser = require('cookie-parser');
 const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
