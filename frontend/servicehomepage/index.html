@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flatmate.com</title>
-    <link rel="icon" href="/Images/home.png" type="image/x-icon">
+    <link rel="icon" href="/img/home.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Oleo+Script&family=Spicy+Rice&display=swap"
       rel="stylesheet">
-    <style>
+<style>
       body {
         margin: 0;
         font-family: Arial, sans-serif;
@@ -29,7 +29,7 @@
         height: 695px;
         margin: 0;
         margin-top: 130px;
-        background-image: url(/Images/Homebackground.jpg);
+        background-image: url(/img/Homebackground.jpg);
         background-size: 1536px 570px; 
         background-repeat: no-repeat;
     }
@@ -108,9 +108,20 @@
       width: 500px;
     }
     
-    .navbar-center button {
+    .navbar-center #search-button {
+        height: 35px;
         padding: 5px 10px;
         font-size: 16px;
+        color: #333;
+        border: none;
+        border-radius: 10px; /* Rounded corners */
+        cursor: pointer;
+    }
+    .navbar-center #clear-button {
+        height: 35px;
+        padding: 5px 10px;
+        font-size: 16px;
+        color: #333;
         border: none;
         border-radius: 10px; /* Rounded corners */
         cursor: pointer;
@@ -142,47 +153,102 @@
             color: #fff;
     }
     
-    footer{
-        background-color:rgb(53, 49, 49) ;
-        height: 450px;
-        color: rgb(165, 160, 160);
-        font-family: 'Calistoga', cursive;
-        padding-left: 150px;
-    
-    }
-    
-    .feet2 {
-        display: flex;
+     footer {
+    background-color: rgb(53, 49, 49);
+    color: rgb(165, 160, 160);
+    font-family: 'Calistoga', cursive;
+    padding: 40px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+footer .feet {
+    max-width: 40%;
+    margin-top: -25px;
+}
+footer .feet h1 {
+    font-size: 48px;
+    color: white;
+    margin-bottom: 20px;
+}
+footer .feet p {
+    font-size: 18px;
+    line-height: 1.8;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+}
+.feet .copyright p {
+    font-size: 14px;
+    font-weight:bold;
+    margin-top: 5px;
+}
+footer .feet2, footer .contact {
+    max-width: 20%;
+}
+
+footer .feet2 p, footer .contact p {
+    font-size: 28px;
+    font-weight: bold;
+    color: rgb(165, 160, 160);
+    margin-top: 40px;
+    margin-bottom: 25px;
+}
+
+footer .feet2 a, footer .contact a {
+    text-decoration: none;
+    color: rgb(165, 160, 160);
+    font-family: Arial, Helvetica, sans-serif;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+
+footer .contact a:hover {
+    transform: scale(1.1);
+    color: white;
+}
+
+footer .contact a {
+    font-size: 24px;
+    display: inline-block;
+    margin-right: 2px;
+}
+
+footer .contact a:last-child {
+    margin-right: 0;
+}
+
+footer .contact a i {
+    transition: transform 0.3s ease;
+}
+
+footer .contact a:hover i {
+    transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+    footer {
         flex-direction: column;
-        position: relative;
-        top: -300px;
-        left: 800px;
+        align-items: center;
+        text-align: center;
     }
-    .feet2 .home-button {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        background: none;
-        border: none;
-        cursor: pointer;
-        right: 5px;
+
+    footer .feet {
+        max-width: 90%;
+        margin-bottom: 30px;
     }
-    
-    .contact {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        top: -592px;
-        right: -1025px;
+
+    footer .feet2, footer .contact {
+        max-width: 100%;
+        margin-bottom: 20px;
     }
-    
-    .contact a {
-        text-decoration: none;
+
+    footer .contact a {
+        margin-right: 15px;
     }
-    
-    .contact a:hover{
-      transform: scale(1.2);
-    }
+}
     
     .scroll-top-btn {
       position: fixed;
@@ -632,22 +698,109 @@ h2 {
     }
 }
 
-  </style>
+</style>
 </head>
 
 <body>
-
 <div class="navbar">
         <div class="navbar-left">
             <h1 style="position: relative; right: -20px; font-size: 50px;">Flatmate</h1>
-        </div>
-        <div class="navbar-center">
-            <input type="text" class="search-box" id="search-input" placeholder="Search for flatmates">
-            <button id="search-button"  style="height: 35px;
-            color: black;" class="icon-link search icon">
-            <i class="fas fa-search"></i></button>
-        </div>
-        <div class="navbar-right">
+</div>
+<div class="navbar-center" style="position: relative;">
+    <input type="text" class="search-box" id="search-input" placeholder="Search for flatmates" style="padding-right: 35px;">
+    <button id="search-button" class="icon-link search icon">
+        <i class="fas fa-search"></i>
+    </button>
+    <button id="clear-button" class="icon-link clear icon">
+        <i class="fas fa-times"></i>
+    </button>
+</div>
+<script>
+document.getElementById('search-button').addEventListener('click', function () {
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+    let firstMatchFound = false;
+
+    const swiperSections = [
+        {
+            selector: '.profilesSwiper',
+            filter: user => user.getAttribute('data-type') === 'profiles',
+            scrollClass: '.profilesSwiper'
+        },
+        {
+            selector: '.foodSwiper',
+            filter: service => service.getAttribute('data-type') === 'Food',
+            scrollClass: '.foodSwiper'
+        },
+        {
+            selector: '.laundrySwiper',
+            filter: service => service.getAttribute('data-type') === 'Laundry',
+            scrollClass: '.laundrySwiper'
+        },
+        {
+            selector: '.brokerSwiper',
+            filter: service => service.getAttribute('data-type') === 'Broker',
+            scrollClass: '.brokerSwiper'
+        }
+    ];
+
+    swiperSections.forEach(section => {
+        const swiperContainer = document.querySelector(section.selector);
+        const slides = swiperContainer.querySelectorAll('.swiper-slide');
+
+        if (searchQuery === '') {
+            // If search input is empty, reset all slides to be visible
+            slides.forEach(slide => {
+                slide.style.display = 'block';
+            });
+            swiperContainer.swiper.update();
+            return;
+        }
+
+        let hasMatch = false;
+
+        slides.forEach(slide => {
+            const name = slide.querySelector('.name')?.textContent.toLowerCase() || '';
+            const type = slide.getAttribute('data-type')?.toLowerCase() || '';
+
+            // Match against name or service type
+            if (name.includes(searchQuery) || type.includes(searchQuery)) {
+                slide.style.display = 'block';
+                hasMatch = true;
+            } else {
+                slide.style.display = 'none';
+            }
+        });
+
+        swiperContainer.swiper.update();
+
+        // Scroll smoothly to the first matching section
+        if (hasMatch && !firstMatchFound) {
+            document.querySelector(section.scrollClass).scrollIntoView({ behavior: 'smooth' });
+            firstMatchFound = true;
+        }
+    });
+});
+
+document.getElementById('clear-button').addEventListener('click', function () {
+    document.getElementById('search-input').value = '';
+    const swiperSections = [
+        '.profilesSwiper',
+        '.foodSwiper',
+        '.laundrySwiper',
+        '.brokerSwiper'
+    ];
+
+    swiperSections.forEach(selector => {
+        const swiperContainer = document.querySelector(selector);
+        const slides = swiperContainer.querySelectorAll('.swiper-slide');
+        slides.forEach(slide => {
+            slide.style.display = 'block';
+        });
+        swiperContainer.swiper.update();
+    });
+});
+</script>  
+<div class="navbar-right">
           <button onclick="showLogoutPopup()">Log out</button>
           <div id="logoutPopup"
             style="visibility: hidden; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%;
@@ -710,10 +863,10 @@ h2 {
             <button onclick="location.href='/serviceprofile'" class="icon-link profile-icon" >
               <i class="fas fa-user 
                 fa-lg"></i></button>
-        </div>
+</div>
 </div>
 
-<header>
+<header id="header">
         <h1 style="
                     position: relative; 
                     left: 825px;
@@ -738,7 +891,7 @@ h2 {
           The perfect solution for the PG students and service providers.</p>
 </header>
 
-<section class="how-it-works" style="margin-top: -122px;">
+<section id="overview" class="how-it-works" style="margin-top: -122px;">
         <div class="content-container">
             <div class="text-content">
                 <h2>How Flatmate Works</h2>
@@ -784,16 +937,16 @@ h2 {
             </div>
 
             <div class="image-content">
-                <img src="/Images/laptopuser.png" alt="Illustration of person working on a laptop">
+                <img src="/img/laptopuser.png" alt="Illustration of person working on a laptop">
             </div>
         </div>
 </section>
     
-<section class="about-section" style="margin-top: 40px;">
+<section id="about-us" class="about-section" style="margin-top: 40px;">
         <div class="grid-container">
             <!-- Left side (Image) -->
             <div class="image-section">
-                <img src="/Images/Aboutus.jpg" alt="About Us Image">
+                <img src="/img/Aboutus.jpg" alt="About Us Image">
             </div>
     
             <!-- Right side (Description) -->
@@ -831,45 +984,69 @@ h2 {
         }
 </script>
 
-<section id="profiles" style="font-family: DM Serif Display, serif;  letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; 
-font-style: normal;  position: relative; top: -35px;">
+<section id="profiles" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: -35px;">
   <h1 style="position: relative; left: 690px;">Profiles</h1>
-
-<div class="swiper mySwiper container">
+  <div class="swiper profilesSwiper container">
     <div class="swiper-wrapper content">
         <!-- Swiper Slides will be dynamically generated here -->
     </div>    
-</div>
+  </div>
+  <div class="swiper-button-next profiles-next"></div>
+  <div class="swiper-button-prev profiles-prev"></div>
+  <div class="swiper-pagination profiles-pagination"></div>
+</section>
+
+<section id="services" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: 50px;">
+  <h1 style="position: relative; left: 685px; top: -35px;">Services</h1>
+  <h3 style="position: relative; left: 720px; top: -20px;">Food</h3>
+  <div class="swiper foodSwiper container">
+    <div class="swiper-wrapper content">
+        <!-- Swiper Slides will be dynamically generated here -->
+    </div>
+  </div>
+  <div class="swiper-button-next food-next"></div>
+  <div class="swiper-button-prev food-prev"></div>
+  <div class="swiper-pagination food-pagination"></div>
+</section>
+
+<section id="services" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: 100px;">
+  <h3 style="position: relative; left: 700px; top: -35px;">Laundry</h3>
+  <div class="swiper laundrySwiper container">
+    <div class="swiper-wrapper content">
+        <!-- Swiper Slides will be dynamically generated here -->
+    </div>
+  </div>
+  <div class="swiper-button-next laundry-next"></div>
+  <div class="swiper-button-prev laundry-prev"></div>
+  <div class="swiper-pagination laundry-pagination"></div>
+</section>
+
+<section id="services" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: 140px;">
+  <h3 style="position: relative; left: 700px; top: -35px;">Brokers</h3>
+  <div class="swiper brokerSwiper container">
+    <div class="swiper-wrapper content">
+        <!-- Swiper Slides will be dynamically generated here -->
+    </div>
+  </div>
+  <div class="swiper-button-next broker-next"></div>
+  <div class="swiper-button-prev broker-prev"></div>
+  <div class="swiper-pagination broker-pagination"></div>
+</section>
 
 <!-- Include Swiper CSS & JS -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
-<!-- Pagination and navigation -->
-<div class="swiper-button-next"></div>
-<div class="swiper-button-prev"></div>
-<div class="swiper-pagination"></div>
-
 <script>
- document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     fetch('/data')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            const swiperWrapper = document.querySelector('.swiper-wrapper');
-
-            // Dynamically generate Swiper slides with user data
+            // Profiles Swiper
+            const profilesWrapper = document.querySelector('.profilesSwiper .swiper-wrapper');
             data.profiles.forEach(user => {
                 const userSlide = document.createElement('div');
                 userSlide.classList.add('swiper-slide', 'card');
-
-                userSlide.setAttribute('data-name', user.full_name.toLowerCase());
-                userSlide.setAttribute('data-year', user.year.toLowerCase());
-                userSlide.setAttribute('data-branch', user.branch.toLowerCase());
                 userSlide.innerHTML = `
                     <div class="card-content">
                         <div class="image">
@@ -879,9 +1056,7 @@ font-style: normal;  position: relative; top: -35px;">
                             <span class="name" style="font-size: 24px;">${user.full_name}</span>
                             <span class="profession" style="font-weight: 800; font-size: 20px;">${user.year} - ${user.branch}</span>
                         </div>
-                        <button class="message-button" onclick="openPopup(this)" 
-                            style="font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; 
-                            font-style: normal;">Contact Me</button>
+                        <button class="message-button" onclick="openPopup(this)" style="font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal;">Contact Me</button>
                         <div class="popup">
                             <h4>Thank You for visiting My Profile!</h4>
                             <p>Here are my contact details:</p>
@@ -893,411 +1068,259 @@ font-style: normal;  position: relative; top: -35px;">
                         </div>
                     </div>
                 `;
-                swiperWrapper.appendChild(userSlide);
+                profilesWrapper.appendChild(userSlide);
             });
 
-            // Initialize Swiper with the new configuration
-            var swiper = new Swiper(".mySwiper", {
+            // Food Services Swiper
+            const foodWrapper = document.querySelector('.foodSwiper .swiper-wrapper');
+            const foodServices = data.services.filter(service => service.service === 'Food');
+            foodServices.forEach(service => {
+                const serviceSlide = document.createElement('div');
+                serviceSlide.classList.add('swiper-slide', 'card');
+                serviceSlide.innerHTML = `
+                    <div class="card-content">
+                        <div class="image">
+                            <img src="/img/foodservice.jpg" alt="${service.business_Name} image" class="service-image">
+                        </div>
+                        <div class="name-profession">
+                            <span class="name" style="font-size: 24px;">${service.business_Name}</span>
+                            <span class="profession" style="font-weight: 800; font-size: 20px;">${service.service}</span>
+                        </div>
+                        <button class="message-button" onclick="openPopup(this)" style="font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 30px;">Contact Us</button>
+                        <div class="popup">
+                            <h4>Thank you for visiting our Service!</h4>
+                            <p>Connect with us using the details:</p>
+                            <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
+                                <li style="font-size: 18px;">Contact No: ${service.contact_number}</li>
+                                <li style="font-size: 18px;">Email: ${service.email}</li>
+                                <li onclick="window.location.href='${service.price_chart_link}';" style="font-size: 18px;">
+                                View Price Chart:
+                                <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i>
+                                </li>
+                            </ul>
+                            <button type="button" onclick="closePopup(this)">OK</button>
+                        </div>
+                    </div>
+                `;
+                foodWrapper.appendChild(serviceSlide);
+            });
+
+            // Laundry Services Swiper
+            const laundryWrapper = document.querySelector('.laundrySwiper .swiper-wrapper');
+            const laundryServices = data.services.filter(service => service.service === 'Laundry');
+            laundryServices.forEach(service => {
+                const serviceSlide = document.createElement('div');
+                serviceSlide.classList.add('swiper-slide', 'card');
+                serviceSlide.innerHTML = `
+                    <div class="card-content">
+                        <div class="image">
+                            <img src="/img/laundryservice.jpg" alt="${service.business_Name} image" class="service-image">
+                        </div>
+                        <div class="name-profession">
+                            <span class="name" style="font-size: 24px;">${service.business_Name}</span>
+                            <span class="profession" style="font-weight: 800; font-size: 20px;">${service.service}</span>
+                        </div>
+                        <button class="message-button" onclick="openPopup(this)" style="font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 30px;">Contact Us</button>
+                        <div class="popup">
+                            <h4>Thank you for visiting our Service!</h4>
+                            <p>Connect with us using the details:</p>
+                            <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
+                                <li style="font-size: 18px;">Contact No: ${service.contact_number}</li>
+                                <li style="font-size: 18px;">Email: ${service.email}</li>
+                                <li onclick="window.location.href='${service.price_chart_link}';" style="font-size: 18px;">
+                                View Price Chart:
+                                <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i>
+                                </li>
+                            </ul>
+                            <button type="button" onclick="closePopup(this)">OK</button>
+                        </div>
+                    </div>
+                `;
+                laundryWrapper.appendChild(serviceSlide);
+            });
+
+            // Broker Services Swiper
+            const brokerWrapper = document.querySelector('.brokerSwiper .swiper-wrapper');
+            const brokerServices = data.services.filter(service => service.service === 'Broker');
+            brokerServices.forEach(service => {
+                const serviceSlide = document.createElement('div');
+                serviceSlide.classList.add('swiper-slide', 'card');
+                serviceSlide.innerHTML = `
+                    <div class="card-content">
+                        <div class="image">
+                            <img src="/img/brokerservice.jpg" alt="${service.business_Name} image" class="service-image">
+                        </div>
+                        <div class="name-profession">
+                            <span class="name" style="font-size: 24px;">${service.business_Name}</span>
+                            <span class="profession" style="font-weight: 800; font-size: 20px;">${service.service}</span>
+                        </div>
+                        <button class="message-button" onclick="openPopup(this)" style="font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 30px;">Contact Us</button>
+                        <div class="popup">
+                            <h4>Thank you for visiting our Service!</h4>
+                            <p>Connect with us using the details:</p>
+                            <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
+                                <li style="font-size: 18px;">Contact No: ${service.contact_number}</li>
+                                <li style="font-size: 18px;">Email: ${service.email}</li>
+                                <li onclick="window.location.href='${service.price_chart_link}';" style="font-size: 18px;">
+                                View Price Chart:
+                                <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i>
+                                </li>
+                            </ul>
+                            <button type="button" onclick="closePopup(this)">OK</button>
+                        </div>
+                    </div>
+                `;
+                brokerWrapper.appendChild(serviceSlide);
+            });
+
+            // Initialize Swipers
+            new Swiper(".profilesSwiper", {
                 slidesPerView: 3,
                 spaceBetween: 40,
                 slidesPerGroup: 3,
                 loop: true,
                 loopFillGroupWithBlank: true,
                 pagination: {
-                    el: ".swiper-pagination",
+                    el: ".profiles-pagination",
                     clickable: true,
                 },
                 navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
+                    nextEl: ".profiles-next",
+                    prevEl: ".profiles-prev",
+                },
+            });
+
+            new Swiper(".foodSwiper", {
+                slidesPerView: 3,
+                spaceBetween: 40,
+                slidesPerGroup: 3,
+                loop: true,
+                loopFillGroupWithBlank: true,
+                pagination: {
+                    el: ".food-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".food-next",
+                    prevEl: ".food-prev",
+                },
+            });
+
+            new Swiper(".laundrySwiper", {
+                slidesPerView: 3,
+                spaceBetween: 40,
+                slidesPerGroup: 3,
+                loop: true,
+                loopFillGroupWithBlank: true,
+                pagination: {
+                    el: ".laundry-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".laundry-next",
+                    prevEl: ".laundry-prev",
+                },
+            });
+
+            new Swiper(".brokerSwiper", {
+                slidesPerView: 3,
+                spaceBetween: 40,
+                slidesPerGroup: 3,
+                loop: true,
+                loopFillGroupWithBlank: true,
+                pagination: {
+                    el: ".broker-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".broker-next",
+                    prevEl: ".broker-prev",
                 },
             });
         })
         .catch(error => console.error('Error fetching data:', error));
 });
-
-  // Search functionality
-  document.getElementById('search-button').addEventListener('click', function () {
-    const searchQuery = document.getElementById('search-input').value.toLowerCase();
-    const slides = document.querySelectorAll('.swiper-slide');
-
-    slides.forEach(slide => {
-      const name = slide.getAttribute('data-name');
-      const year = slide.getAttribute('data-year');
-      const branch = slide.getAttribute('data-branch');
-
-      if (name.includes(searchQuery) || year.includes(searchQuery) || branch.includes(searchQuery)) {
-        slide.style.display = 'block';
-      } else {
-        slide.style.display = 'none'; 
-      }
-    });
-
-    swiper.update();
-     })
-  .catch (error => console.error('Error fetching profiles:', error));
-
-    // JavaScript for opening and closing popups
-    function openPopup(button) {
-        const popup = button.nextElementSibling;
-        popup.classList.add('open-popup');
-        popup.style.display = 'block';
-    }
-
+function openPopup(button) {
+                    const popup = button.nextElementSibling;
+                    popup.classList.add("open-popup");
+                    popup.style.display = 'block';
+                }
     function closePopup(button) {
-        const popup = button.parentElement;
-        popup.classList.remove('open-popup');
-        popup.style.display = 'none';
-    }
-</script>       
-</section>
-  
-<section id="services" style="font-family: DM Serif Display, serif;  letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; 
-font-style: normal;  position: relative; top: 50px;">
-<h1 style="position: relative; left: 685px; top: -35px;">Services</h1>
-<h3 style="position: relative; left: 720px; top: -20px;">Food</h3>
-<div class="swiper mySwiper container">
-    <div class="swiper-wrapper content">
-        <!-- Swiper Slides will be dynamically generated here -->
-    </div>
-</div>
-<!-- Include Swiper CSS & JS -->
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+                    const popup = button.parentElement;
+                    popup.classList.remove("open-popup");
+                    popup.style.display = 'none';
+                }
 
-<!-- Pagination and navigation -->
-<div class="swiper-button-next"></div>
-<div class="swiper-button-prev"></div>
-<div class="swiper-pagination"></div>
-
-<script>
-   document.addEventListener('DOMContentLoaded', function () {
-    fetch('/data')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const swiperWrapper = document.querySelector('.swiper-wrapper');
-
-            const foodServices = data.services.filter(service => service.service === 'Food');
-
-            foodServices.forEach(service => {
-                const serviceSlide = document.createElement('div');
-                serviceSlide.classList.add('swiper-slide', 'card');
-
-                serviceSlide.innerHTML = `
-                    <div class="card-content">
-                        <div class="image">
-                            <img src="/Images/foodservice.jpg" alt="${service.business_Name} image" class="service-image">
-                        </div>
-                        <div class="name-profession">
-                            <span class="name" style="font-size: 24px;">${service.business_Name}</span>
-                            <span class="profession" style="font-weight: 800; font-size: 20px;">${service.service}</span>
-                        </div>
-                        <button class="contact-button" onclick="openPopup(this)" 
-                            style="font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; 
-                            font-style: normal; margin-top: 30px;">Contact Us</button>
-                        <div class="popup">
-                            <h4>Thank you for visiting our Service!</h4>
-                            <p>Connect with us using the details:</p>
-                            <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                                <li style="font-size: 18px;">Contact No: ${service.contact_number}</li>
-                                <li style="font-size: 18px;">Email: ${service.email}</li>
-                            </ul>
-                            <button type="button" onclick="closePopup(this)">OK</button>
-                        </div>
-                    </div>
-                `;
-                swiperWrapper.appendChild(serviceSlide);
-            });
-
-            // Initialize Swiper with the configuration
-            var swiper = new Swiper(".mySwiper", {
-                slidesPerView: 3,
-                spaceBetween: 40,
-                slidesPerGroup: 3,
-                loop: true,
-                loopFillGroupWithBlank: true,
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-            });
-        })
-        .catch(error => console.error('Error fetching services:', error));
-});
-
-    // Popup functions
-    function openPopup(button) {
-        const popup = button.nextElementSibling;
-        popup.style.display = 'block';
-    }
-
-    function closePopup(button) {
-        const popup = button.parentElement;
-        popup.style.display = 'none';
-    }
 </script>
-</section>
 
-<section id="services" style="font-family: DM Serif Display, serif;  letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; 
-font-style: normal;  position: relative; top: 50px;">
-<h3 style="position: relative; left: 700px; top: -35px;">Laundry</h3>
-<div class="swiper mySwiper container">
-    <div class="swiper-wrapper content">
-        <!-- Swiper Slides will be dynamically generated here -->
-    </div>
-</div>
-
-<!-- Include Swiper CSS & JS -->
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-<!-- Pagination and navigation -->
-<div class="swiper-button-next"></div>
-<div class="swiper-button-prev"></div>
-<div class="swiper-pagination"></div>
-
-<script>
- document.addEventListener('DOMContentLoaded', function () {
-    fetch('/data')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Fetched data:', data); // Log the entire data object
-            const swiperWrapper = document.querySelector('.swiper-wrapper');
-
-            // Filter services for "Laundry" only
-            const laundryServices = data.services.filter(service => service.service === 'Laundry');
-
-            // Dynamically generate Swiper slides with "Laundry" service data
-            laundryServices.forEach(service => {
-                const serviceSlide = document.createElement('div');
-                serviceSlide.classList.add('swiper-slide', 'card');
-
-                serviceSlide.innerHTML = `
-                    <div class="card-content">
-                        <div class="image">
-                            <img src="/Images/laundryservice.jpg" alt="${service.business_Name} image" class="service-image">
-                        </div>
-                        <div class="name-profession">
-                            <span class="name" style="font-size: 24px;">${service.business_Name}</span>
-                            <span class="profession" style="font-weight: 800; font-size: 20px;">${service.service}</span>
-                        </div>
-                        <button class="contact-button" onclick="openPopup(this)" 
-                            style="font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; 
-                            font-style: normal; margin-top: 30px;">Contact Us</button>
-                        <div class="popup">
-                            <h4>Thank you for visiting our Service!</h4>
-                            <p>Connect with us using the details:</p>
-                            <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                                <li style="font-size: 18px;">Contact No: ${service.contact_number}</li>
-                                <li style="font-size: 18px;">Email: ${service.email}</li>
-                            </ul>
-                            <button type="button" onclick="closePopup(this)">OK</button>
-                        </div>
-                    </div>
-                `;
-                swiperWrapper.appendChild(serviceSlide);
-            });
-
-            // Initialize Swiper with the configuration after adding all slides
-            var swiper = new Swiper(".mySwiper", {
-                slidesPerView: 3,
-                spaceBetween: 40,
-                slidesPerGroup: 3,
-                loop: true,
-                loopFillGroupWithBlank: true,
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-            });
-        })
-        .catch(error => console.error('Error fetching services:', error));
-});
-
-    // Popup functions
-    function openPopup(button) {
-        const popup = button.nextElementSibling;
-        popup.style.display = 'block';
-    }
-
-    function closePopup(button) {
-        const popup = button.parentElement;
-        popup.style.display = 'none';
-    }
-</script>
-</section>
-
-<section id="services" style="font-family: DM Serif Display, serif;  
-letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; 
-font-style: normal;  position: relative; top: 50px;">
- <h3 style="position: relative; left: 700px; top: -35px;">Brokers</h3>
-<div class="swiper mySwiper container">
-    <div class="swiper-wrapper content">
-        <!-- Swiper Slides will be dynamically generated here -->
-    </div>
-</div>
-
-<!-- Include Swiper CSS & JS -->
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-<!-- Pagination and navigation -->
-<div class="swiper-button-next"></div>
-<div class="swiper-button-prev"></div>
-<div class="swiper-pagination"></div>
-
-<script>
-   document.addEventListener('DOMContentLoaded', function () {
-    fetch('/data')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const swiperWrapper = document.querySelector('.swiper-wrapper');
-
-            // Filter services for "Broker" only
-            const brokerServices = data.services.filter(service => service.service === 'Broker');
-
-            // Dynamically generate Swiper slides with "Broker" service data
-            brokerServices.forEach(service => {
-                const serviceSlide = document.createElement('div');
-                serviceSlide.classList.add('swiper-slide', 'card');
-
-                serviceSlide.innerHTML = `
-                    <div class="card-content">
-                        <div class="image">
-                            <img src="/Images/brokerservice.jpg" alt="${service.business_Name} image" class="service-image">
-                        </div>
-                        <div class="name-profession">
-                            <span class="name" style="font-size: 24px;">${service.business_Name}</span>
-                            <span class="profession" style="font-weight: 800; font-size: 20px;">${service.service}</span>
-                        </div>
-                        <button class="contact-button" onclick="openPopup(this)" 
-                            style="font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; 
-                            font-style: normal; margin-top: 30px;">Contact Us</button>
-                        <div class="popup">
-                            <h4>Thank you for visiting our Service!</h4>
-                            <p>Connect with us using the details:</p>
-                            <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                                <li style="font-size: 18px;">Contact No: ${service.contact_number}</li>
-                                <li style="font-size: 18px;">Email: ${service.email}</li>
-                            </ul>
-                            <button type="button" onclick="closePopup(this)">OK</button>
-                        </div>
-                    </div>
-                `;
-                swiperWrapper.appendChild(serviceSlide);
-            });
-
-            // Initialize Swiper with the configuration
-            var swiper = new Swiper(".mySwiper", {
-                slidesPerView: 3,
-                spaceBetween: 40,
-                slidesPerGroup: 3,
-                loop: true,
-                loopFillGroupWithBlank: true,
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-            });
-        })
-        .catch(error => console.error('Error fetching services:', error));
-});
-
-    // Popup functions
-    function openPopup(button) {
-        const popup = button.nextElementSibling;
-        popup.style.display = 'block';
-    }
-
-    function closePopup(button) {
-        const popup = button.parentElement;
-        popup.style.display = 'none';
-    }
-</script>
-</section>
-
-<section id="footer" style="position: relative; bottom: -50px;">
-    <footer style="position: relative; top: 60px;">
-        <h1 style="top: 50px; position: relative; right: 0px; font-size: 50px;color: white;">Flatmate</h1>
+<section id="footer" style="position: relative; bottom: -220px;">
+    <footer>
         <div class="feet">
-            <p style="font-size: 20px;font-family: Arial, Helvetica, sans-serif;position: relative;top: 30px;">
-                Introducing our innovative platform designed to help <br>
-                students find the perfect roommates and accommodations. <br>
-                Free registration for students ensures easy access, <br>
-                while PG owners, meal providers, and other service <br>
-                vendors can expand their reach with our subscription <br>
-                service. Built with plain HTML, CSS, JavaScript, Node.js,<br>
-                and MySQL, our website features advanced preference <br>
-                matching algorithms along with search & filter options <br>
+        <h1>Flatmate</h1>
+            <p>
+                Introducing our innovative platform designed to help
+                students find the perfect roommates and accommodations. 
+                Free registration for students ensures easy access,
+                while PG owners, meal providers, and other service
+                vendors can expand their reach with our subscription
+                service. Built with plain HTML, CSS, JavaScript, Node.js,
+                and MySQL, our website features advanced preference 
+                matching algorithms along with search & filter options 
                 for a seamless experience.
             </p>
-
-        <p style="font-size: 15px;position: relative;top: 30px;">&copy; 2024 Flatmate. All rights reserved.</p>
-
-      
+            <div class="copyright">
+            <p>&copy; 2024 Flatmate. All rights reserved.</p>
+            </div>
         </div>
         <div class="feet2">
-            <p style="text-decoration: none;color: white; font-family: Arial, Helvetica, sans-serif; ">Quick links</p>
-                <button class="home-button" onclick="document.getElemenstByTagName('header').scrollIntoView({ behavior: 'smooth' });" 
-                style="text-decoration: none; color: rgb(165, 160, 160);font-family: Arial, Helvetica, sans-serif; font-size: 20px;" >Home </button><br>
-                <a href="/loginpage" style="text-decoration: none; color: rgb(165, 160, 160);font-family: Arial, Helvetica, sans-serif; font-size: 20px; position: relative; top: -20px;">Login</a><br>
-                <a href="#" style="text-decoration: none; color: rgb(165, 160, 160);font-family: Arial, Helvetica, sans-serif; position: relative; font-size: 20px; top: -40px;">Services</a><br>
-                <a href="/profilepage" style="text-decoration: none; color: rgb(165, 160, 160); font-size: 20px; font-family: Arial, Helvetica, sans-serif; position: relative; top: -60px; ">My Profile</a><br>
-
+            <p>Quick links</p>
+            <a href="#header">Home</a>
+            <a href="#about-us">About Us</a>
+            <a href="#profiles">Profiles</a>
+            <a href="#services">Services</a>
+            <a href="#overview">Overview</a>
+            <a href="/teampage">Our Team</a>
         </div>
-        
         <div class="contact">
-            <p style="text-decoration: none;color: white; font-family: Arial, Helvetica, sans-serif; ">Connect with us</p>
-            <a href="" class="icon-link facebook icon" style="color:rgb(165, 160, 160); position: relative; right:20px; top:-12px;"><i class="fab fa-facebook fa-lg"></i></a>
-            <a href="" class="icon-link instagram icon" style="color:rgb(165, 160, 160); position: relative; right: -25px; top:-61px;"><i class="fab fa-instagram fa-lg"></i></a>
-            <a href="" class="icon-link youtube icon" style="color:rgb(165, 160, 160); position: relative; right: -75px; top:-111px;"><i class="fab fa-youtube fa-lg"></i></a>
+            <p>Connect with us</p>
+            <a href="" class="icon-link facebook"><i class="fab fa-facebook fa-lg"></i></a>
+            <a href="" class="icon-link instagram"><i class="fab fa-instagram fa-lg"></i></a>
+            <a href="" class="icon-link youtube"><i class="fab fa-youtube fa-lg"></i></a>
         </div>
-    </footer>
+</footer>
 
     <button id="scrollTopBtn" class="scroll-top-btn">⬆</button>
     <script>
-      /* Show button when scrolling down */
-        window.onscroll = function () {
-          var scrollBtn = document.getElementById('scrollTopBtn');
-          if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-            scrollBtn.style.display = 'block';
-          } else {
-            scrollBtn.style.display = 'none';
-          }
-        };
+      window.onscroll = function () {
+    var scrollBtn = document.getElementById('scrollTopBtn');
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        scrollBtn.style.display = 'block';
+    } else {
+        scrollBtn.style.display = 'none';
+    }
+};
 
-        document.getElementById('scrollTopBtn').onclick = function () {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
+const scrollLinks = document.querySelectorAll('a[href^="#"]:not([href="/adminpanel"])');
+
+scrollLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+            const offset = 130;
+            window.scrollTo({
+                top: targetElement.offsetTop - offset,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+document.getElementById('scrollTopBtn').onclick = function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
     </script>
 </section>
-
 </body>
 </html>
