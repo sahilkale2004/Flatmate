@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Oleo+Script&family=Spicy+Rice&display=swap"
         rel="stylesheet">
-    <style>
+<style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -186,7 +186,6 @@ footer .feet p {
 footer .feet2, footer .contact {
     max-width: 20%;
 }
-
 footer .feet2 p, footer .contact p {
     font-size: 28px;
     font-weight: bold;
@@ -195,25 +194,29 @@ footer .feet2 p, footer .contact p {
     margin-bottom: 25px;
 }
 
-footer .feet2 a, footer .contact a {
+footer .feet2 a {
     text-decoration: none;
     color: rgb(165, 160, 160);
     font-family: Arial, Helvetica, sans-serif;
     display: block;
+    text-align: center;
     margin-bottom: 10px;
     font-size: 20px;
+    transition: transform 0.3s ease;
 }
-
-
-footer .contact a:hover {
-    transform: scale(1.1);
+footer .feet2 a:hover {
+    text-decoration: underline;
     color: white;
 }
 
 footer .contact a {
-    font-size: 24px;
+    text-decoration: none;
+    color: rgb(165, 160, 160);
+    font-family: Arial, Helvetica, sans-serif;
     display: inline-block;
+    margin-bottom: 10px;
     margin-right: 2px;
+    font-size: 24px;
 }
 
 footer .contact a:last-child {
@@ -660,11 +663,8 @@ h2 {
     }
 }
 
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+</style>
 </head>
-
 <body>
 <div class="navbar">
     <div class="navbar-left">
@@ -679,91 +679,6 @@ h2 {
         <i class="fas fa-times"></i>
     </button>
 </div>
-<script>
-document.getElementById('search-button').addEventListener('click', function () {
-    const searchQuery = document.getElementById('search-input').value.toLowerCase();
-    let firstMatchFound = false;
-
-    const swiperSections = [
-        {
-            selector: '.profilesSwiper',
-            filter: user => user.getAttribute('data-type') === 'profiles',
-            scrollClass: '.profilesSwiper'
-        },
-        {
-            selector: '.foodSwiper',
-            filter: service => service.getAttribute('data-type') === 'Food',
-            scrollClass: '.foodSwiper'
-        },
-        {
-            selector: '.laundrySwiper',
-            filter: service => service.getAttribute('data-type') === 'Laundry',
-            scrollClass: '.laundrySwiper'
-        },
-        {
-            selector: '.brokerSwiper',
-            filter: service => service.getAttribute('data-type') === 'Broker',
-            scrollClass: '.brokerSwiper'
-        }
-    ];
-
-    swiperSections.forEach(section => {
-        const swiperContainer = document.querySelector(section.selector);
-        const slides = swiperContainer.querySelectorAll('.swiper-slide');
-
-        if (searchQuery === '') {
-            // If search input is empty, reset all slides to be visible
-            slides.forEach(slide => {
-                slide.style.display = 'block';
-            });
-            swiperContainer.swiper.update();
-            return;
-        }
-
-        let hasMatch = false;
-
-        slides.forEach(slide => {
-            const name = slide.querySelector('.name')?.textContent.toLowerCase() || '';
-            const type = slide.getAttribute('data-type')?.toLowerCase() || '';
-
-            // Match against name or service type
-            if (name.includes(searchQuery) || type.includes(searchQuery)) {
-                slide.style.display = 'block';
-                hasMatch = true;
-            } else {
-                slide.style.display = 'none';
-            }
-        });
-
-        swiperContainer.swiper.update();
-
-        // Scroll smoothly to the first matching section
-        if (hasMatch && !firstMatchFound) {
-            document.querySelector(section.scrollClass).scrollIntoView({ behavior: 'smooth' });
-            firstMatchFound = true;
-        }
-    });
-});
-
-document.getElementById('clear-button').addEventListener('click', function () {
-    document.getElementById('search-input').value = '';
-    const swiperSections = [
-        '.profilesSwiper',
-        '.foodSwiper',
-        '.laundrySwiper',
-        '.brokerSwiper'
-    ];
-
-    swiperSections.forEach(selector => {
-        const swiperContainer = document.querySelector(selector);
-        const slides = swiperContainer.querySelectorAll('.swiper-slide');
-        slides.forEach(slide => {
-            slide.style.display = 'block';
-        });
-        swiperContainer.swiper.update();
-    });
-});
-</script>
 
 <div class="navbar-right">
         <button onclick="location.href='/loginpage'">Sign in</button>
@@ -902,18 +817,6 @@ document.getElementById('clear-button').addEventListener('click', function () {
             </div>
         </div>
 </section>
-<script>
-        function showTab(tab) {
-            document.querySelectorAll('.tab').forEach(button => {
-                button.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.querySelector(`.${tab}`).classList.add('active');
-            document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
-        }
-</script>
 
 <section id="profiles" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: -25px;">
     <h1 style="position: relative; left: 690px;">Profiles</h1>
@@ -1086,10 +989,108 @@ document.getElementById('clear-button').addEventListener('click', function () {
     <div class="swiper-pagination broker-pagination"></div>
 </section>
 
-<!-- Include Swiper JS -->
+<!-- Include Swiper CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
 <script>
+// search functionality script
+document.getElementById('search-button').addEventListener('click', function () {
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+    let firstMatchFound = false;
+
+    const swiperSections = [
+        {
+            selector: '.profilesSwiper',
+            filter: user => user.getAttribute('data-type') === 'profiles',
+            scrollClass: '.profilesSwiper'
+        },
+        {
+            selector: '.foodSwiper',
+            filter: service => service.getAttribute('data-type') === 'Food',
+            scrollClass: '.foodSwiper'
+        },
+        {
+            selector: '.laundrySwiper',
+            filter: service => service.getAttribute('data-type') === 'Laundry',
+            scrollClass: '.laundrySwiper'
+        },
+        {
+            selector: '.brokerSwiper',
+            filter: service => service.getAttribute('data-type') === 'Broker',
+            scrollClass: '.brokerSwiper'
+        }
+    ];
+
+    swiperSections.forEach(section => {
+        const swiperContainer = document.querySelector(section.selector);
+        const slides = swiperContainer.querySelectorAll('.swiper-slide');
+
+        if (searchQuery === '') {
+            // If search input is empty, reset all slides to be visible
+            slides.forEach(slide => {
+                slide.style.display = 'block';
+            });
+            swiperContainer.swiper.update();
+            return;
+        }
+
+        let hasMatch = false;
+
+        slides.forEach(slide => {
+            const name = slide.querySelector('.name')?.textContent.toLowerCase() || '';
+            const type = slide.getAttribute('data-type')?.toLowerCase() || '';
+
+            // Match against name or service type
+            if (name.includes(searchQuery) || type.includes(searchQuery)) {
+                slide.style.display = 'block';
+                hasMatch = true;
+            } else {
+                slide.style.display = 'none';
+            }
+        });
+
+        swiperContainer.swiper.update();
+
+        // Scroll smoothly to the first matching section
+        if (hasMatch && !firstMatchFound) {
+            document.querySelector(section.scrollClass).scrollIntoView({ behavior: 'smooth' });
+            firstMatchFound = true;
+        }
+    });
+});
+
+document.getElementById('clear-button').addEventListener('click', function () {
+    document.getElementById('search-input').value = '';
+    const swiperSections = [
+        '.profilesSwiper',
+        '.foodSwiper',
+        '.laundrySwiper',
+        '.brokerSwiper'
+    ];
+
+    swiperSections.forEach(selector => {
+        const swiperContainer = document.querySelector(selector);
+        const slides = swiperContainer.querySelectorAll('.swiper-slide');
+        slides.forEach(slide => {
+            slide.style.display = 'block';
+        });
+        swiperContainer.swiper.update();
+    });
+});
+
+// about-us section tabs script
+        function showTab(tab) {
+            document.querySelectorAll('.tab').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelector(`.${tab}`).classList.add('active');
+            document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
+        }
+
+// Initialize Swiper Sliders script
 document.addEventListener('DOMContentLoaded', function () {
     const profilesSwiper = new Swiper(".profilesSwiper", {
         slidesPerView: 3,
@@ -1154,7 +1155,7 @@ document.addEventListener('DOMContentLoaded', function () {
             prevEl: ".broker-prev",
         },
     });
-
+// popup functionality
     function openPopup(button) {
         const popup = button.nextElementSibling;
         popup.classList.add("open-popup");
@@ -1167,6 +1168,7 @@ document.addEventListener('DOMContentLoaded', function () {
         popup.style.display = 'none';
     }
 
+// filter functionality
     document.getElementById('filterButton').addEventListener('click', () => {
         const dropdown = document.getElementById('filterDropdown');
         if (dropdown.style.display === 'none') {
@@ -1214,6 +1216,43 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
+
+// srcoll to top button script 
+document.addEventListener('DOMContentLoaded', () => {
+        const scrollBtn = document.getElementById('scrollTopBtn');
+
+        if (scrollBtn) {
+            window.onscroll = function () {
+                if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                    scrollBtn.style.display = 'block';
+                } else {
+                    scrollBtn.style.display = 'none';
+                }
+            };
+
+            scrollBtn.onclick = function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+        }
+
+        const scrollLinks = document.querySelectorAll('a[href^="#"]:not([href="#"])');
+
+        scrollLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    const offset = 130;
+                    window.scrollTo({
+                        top: targetElement.offsetTop - offset,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
 </script>
 
 <section id="footer" style="position: relative; bottom: -50px;">
@@ -1252,37 +1291,6 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
 </footer>
 <button id="scrollTopBtn" class="scroll-top-btn">⬆</button>
-<script>
-   window.onscroll = function () {
-    var scrollBtn = document.getElementById('scrollTopBtn');
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        scrollBtn.style.display = 'block';
-    } else {
-        scrollBtn.style.display = 'none';
-    }
-};
-
-const scrollLinks = document.querySelectorAll('a[href^="#"]:not([href="/adminpanel"])');
-
-scrollLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href').substring(1);
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement) {
-            const offset = 130;
-            window.scrollTo({
-                top: targetElement.offsetTop - offset,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-document.getElementById('scrollTopBtn').onclick = function () {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-};
-</script>
 </section>
 </body>
 </html>

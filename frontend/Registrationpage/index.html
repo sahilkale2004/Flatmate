@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   
-  <style>
+ <style>
     body {
       background-image: url(/img/loginpage.jpg);
       background-size: 1536px 690px !important; 
@@ -30,10 +30,10 @@
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 800px; /* Adjusted width to accommodate two columns */
+      width: 800px;
       display: flex;
       height: 530px;
-      justify-content: space-between; /* Ensure the two columns are spaced out */
+      justify-content: space-between; 
   }
   
   .registration-container h1 {
@@ -189,7 +189,44 @@
         from { transform: scale(0.9); opacity: 0; }
         to { transform: scale(1); opacity: 1; }
     }
-  </style>
+
+    /* Responsive Styles */
+    @media (max-width: 1200px) {
+        .registration-container {
+            width: 90%;
+            height: auto;
+            flex-direction: column;
+        }
+        .container-2 {
+            padding-left: 0;
+        }
+        .registration-container button {
+            margin-top: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .registration-container {
+            width: 100%;
+            padding: 10px;
+        }
+        .container-2 select {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .registration-container {
+            padding: 10px;
+        }
+        .registration-container h1 {
+            font-size: 1.5em;
+        }
+        .registration-container button {
+            padding: 8px;
+        }
+    }
+</style>
 </head>
   
 <body>
