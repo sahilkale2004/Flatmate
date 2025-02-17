@@ -621,12 +621,7 @@ app.post('/profile-update', (req, res) => {
     });
 });
 
-// Logout and clear the cookie
-app.post('/logout', (req, res) => {
-    res.clearCookie('email');
-    res.redirect('/loginpage');
-});
 // Start the Express server
 app.listen(3000, () => {
-    console.log('Server running on http://localhost:3000');
+    console.log('Server running on http://localhost:3000/mainpage');
 });
