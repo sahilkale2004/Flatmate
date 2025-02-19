@@ -8,24 +8,25 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    body {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     background-image: url(/img/loginpage.jpg);
-    background-size: 1536px 690px !important;
-    background-repeat: no-repeat;
     background-size: cover;
+    background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #f0f0f0;
+    padding: 20px;
 }
 
 .registration-container {
@@ -33,102 +34,76 @@
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 800px;
+    width: 100%;
+    max-width: 900px;
     display: flex;
-    height: 550px;
+    flex-wrap: wrap;
     justify-content: space-between;
+    gap: 20px;
 }
 
 .registration-container h1 {
-    position: relative;
-    left: 290px;
-    margin-bottom: 20px;
+    width: 100%;
     text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
 }
 
-.container-1 {
-    position: relative;
-    top: 50px;
-    right: 150px;
+.container-1, .container-2 {
     flex: 1;
     padding: 10px;
-}
-
-.container-2 {
-    position: relative;
-    top: 50px;
-    right: 70px;
-    flex: 1;
-    padding: 10px;
+    min-width: 300px;
 }
 
 .registration-container label {
     display: block;
     margin-bottom: 5px;
-    text-align: left;
+    font-weight: bold;
 }
 
-.registration-container .container-1 input,
-.registration-container .container-2 input {
+.registration-container input,
+.container-2 select {
     width: 100%;
     padding: 10px;
-    margin: 7px 2px;
+    margin: 7px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
-.registration-container input:focus {
-    border: 1px solid #f39c12;
-    box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
-}
-
-.container-2 select {
-    width: 100%;
-    padding: 10px;
-    margin: 7px 2px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
+.registration-container input:focus,
 .container-2 select:focus {
     border: 1px solid #f39c12;
     box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
 }
 
-.password-container {
+.password-container, .image-container {
     position: relative;
     width: 100%;
 }
 
-#togglePassword {
+#togglePassword, #trashImage {
     position: absolute;
     top: 50%;
-    right: 5px;
+    right: 10px;
     transform: translateY(-50%);
     cursor: pointer;
     color: #D0B8A8;
 }
 
-.image-container {
-    position: relative;
+.bottom-section {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: auto;
 }
 
-#trashImage {
-    position: absolute;
-    top: 50%;
-    right: 5px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #D0B8A8;
-}
-
-.registration-container button {
+button {
     width: 100%;
-    position: relative;
-    top: 80px;
-    right: 190px;
+    max-width: 300px;
+    display: block;
+    margin: 0px auto 10px;
     padding: 10px;
     background-color: #007bff;
     color: white;
@@ -136,31 +111,36 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 16px;
+    text-align: center;
 }
 
-.registration-container button:hover {
+button:hover {
     background-color: #0056b3;
     transform: scale(1.05);
 }
 
 .registered-user {
-    position: relative;
-    bottom: -30px;
-    left: -160px;
-}
-
-.registered-user a {
-    position: relative;
-    bottom: -35px;
-    left: 140px;
-    font-weight: 400;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 16px;
 }
 
 .registered-user p {
-    position: relative;
-    bottom: -55px;
-    right: 5px;
-    font-weight: 400;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.registered-user a {
+    font-weight: 600;
+    text-decoration: none;
+    color: #007bff;
+    transition: color 0.3s ease;
+}
+
+.registered-user a:hover {
+    text-decoration: underline;
+    color: #0056b3;
 }
 
 .overlay {
@@ -169,54 +149,78 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.5);
     display: none;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.5s ease;
+    z-index: 999;
 }
 
-.overlay.show {
-    display: flex;
-    opacity: 1;
-}
-
-.modal-content {
-    background: #fff;
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
     padding: 20px;
-    width: 300px;
-    border-radius: 8px;
-    text-align: center;
-    margin-bottom: 15px;    
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.5s ease;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 500px;
+    z-index: 1000;
+    display: none;
 }
 
-.modal-content img {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-}
-
-.close-btn {
+.modal.active,
+.overlay.active {
     display: block;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    cursor: pointer;
-    color: #888;
 }
 
-@keyframes fadeIn {
-    from {
-        transform: scale(0.9);
-        opacity: 0;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .registration-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
     }
-    to {
-        transform: scale(1);
-        opacity: 1;
+
+    .container-1, .container-2 {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .modal {
+        width: 80%;
+    }
+}
+
+@media (max-width: 480px) {
+    .registration-container {
+        padding: 15px;
+    }
+
+    .registration-container h1 {
+        font-size: 20px;
+    }
+
+    .container-1, .container-2 {
+        padding: 5px;
+    }
+
+    .registration-container input,
+    .container-2 select {
+        padding: 8px;
+    }
+
+    button {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .modal {
+        width: 90%;
+        padding: 15px;
     }
 }
 
@@ -282,14 +286,17 @@
             <label for="AboutYourself">About Yourself:</label>
             <input type="text" placeholder="Describe yourself" id="AboutYourself" name="AboutYourself" required>
         </div>
-        <button onclick="myFunction()" type="submit">Register</button>
+        </form>
+    </div>
+    <div class="bottom-section">
+    <button onclick="myFunction()" type="submit">Register</button>
         <div class="registered-user">
             <p>Already registered?</p>
             <a href="/loginpage">Login</a>
         </div>
-        </form>
     </div>
 </div>
+
 <div class="overlay" id="successModal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal()">&times;</span>
