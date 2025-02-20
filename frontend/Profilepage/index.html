@@ -9,130 +9,183 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            width: 100%;
-            background-image: url(/img/loginpage.jpg);
-            background-size: 1536px 695px !important; 
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-        
-        .profile-class {
-            background-color: snow;
-            font-family: 'Arial';
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 800px;
-            display: flex;
-            height: 370px;
-            justify-content: space-between; 
-            position: relative;
-            top: -230px;
-            left: 450px; 
-            bottom: 180px;
-        }
-        
-        h1 {
-            color: black;
-            position: relative;
-            left: 452px;
-            top: -230px;
-        }
-        
-        .profile-class label {
-            display: block;
-            margin-bottom: 5px;
-            text-align: left;
-        }
-        
-        .profile-class  input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            transition: border 0.3s ease, box-shadow 0.3s ease;
-        }
-        .profile-class input:focus {
-            border: 1px solid #f39c12;
-            box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
-        }
-        
-        select {
-            width: 106.5%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        select:focus{
-            border: 1px solid #f39c12;
-            box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
-        }
-        .password-container {
-         position: relative;
-         width: 100%;
-        }
+    body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-image: url(/img/loginpage.jpg);
+    background-size: 1536px 695px !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
 
-        #togglePassword {
-        position: absolute;
-        top: 40%;
-        right: -10px;
-        transform: translateY(-50%);
-        cursor: pointer;
-        color: #D0B8A8;
-        }
+.profile {
+    text-align: left;
+    margin: 20px 0 10px;
+}
 
-        .profile-class button {
-            width: 50%;
-            padding: 10px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        
-        .profile-class button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-        
-        .container-1, .container-2 {
-            flex: 1;
-            padding: 10px;
-        }
-        
-        .container-2 {
-            padding-left: 45px;
-            padding-right: 30px;
-        }
-        
-</style>    
+#profilePic {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 4px solid snow;
+    object-fit: cover;
+}
+
+.profile label {
+    color: black;
+    display: block;
+    width: 20px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: -55px;
+    margin-left: 165px;
+    transform: translateX(-50%);
+}
+
+.profile input[type="file"] {
+    display: none;
+}
+
+.profile-class {
+    background-color: snow;
+    font-family: 'Arial';
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 800px;
+    display: flex;
+    height: auto;
+    justify-content: space-between;
+    position: relative;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+h1 {
+    text-align: center;
+    color: black;
+}
+
+.profile-class label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.profile-class input, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-class input:focus, select:focus {
+    border: 1px solid #f39c12;
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+#togglePassword {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #D0B8A8;
+}
+
+.profile-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.profile-button button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.profile-class button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.container-1, .container-2 {
+    flex: 1;
+    padding: 30px;
+}
+
+.container-2 {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .profile-class {
+        width: 90%;
+        flex-direction: column;
+        align-items: center;
+    }
+    .container-1, .container-2 {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    #profilePic {
+        width: 150px;
+        height: 150px;
+    }
+    .profile label {
+        width: auto;
+    }
+    .profile-class {
+        width: 95%;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-class {
+        padding: 10px;
+    }
+    .profile-class button {
+        width: 100%;
+    }
+    .container-2 {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+</style>
 </head>
-
 <body>
-    <div class="profile">
-         <!-- Profile Picture Display -->
-<img src="{{profileImage}}" aria-label="Profile photo" id="profilePic" 
-onerror="this.src='/img/User.png';" 
-style="top: 100px; width: 200px; height: 200px; border-radius: 50%; margin-left: 210px; position: relative; border: 4px solid snow;">
-
-    <label for="input-file" style="color: black; display: block; 
-    width: 20px; background-color: white; padding: 10px; margin-left: 370px; margin-top: 44px; border-radius: 10px; cursor: pointer; transform: translateX(-50%);">
-    <i class="fas fa-camera fa-lg"></i>
-    </label>
-
-    <input type="file" accept="image/jpeg, image/png, image/jpg" id="input-file" name="profilePic" style="display: none;">
-    </div>
-    
     <h1>Edit Profile</h1>
     <div class="profile-class">
+        <div class="profile">
+        <img src="{{profileImage}}" aria-label="Profile photo" id="profilePic" onerror="this.src='/img/User.png';">
+        <label for="input-file" class="upload-label">
+            <i class="fas fa-camera fa-lg"></i>
+        </label>
+        <input type="file" accept="image/jpeg, image/png, image/jpg" id="input-file" name="profilePic">
+    </div>
         <div class="container-1">
             <form id="profileForm1">
                 <div class="form-group">
@@ -146,8 +199,7 @@ style="top: 100px; width: 200px; height: 200px; border-radius: 50%; margin-left:
                 <div class="form-group">
                     <label for="password">Password:</label>
                     <div class="password-container">
-                        <input type="password" id="password" name="password"
-                        placeholder="Enter Your Password" required disabled>
+                        <input type="password" id="password" name="password" placeholder="Enter Your Password" required disabled>
                         <i class="fas fa-eye" id="togglePassword"></i>
                     </div>
                 </div>
@@ -186,9 +238,11 @@ style="top: 100px; width: 200px; height: 200px; border-radius: 50%; margin-left:
                     <label for="AboutYourself">About Yourself:</label>
                     <input type="text" placeholder="Describe about yourself" id="AboutYourself" name="AboutYourself" required disabled>
                 </div>
-                <button type="button" id="saveBtn" style="position: relative; top: 29px; right: -30px;">Save Changes</button><br><br>
-                <button type="button" id="editBtn" style="position: relative; left: -240px; top: -25px;">Edit</button>
-            </form>    
+            </form>
+             <div class="profile-button">
+                    <button type="button" id="saveBtn">Save Changes</button>
+                    <button type="button" id="editBtn">Edit</button>
+            </div>
         </div>
     </div>
 <script>
