@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,144 +7,156 @@
   <link rel="icon" href="/img/signup.png" type="image/x-icon">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-  <style>
-    body {
-      background-image: url(/img/loginpage.jpg);
-      background-size: cover;
-      background-size: 1536px 690px; 
-      background-repeat: no-repeat;
-      background-position: center;
-      background-attachment: fixed;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f0f0f0;
-      margin: 0;
-    }
+body {
+    background-image: url(/img/loginpage.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
 
-    .registration-container {
-      background-color: snow;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 800px;
-      display: flex;
-      height: 450px;
-      justify-content: space-between;
-    }
+.registration-container {
+    background-color: snow;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
 
-    .registration-container h1 {
-      margin-bottom: 20px;
-      text-align: center;
-    }
+.registration-container h1 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
 
-    .registration-container label {
-      display: block;
-      margin-bottom: 5px;
-      text-align: left;
-    }
+.registration-container label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+}
 
-    .registration-container .container-1 input {
-      width: 100%;
-      padding: 10px;
-      margin: 7px 2px;
-      border: 1px solid #ccc;
-      background-color: white;
-      border-radius: 5px;
-      transition: border 0.3s ease, box-shadow 0.3s ease;
-    }
+.registration-container .container-1 input,
+.registration-container .container-2 input {
+    width: 100%;
+    padding: 10px;
+    margin: 7px 2px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    background-color: white;
+}
 
-    .registration-container .container-2 input {
-      width: 100%;
-      padding: 10px;
-      margin: 7px 2px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      transition: border 0.3s ease, box-shadow 0.3s ease;
-    }
-    .registration-container input:focus {
-      border: 1px solid #f39c12;
-      box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
-  }
+.registration-container input:focus,
+.container-2 select:focus {
+    border: 1px solid #f39c12;
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
+}
 
-    .container-2 select {
-      width: 107.5%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .container-2 select:focus{
-      border: 1px solid #f39c12;
-      box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
-  }
+.container-2 select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
-    .registration-container button {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      background-color: #007bff;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 75px;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-  }
-  
-  .registration-container button:hover {
-      background-color: #0056b3;
-      transform: scale(1.05);
-  }
+.container-1,
+.container-2 {
+    flex: 1;
+    padding: 10px;
+}
 
-    .container-1,
-    .container-2 {
-      flex: 1;
-      padding: 10px;
-    }
+.bottom-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: auto;
+}
+button {
+    width: 100%;
+    max-width: 300px;
+    display: block;
+    margin: 0px auto 10px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 16px;
+    text-align: center;
+}
 
-    .container-2 {
-      padding-left: 20px;
-      /* Added padding to separate the two containers visually */
-    }
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
 
-    .registered-user p {
-      position: relative;
-      bottom: -25px;
-      left: -160px;
-      font-family: 'Arial';
-      font-weight: 700;
-    }
-    .password-container {
-         position: relative;
-         width: 100%;
-        }
+.registered-user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    margin-top: 5px;
+    font-size: 16px;
+}
 
-  #togglePassword {
-        position: absolute;
-        top: 50%;
-        right: -10px;
-        transform: translateY(-50%);
-        cursor: pointer;
-        color: #D0B8A8;
-    }
-  .urlContainer {
-         position: relative;
-         width: 100%;
-        }
+.registered-user p {
+    font-weight: 600;
+    color: #333;
+}
 
-  #trashLink {
-        position: absolute;
-        top: 50%;
-        right: -10px;
-        transform: translateY(-50%);
-        cursor: pointer;
-        color: #D0B8A8;
-    }
+.registered-user a {
+    font-weight: 600;
+    text-decoration: none;
+    color: #007bff;
+    transition: color 0.3s ease;
+}
 
-  .modal-overlay {
+.registered-user a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.password-container, .urlContainer {
+    position: relative;
+    width: 100%;
+}
+
+#togglePassword,
+#trashLink {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #D0B8A8;
+}
+
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -169,7 +180,8 @@
     top: 50%;
     left: 62%;
     transform: translate(-50%, -50%);
-    width: 300px;
+    width: 350px;
+    line-height: 1.6;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 15px;
@@ -178,87 +190,113 @@
     z-index: 1000;
 }
 
-  .modal li {
+.modal li {
     text-align: left;
-  }
-  
-  .modal h3 {
-    text-align: center;
-  }
+}
 
-  #closeModal {
+.modal h3 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#closeModal {
     margin-top: 20px;
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
     border: none;
     cursor: pointer;
-  }
+}
 
-  #closeModal:hover {
+#closeModal:hover {
     background-color: #0056b3;
-  }
+}
 
-  .modal-open {
-    display: block;
-  }
-  </style>
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .registration-container {
+        flex-direction: column;
+        width: 90%;
+        height: auto;
+    }
+
+    .container-1, .container-2 {
+        padding: 10px 0;
+    }
+
+    .registration-container button {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .registration-container {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .modal {
+        width: 90%;
+    }
+}
+</style>
 </head>
 
 <body>
-  <div class="registration-container">
-    <h1 style="position: relative;top: -30px; left: 290px;">Enter Details</h1>
-    <div class="container-1" style="position: relative;top: 50px;right: 150px;">
-      <form action="/register" method="post" id="registrationForm" enctype="multipart/form-data">
-        <div class="form-group">
-          <label for="businessName">Business name:</label>
-          <input type="text" id="businessName" name="businessName" placeholder="Enter business name" required>
+<div class="registration-container">
+        <h1>Enter Details</h1>
+        <div class="container-1">
+            <form action="/register" method="post" id="registrationForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="businessName">Business name:</label>
+                    <input type="text" id="businessName" name="businessName" placeholder="Enter business name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" placeholder="Enter your Email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
+                        <i class="fas fa-eye" id="togglePassword"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Business Address:</label>
+                    <input type="text" placeholder="Enter your business address" id="address" name="address" required>
+                </div>
         </div>
-        <div class="form-group">
-          <label for="email">Email address:</label>
-          <input type="email" placeholder="Enter your Email" id="email" name="email" required>
+        <div class="container-2">
+            <div class="form-group">
+                <label for="contactNumber">Contact number:</label>
+                <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="service">Select Service type:</label>
+                <select id="service" name="service" required>
+                    <option value="Food">Food</option>
+                    <option value="Laundry">Laundry</option>
+                    <option value="Broker">Broker</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="priceChartLink">Price Chart Link:</label>
+                <div class="urlContainer">
+                    <input type="url" id="priceChartLink" name="priceChartLink" disabled>
+                    <i class="fas fa-trash" id="trashLink"></i>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <div class="password-container">
-            <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
-            <i class="fas fa-eye" id="togglePassword"></i>
-          </div>
+        <div class="bottom-section">
+          <button type="submit">Register</button>
+            <div class="registered-user">
+                <p>Already registered?</p>
+                <a href="/servicelogin">Login</a>
+            </div>
         </div>
-        <div class="form-group">
-          <label for="address">Business Address:</label>
-          <input type="text" placeholder="Enter your business address" id="address" name="address" required>
-        </div>
-    </div>
-    <div class="container-2" style="position: relative;top: 50px; right: 70px;">
-      <div class="form-group">
-        <label for="contactNumber">Contact number:</label>
-        <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required>
-      </div>
-
-      <div class="form-group">
-        <label for="service">Select Service type:</label>
-        <select id="service" name="service" required>
-          <option value="Food">Food</option>
-          <option value="Laundry">Laundry</option>
-          <option value="Broker">Broker</option>
-        </select>
-      </div>
-    <div class="form-group">
-          <label for="priceChartLink">Price Chart Link:</label>
-          <div class="urlContainer">
-          <input type="url" id="priceChartLink" name="priceChartLink" disabled>
-          <i class="fas fa-trash" id="trashLink"></i>
-        </div>
-    </div>
-      <button style="position: relative;top: 20px;right: 190px;" type="submit">Register</button>
-
-      <div class="registered-user">
-        <p>Already registered?</p>
-        <a href="/servicelogin" style="position: relative;bottom: 10px; right: 5px; font-weight: 400;">Login</a>
-      </div>
       </form>
-    </div>
+</div>
 
     <!-- Modal Structure -->
 <div id="priceChartModal" class="modal-overlay">
@@ -272,7 +310,8 @@
     <button id="closeModal">Close</button>
   </div>
 </div>
-    <script>
+
+<script>
   const togglePassword = document.querySelector('#togglePassword');
   const passwordInput = document.querySelector('#password');
 
@@ -311,6 +350,6 @@ closeModalBtn.addEventListener('click', function () {
   priceChartLink.removeAttribute('disabled');
   priceChartLink.focus();
 });
-    </script>
+</script>
 </body>
 </html>
