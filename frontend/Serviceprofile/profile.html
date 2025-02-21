@@ -5,182 +5,217 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <link rel="icon" href="/img/profile.png" type="image/x-icon">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            width: 100%;
-            background-image: url(/img/loginpage.jpg);
-            background-size: cover;
-            background-size: 1536px 695px; 
-            background-repeat: no-repeat;
-        }
-        
-        .profile-class {
-            background-color: snow;
-            font-family: 'Arial';
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 800px; 
-            display: flex;
-            height: 370px;
-            justify-content: space-between; 
-            position: relative;
-            top: 65px;
-            left: 350px;
-            bottom: 180px;
-        }
-        
-        h1 {
-            color: black;
-            position: relative;
-            left: 350px;
-            top: 70px;
-        }
-        
-        .profile-class label {
-            display: block;
-            margin-bottom: 5px;
-            text-align: left;
-        }
-        
-        .profile-class  input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            transition: border 0.3s ease, box-shadow 0.3s ease;
-        }
-        .profile-class input:focus {
-            border: 1px solid #f39c12;
-            box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
-        }
-        
-        select {
-            width: 106.5%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        select:focus{
-            border: 1px solid #f39c12;
-            box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
-        }
-        .password-container {
-         position: relative;
-         width: 100%;
-        }
-
-        #togglePassword {
-        position: absolute;
-        top: 40%;
-        right: -10px;
-        transform: translateY(-50%);
-        color: #D0B8A8;
-        cursor: pointer;
-        }
-        
-        .profile-class button {
-            width: 50%;
-            padding: 10px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        
-        .profile-class button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-        
-        .container-1, .container-2 {
-            flex: 1;
-            padding: 10px;
-        }
-        
-        .container-2 {
-            padding-left: 45px;
-            padding-right: 30px; 
-        }
-       
-    </style>  
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    background-image: url(/img/loginpage.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.profile-class {
+    background-color: snow;
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 800px;
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    justify-content: space-between;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+h1 {
+    color: black;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.profile-class label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.profile-class input,
+.profile-class select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-class input:focus,
+.profile-class select:focus {
+    border: 1px solid #f39c12;
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+#togglePassword {
+    position: absolute;
+    top: 40%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #D0B8A8;
+    cursor: pointer;
+}
+
+.profile-class button {
+    width: 48%;
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 10px;
+}
+
+.profile-class button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.container-1, .container-2 {
+    flex: 1;
+    padding: 25px;
+    min-width: 300px;
+}
+
+.container-2 label,
+.container-2 input,
+.container-2 select {
+    position: relative;
+    top: 0;
+    right: 0;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 80px;
+    margin-left: -200px;
+}
+
+#saveBtn, #editBtn {
+    width: auto;
+    min-width: 200px;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .profile-class {
+        width: 90%;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .container-2 {
+        padding-left: 10px;
+        padding-right: 10px;
+        top: 0;
+        right: 0;
+    }
+
+    .container-2 label,
+    .container-2 input,
+    .container-2 select {
+        top: 0;
+        right: 0;
+    }
+
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #saveBtn, #editBtn {
+        width: 100%;
+    }
+}
+</style>
 </head>
 
 <body>
 <h1>Edit Business</h1>
-
-    <div class="profile-class">
-        <div class="container-1">
-            <form id="profileForm1">
-                <div class="form-group">
-                    <label for="businessName">Business name:</label>
-                    <input type="text" id="businessName" name="businessName" placeholder="Enter business name" required disabled>
+<div class="profile-class">
+    <div class="container-1">
+        <form id="profileForm1">
+            <div class="form-group">
+                <label for="businessName">Business name:</label>
+                <input type="text" id="businessName" name="businessName" placeholder="Enter business name" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address:</label>
+                <input type="email" placeholder="Enter your Email" id="email" name="email" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <div class="password-container">
+                    <input type="password" id="password" name="password" placeholder="Enter Your Password" required disabled>
+                    <i class="fas fa-eye" id="togglePassword"></i>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email address:</label>
-                    <input type="email" placeholder="Enter your Email" id="email" name="email" required disabled>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <div class="password-container">
-                        <input type="password" id="password" name="password" 
-                        placeholder="Enter Your Password" required disabled>
-                        <i class="fas fa-eye" id="togglePassword"></i>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="address">Business Address:</label>
-                    <input type="text" placeholder="Enter your business address" id="address" name="address" required disabled>
-                </div>
-            </form>
-        </div>
-
-        <div class="container-2" style="position: relative; top: 50px; right: 70px;">
-            <form id="profileForm2">
-                <div class="form-group">
-                    <label for="contactNumber" style="position: relative; top: -50px; right: -70px;">Contact
-                        number:</label>
-                    <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber"
-                        required style="position: relative; top: -50px; right: -70px;" disabled>
-                </div>
-
-                <div class="form-group">
-                    <label for="service" style="position: relative; top: -50px; right: -70px;">Select Service
-                        type:</label>
-                    <select id="service" name="service" required style="position: relative; top: -50px; right: -70px;"
-                        disabled>
-                        <option value="Food">Food</option>
-                        <option value="Laundry">Laundry</option>
-                        <option value="Broker">Broker</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="priceChartLink" style="position: relative; top: -50px; right: -70px;">Price Chart Link:</label>
-                    <input type="url" id="priceChartLink" name="priceChartLink"
-                        style="position: relative; top: -50px; right: -70px;" disabled>
-                </div>
-
-                <button type="button" id="saveBtn" style="position: relative; top: 29px; right: -100px;">Save
-                    Changes</button>
-                <br><br>
-                <button type="button" id="editBtn" style="position: relative; left: -170px; top: -25px;">Edit</button>
-            </form>
-        </div>
+            </div>
+            <div class="form-group">
+                <label for="address">Business Address:</label>
+                <input type="text" placeholder="Enter your business address" id="address" name="address" required disabled>
+            </div>
+        </form>
     </div>
 
-    <!-- JavaScript for Profile Handling -->
-    <script>
+    <div class="container-2">
+        <form id="profileForm2">
+            <div class="form-group">
+                <label for="contactNumber">Contact number:</label>
+                <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="service">Select Service type:</label>
+                <select id="service" name="service" required disabled>
+                    <option value="Food">Food</option>
+                    <option value="Laundry">Laundry</option>
+                    <option value="Broker">Broker</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="priceChartLink">Price Chart Link:</label>
+                <input type="url" id="priceChartLink" name="priceChartLink" disabled>
+            </div>
+            <div class="button-container">
+                <button type="button" id="editBtn">Edit</button>
+                <button type="button" id="saveBtn">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- JavaScript for Profile Handling -->
+<script>
         document.addEventListener('DOMContentLoaded', function () {
 
             const service = {
@@ -250,6 +285,6 @@
             togglePassword.classList.toggle('fa-eye');
             togglePassword.classList.toggle('fa-eye-slash');
         });
-    </script>
+</script>
 </body>
 </html> 

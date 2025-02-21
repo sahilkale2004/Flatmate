@@ -14,7 +14,7 @@
     padding: 0;
     width: 100%;
     background-image: url(/img/loginpage.jpg);
-    background-size: 1536px 695px !important;
+    background-size: 1536px 695px;
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -60,11 +60,14 @@
     height: auto;
     justify-content: space-between;
     position: relative;
-    margin: 0 auto;
+    margin: 75px auto 0px;
     flex-wrap: wrap;
 }
 
 h1 {
+    position: relative;
+    top: 55px;
+    left: -325px;
     text-align: center;
     color: black;
 }
@@ -96,8 +99,8 @@ h1 {
 
 #togglePassword {
     position: absolute;
-    top: 50%;
-    right: 10px;
+    top: 42%;
+    right: -10px;
     transform: translateY(-50%);
     cursor: pointer;
     color: #D0B8A8;
@@ -136,26 +139,24 @@ h1 {
     padding-right: 20px;
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
     .profile-class {
-        width: 90%;
         flex-direction: column;
         align-items: center;
     }
     .container-1, .container-2 {
         width: 100%;
     }
+    .profile-button {
+        flex-direction: column;
+    }
+    .profile-button button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }
 
 @media (max-width: 768px) {
-    #profilePic {
-        width: 150px;
-        height: 150px;
-    }
-    .profile label {
-        width: auto;
-    }
     .profile-class {
         width: 95%;
         padding: 15px;
@@ -164,87 +165,85 @@ h1 {
 
 @media (max-width: 480px) {
     .profile-class {
-        padding: 10px;
-    }
-    .profile-class button {
         width: 100%;
-    }
-    .container-2 {
-        padding-left: 10px;
-        padding-right: 10px;
+        padding: 10px;
     }
 }
 </style>
 </head>
 <body>
-    <h1>Edit Profile</h1>
-    <div class="profile-class">
-        <div class="profile">
+<h1>Edit Profile</h1>
+<div class="profile-class">
+    <div class="profile">
         <img src="{{profileImage}}" aria-label="Profile photo" id="profilePic" onerror="this.src='/img/User.png';">
         <label for="input-file" class="upload-label">
             <i class="fas fa-camera fa-lg"></i>
         </label>
         <input type="file" accept="image/jpeg, image/png, image/jpg" id="input-file" name="profilePic">
     </div>
-        <div class="container-1">
-            <form id="profileForm1">
-                <div class="form-group">
-                    <label for="fullName">Full name:</label>
-                    <input type="text" id="fullName" name="fullName" placeholder="Enter full name" required disabled>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email address:</label>
-                    <input type="email" placeholder="Enter your Email" id="email" name="email" required disabled>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <div class="password-container">
-                        <input type="password" id="password" name="password" placeholder="Enter Your Password" required disabled>
-                        <i class="fas fa-eye" id="togglePassword"></i>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="address">Home Address:</label>
-                    <input type="text" placeholder="Enter your address" id="address" name="address" required disabled>
-                </div>
-            </form>
-        </div>
-        <div class="container-2">
-            <form id="profileForm2">
-                <div class="form-group">
-                    <label for="contactNumber">Contact number:</label>
-                    <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required disabled>
-                </div>
-                <div class="form-group">
-                    <label for="Year">Select your Year:</label>
-                    <select id="Year" name="Year" required disabled>
-                        <option value="FE">First Year (FE)</option>
-                        <option value="SE">Second Year (SE)</option>
-                        <option value="TE">Third Year (TE)</option>
-                        <option value="BE">Fourth Year (BE)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="Branch">Select your Branch:</label>
-                    <select id="Branch" name="Branch" required disabled>
-                        <option value="CMPN">Computer Science</option>
-                        <option value="INFT">Information Technology</option>
-                        <option value="EXTC">Electronics & Telecommunication</option>
-                        <option value="ELEC">Electrical</option>
-                        <option value="ECS">Electronics & CS</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="AboutYourself">About Yourself:</label>
-                    <input type="text" placeholder="Describe about yourself" id="AboutYourself" name="AboutYourself" required disabled>
-                </div>
-            </form>
-             <div class="profile-button">
-                    <button type="button" id="saveBtn">Save Changes</button>
-                    <button type="button" id="editBtn">Edit</button>
+
+    <div class="container-1">
+        <form id="profileForm1">
+            <div class="form-group">
+                <label for="fullName">Full name:</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Enter full name" required disabled>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="email">Email address:</label>
+                <input type="email" placeholder="Enter your Email" id="email" name="email" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <div class="password-container">
+                    <input type="password" id="password" name="password" placeholder="Enter Your Password" required disabled>
+                    <i class="fas fa-eye" id="togglePassword"></i>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address">Home Address:</label>
+                <input type="text" placeholder="Enter your address" id="address" name="address" required disabled>
+            </div>
+            <div class="profile-button">
+                <button type="button" id="editBtn">Edit</button>
+            </div>
+        </form>
     </div>
+
+    <div class="container-2">
+        <form id="profileForm2">
+            <div class="form-group">
+                <label for="contactNumber">Contact number:</label>
+                <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="Year">Select your Year:</label>
+                <select id="Year" name="Year" required disabled>
+                    <option value="FE">First Year (FE)</option>
+                    <option value="SE">Second Year (SE)</option>
+                    <option value="TE">Third Year (TE)</option>
+                    <option value="BE">Fourth Year (BE)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Branch">Select your Branch:</label>
+                <select id="Branch" name="Branch" required disabled>
+                    <option value="CMPN">Computer Science</option>
+                    <option value="INFT">Information Technology</option>
+                    <option value="EXTC">Electronics & Telecommunication</option>
+                    <option value="ELEC">Electrical</option>
+                    <option value="ECS">Electronics & CS</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="AboutYourself">About Yourself:</label>
+                <input type="text" placeholder="Describe about yourself" id="AboutYourself" name="AboutYourself" required disabled>
+            </div>
+            <div class="profile-button">
+                <button type="button" id="saveBtn">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script>
         document.addEventListener('DOMContentLoaded', function() {
             const userData = JSON.parse('{{userData}}');
