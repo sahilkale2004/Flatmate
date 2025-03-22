@@ -484,7 +484,9 @@ app.post('/register', (req, res) => {
             address: fields.address[0],
             contactNumber: fields.contactNumber[0],
             service: fields.service[0],
-            priceChartLink: fields.priceChartLink[0]
+            priceChartLink: fields.priceChartLink[0],
+            roomType: fields.roomType[0],
+            amenities: fields.amenities
         };
 
         const sessionFileName = `${Date.now()}_session.json`;
@@ -539,8 +541,8 @@ app.get('/complete', (req, res) => {
         const sessionData = JSON.parse(fs.readFileSync(`../frontend/public/uploads/${session_id}.json`));
 
         const query = `
-            INSERT INTO services (business_Name, email, password, address, contact_number, service, price_chart_link)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO services (business_Name, email, password, address, contact_number, service, price_chart_link, room_type, amenities)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         pool.query(query, [
@@ -550,7 +552,9 @@ app.get('/complete', (req, res) => {
             sessionData.address,
             sessionData.contactNumber,
             sessionData.service,
-            sessionData.priceChartLink 
+            sessionData.priceChartLink,
+            sessionData.roomType,
+            sessionData.amenities
         ], (err, result) => {
             if (err) {
                 console.error('Error registering business:', err);
