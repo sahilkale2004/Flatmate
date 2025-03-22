@@ -275,8 +275,8 @@ button:hover {
             <div class="form-group">
                 <label for="service">Select Service type:</label>
                 <select id="service" name="service" required>
-                    <option value="Food">Food</option>
                     <option value="Laundry">Laundry</option>
+                    <option value="Food">Food</option>
                     <option value="Broker">Broker</option>
                 </select>
             </div>
@@ -349,6 +349,49 @@ closeModalBtn.addEventListener('click', function () {
   modalOverlay.classList.remove('modal-open'); 
   priceChartLink.removeAttribute('disabled');
   priceChartLink.focus();
+});
+
+// dropdown menu for service type
+document.addEventListener("DOMContentLoaded", function () {
+    const serviceSelect = document.getElementById("service");
+    const extraFieldsContainer = document.createElement("div");
+    extraFieldsContainer.id = "extra-fields";
+    serviceSelect.parentNode.appendChild(extraFieldsContainer);
+
+    serviceSelect.addEventListener("change", function () {
+        extraFieldsContainer.innerHTML = ""; 
+        
+        if (serviceSelect.value === "Food") {
+            createDropdown(extraFieldsContainer, "foodType", "Select Food Type:", ["Veg", "Non-Veg", "All -> Veg, Non-Veg, Chinese, Jain"]);
+        } else if (serviceSelect.value === "Broker") {
+            createDropdown(extraFieldsContainer, "roomType", "Select Room Type:", ["Single", "Shared", "Apartment"]);
+            createDropdown(extraFieldsContainer, "amenities", "Select Amenities Available:", ["Furnished", "Parking", "AC", "Non-AC", "WiFi"], true);
+        }
+    });
+
+    
+    function createDropdown(container, id, label, options, multiple = false) {
+        const labelElement = document.createElement("label");
+        labelElement.htmlFor = id;
+        labelElement.textContent = label;
+
+        const selectElement = document.createElement("select");
+        selectElement.id = id;
+        selectElement.name = id;
+        if (multiple) {
+            selectElement.multiple = true;
+        }
+
+        options.forEach(option => {
+            const optionElement = document.createElement("option");
+            optionElement.value = option;
+            optionElement.textContent = option;
+            selectElement.appendChild(optionElement);
+        });
+
+        container.appendChild(labelElement);
+        container.appendChild(selectElement);
+    }
 });
 </script>
 </body>
