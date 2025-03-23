@@ -476,25 +476,39 @@ app.post('/register', (req, res) => {
             console.error('Error parsing form:', err);
             return res.status(500).send('Error processing form');
         }
-        // Prepare session data
-        const sessionData = {
-            businessName: fields.businessName[0],
-            email: fields.email[0],
-            password: fields.password[0],
-            address: fields.address[0],
-            contactNumber: fields.contactNumber[0],
-            service: fields.service[0],
-            priceChartLink: fields.priceChartLink[0],
-            foodType: fields.foodType[0],
-            laundryType: fields.laundryType[0],
-            roomType: fields.roomType[0], 
-            amenities: fields.amenities[0]
-        };
 
-        const sessionFileName = `${Date.now()}_session.json`;
-        fs.writeFileSync(`../frontend/public/uploads/${sessionFileName}`, JSON.stringify(sessionData));
+        try {
+            // Parse dynamic fields
+            const foodType = fields.service === 'Food' ? (Array.isArray(fields.foodType) ? fields.foodType.join(',') : fields.foodType) : null;
+            const laundryType = fields.service === 'Laundry' ? (Array.isArray(fields.laundryType) ? fields.laundryType.join(',') : fields.laundryType) : null;
+            const roomType = fields.service === 'Broker' ? (Array.isArray(fields.roomType) ? fields.roomType.join(',') : fields.roomType) : null;
+            const amenities = fields.service === 'Broker' ? (Array.isArray(fields.amenities) ? fields.amenities.join(',') : fields.amenities) : null;
 
-        res.render('index', { sessionFileName });
+            // Prepare session data
+            const sessionData = {
+                businessName: fields.businessName,
+                email: fields.email,
+                password: fields.password,
+                address: fields.address,
+                contactNumber: fields.contactNumber,
+                service: fields.service,
+                priceChartLink: fields.priceChartLink,
+                foodType,
+                laundryType,
+                roomType,
+                amenities
+            };
+
+            console.log('Session Data:', sessionData); // Debugging: Check parsed data
+
+            const sessionFileName = `${Date.now()}_session.json`;
+            fs.writeFileSync(`../frontend/public/uploads/${sessionFileName}`, JSON.stringify(sessionData));
+
+            res.render('index', { sessionFileName });
+        } catch (error) {
+            console.error('Error processing registration:', error);
+            res.status(500).send('Internal Server Error');
+        }
     });
 });
 
@@ -535,12 +549,19 @@ app.post('/create-checkout-session', (req, res) => {
         }
     });
 });
+
 // Complete payment and add data to the database
 app.get('/complete', (req, res) => {
     const session_id = req.query.session_id;
 
     try {
         const sessionData = JSON.parse(fs.readFileSync(`../frontend/public/uploads/${session_id}.json`));
+
+        // Ensure empty values are handled properly
+        const foodType = sessionData.foodType || null;
+        const laundryType = sessionData.laundryType || null;
+        const roomType = sessionData.roomType || null;
+        const amenities = sessionData.amenities || null;
 
         const query = `
             INSERT INTO services (business_Name, email, password, address, contact_number, service, price_chart_link, food_type, laundry_service, room_type, amenities)
@@ -555,10 +576,10 @@ app.get('/complete', (req, res) => {
             sessionData.contactNumber,
             sessionData.service,
             sessionData.priceChartLink,
-            sessionData.foodType,
-            sessionData.laundryType,
-            sessionData.roomType,
-            sessionData.amenities
+            foodType,
+            laundryType,
+            roomType,
+            amenities
         ], (err, result) => {
             if (err) {
                 console.error('Error registering business:', err);

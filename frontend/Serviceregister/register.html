@@ -417,35 +417,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function createCheckboxGroup(container, id, label, options) {
-        const labelElement = document.createElement("label");
-        labelElement.textContent = label;
-        container.appendChild(labelElement);
+    const labelElement = document.createElement("label");
+    labelElement.textContent = label;
+    container.appendChild(labelElement);
 
-        const checkboxContainer = document.createElement("div");
-        checkboxContainer.id = id;
-        checkboxContainer.classList.add("checkbox-container");
+    const checkboxContainer = document.createElement("div");
+    checkboxContainer.id = id;
+    checkboxContainer.classList.add("checkbox-container");
 
-        options.forEach(option => {
-            const checkboxWrapper = document.createElement("div");
-            checkboxWrapper.classList.add("checkbox-wrapper");
+    options.forEach(option => {
+        const checkboxWrapper = document.createElement("div");
+        checkboxWrapper.classList.add("checkbox-wrapper");
 
-            const checkboxElement = document.createElement("input");
-            checkboxElement.type = "checkbox";
-            checkboxElement.name = id;
-            checkboxElement.value = option;
-            checkboxElement.id = `checkbox-${option}`;
+        const checkboxElement = document.createElement("input");
+        checkboxElement.type = "checkbox";
+        checkboxElement.name = `${id}[]`; // Use array format for checkboxes
+        checkboxElement.value = option;
+        checkboxElement.id = `checkbox-${option}`;
 
-            const checkboxLabel = document.createElement("label");
-            checkboxLabel.textContent = option;
-            checkboxLabel.htmlFor = `checkbox-${option}`;
+        const checkboxLabel = document.createElement("label");
+        checkboxLabel.textContent = option;
+        checkboxLabel.htmlFor = `checkbox-${option}`;
 
-            checkboxWrapper.appendChild(checkboxElement);
-            checkboxWrapper.appendChild(checkboxLabel);
-            checkboxContainer.appendChild(checkboxWrapper);
-        });
+        checkboxWrapper.appendChild(checkboxElement);
+        checkboxWrapper.appendChild(checkboxLabel);
+        checkboxContainer.appendChild(checkboxWrapper);
+    });
 
-        container.appendChild(checkboxContainer);
-    }
+    container.appendChild(checkboxContainer);
+}
 });
 </script>
 </body>
