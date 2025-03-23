@@ -485,8 +485,10 @@ app.post('/register', (req, res) => {
             contactNumber: fields.contactNumber[0],
             service: fields.service[0],
             priceChartLink: fields.priceChartLink[0],
-            roomType: fields.roomType[0],
-            amenities: fields.amenities
+            foodType: fields.foodType[0],
+            laundryType: fields.laundryType[0],
+            roomType: fields.roomType[0], 
+            amenities: fields.amenities[0]
         };
 
         const sessionFileName = `${Date.now()}_session.json`;
@@ -541,8 +543,8 @@ app.get('/complete', (req, res) => {
         const sessionData = JSON.parse(fs.readFileSync(`../frontend/public/uploads/${session_id}.json`));
 
         const query = `
-            INSERT INTO services (business_Name, email, password, address, contact_number, service, price_chart_link, room_type, amenities)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO services (business_Name, email, password, address, contact_number, service, price_chart_link, food_type, laundry_service, room_type, amenities)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         pool.query(query, [
@@ -553,6 +555,8 @@ app.get('/complete', (req, res) => {
             sessionData.contactNumber,
             sessionData.service,
             sessionData.priceChartLink,
+            sessionData.foodType,
+            sessionData.laundryType,
             sessionData.roomType,
             sessionData.amenities
         ], (err, result) => {

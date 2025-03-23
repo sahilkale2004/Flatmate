@@ -210,6 +210,30 @@ button:hover {
 
 #closeModal:hover {
     background-color: #0056b3;
+} 
+
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+.checkbox-wrapper label {
+    font-size: 14px;
+    cursor: pointer;
 }
 
 /* Responsive Styles */
@@ -275,8 +299,9 @@ button:hover {
             <div class="form-group">
                 <label for="service">Select Service type:</label>
                 <select id="service" name="service" required>
-                    <option value="Laundry">Laundry</option>
+                    <option value="" disabled selected>Select Service</option>
                     <option value="Food">Food</option>
+                    <option value="Laundry">Laundry</option>
                     <option value="Broker">Broker</option>
                 </select>
             </div>
@@ -360,12 +385,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     serviceSelect.addEventListener("change", function () {
         extraFieldsContainer.innerHTML = "";
-        
+
         if (serviceSelect.value === "Food") {
-            createDropdown(extraFieldsContainer, "foodType", "Select Food Type:", ["Veg", "Non-Veg", "Vegan"]);
-        } else if (serviceSelect.value === "Broker") {
-            createDropdown(extraFieldsContainer, "roomType", "Select Room Type:", ["Single", "Shared", "Apartment"]);
-            createCheckboxGroup(extraFieldsContainer, "amenities", "Select Amenities Available:",  ["Furnished", "Parking", "AC", "Non-AC", "WiFi"]);
+            createDropdown(extraFieldsContainer, "foodType", "Select Food Type you offer:", ["Veg", "Non-Veg", "All → Veg, Non-Veg, Jain meal, Chinese"]);
+        } else if (serviceSelect.value === "Laundry") {
+            createCheckboxGroup(extraFieldsContainer, "laundryType", "Select Laundry Services you offer:", ["Wash & Iron", "Dry Cleaning", "Pickup & Delivery Service", "Subscription Plans", "Express Service"]);
+        }  else if (serviceSelect.value === "Broker") {
+            createCheckboxGroup(extraFieldsContainer, "roomType", "Select available Room Types:", ["Single", "Shared", "Apartment"]);
+            createCheckboxGroup(extraFieldsContainer, "amenities", "Select Amenities Available:", ["Furnished", "Parking", "AC", "Non-AC", "WiFi"]);
         }
     });
 
@@ -393,37 +420,33 @@ document.addEventListener("DOMContentLoaded", function () {
         const labelElement = document.createElement("label");
         labelElement.textContent = label;
         container.appendChild(labelElement);
-        
+
         const checkboxContainer = document.createElement("div");
         checkboxContainer.id = id;
-        checkboxContainer.style.display = "flex";
-        checkboxContainer.style.flexDirection = "column";
-        checkboxContainer.style.gap = "10px";
-        
+        checkboxContainer.classList.add("checkbox-container");
+
         options.forEach(option => {
             const checkboxWrapper = document.createElement("div");
-            checkboxWrapper.style.display = "flex";
-            checkboxWrapper.style.alignItems = "center";
-            checkboxWrapper.style.gap = "5px";
-            
+            checkboxWrapper.classList.add("checkbox-wrapper");
+
             const checkboxElement = document.createElement("input");
             checkboxElement.type = "checkbox";
             checkboxElement.name = id;
             checkboxElement.value = option;
-            
+            checkboxElement.id = `checkbox-${option}`;
+
             const checkboxLabel = document.createElement("label");
             checkboxLabel.textContent = option;
-            checkboxLabel.style.marginLeft = "5px";
-            
+            checkboxLabel.htmlFor = `checkbox-${option}`;
+
             checkboxWrapper.appendChild(checkboxElement);
             checkboxWrapper.appendChild(checkboxLabel);
             checkboxContainer.appendChild(checkboxWrapper);
         });
-        
+
         container.appendChild(checkboxContainer);
     }
 });
-
 </script>
 </body>
 </html>
