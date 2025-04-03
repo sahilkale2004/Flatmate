@@ -350,6 +350,7 @@ button:hover {
                     createCheckboxGroup(extraFieldsContainer, "laundryType", "Select Laundry Services you offer:", ["Wash & Iron", "Dry Cleaning", "Pickup & Delivery Service", "Subscription Plans", "Express Service"]);
                 } else if (serviceSelect.value === "Broker") {
                     createCheckboxGroup(extraFieldsContainer, "roomType", "Select available Room Types:", ["Single", "Shared", "Apartment"]);
+                    createCheckboxGroup(extraFieldsContainer, "pricingValue", "Select pricing value of PGs:", ["Low: ₹5000 - 8000", "Medium: ₹8000 - 100000", "High: ₹ 2000"]);
                     createCheckboxGroup(extraFieldsContainer, "amenities", "Select Amenities Available:", ["Furnished", "Parking", "AC", "Non-AC", "WiFi"]);
                 }
             });
