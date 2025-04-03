@@ -492,45 +492,56 @@ app.post('/login-service', (req, res) => {
 // ✅ Route for Service Registration
 app.post('/register', (req, res) => {
     const form = new formidable.IncomingForm({
-        multiples: false,
+        multiples: true,
         keepExtensions: true
     });
+
     form.parse(req, async (err, fields, files) => {
         if (err) {
             console.error('Error processing form:', err);
             return res.status(500).send('Error processing form');
         }
+
         try {
-            const getSingleValue = (field) => (Array.isArray(field) ? field[0] : field);
-            const service = getSingleValue(fields.service);
-            const foodType = service === 'Food' 
-                ? getSingleValue(fields.foodType) || null 
-                : null;
-            const laundryType = service === 'Laundry' 
-                ? (fields.laundryType ? (Array.isArray(fields.laundryType) ? fields.laundryType.join(',') : fields.laundryType) : null) 
-                : null;
-            const roomType = service === 'Broker' 
-                ? (fields.roomType ? (Array.isArray(fields.roomType) ? fields.roomType.join(',') : fields.roomType) : null) 
-                : null;
-            const amenities = service === 'Broker' 
-                ? (fields.amenities ? (Array.isArray(fields.amenities) ? fields.amenities.join(',') : fields.amenities) : null) 
-                : null;
-            const sessionData = {
-                businessName: getSingleValue(fields.businessName) || '',
-                email: getSingleValue(fields.email) || '',
-                password: getSingleValue(fields.password) || '',
-                address: getSingleValue(fields.address) || '',
-                contactNumber: getSingleValue(fields.contactNumber) || '',
-                service: service || '',
-                priceChartLink: getSingleValue(fields.priceChartLink) || '',
-                foodType,
-                laundryType,
-                roomType,
-                amenities
+            console.log('Raw fields:', fields);
+
+            const processField = (field) => {
+                if (Array.isArray(field) && field.length > 0) {
+                    return field.join(', ');
+                }
+                return field || '';
             };
+
+            const service = processField(fields.service);
+            const foodType = service === 'Food' ? processField(fields.foodType) : '';
+            const laundryType = service === 'Laundry' ? processField(fields.laundryType) : '';
+            const roomType = service === 'Broker' ? processField(fields.roomType) : '';
+            const amenities = service === 'Broker' ? processField(fields.amenities) : '';
+            const pricingValue = service === 'Broker' ? processField(fields.pricingValue) : '';
+            const landmark = service === 'Broker' ? processField(fields.landmark) : '';
+
+            const sessionData = {
+                businessName: processField(fields.businessName),
+                email: processField(fields.email),
+                password: processField(fields.password),
+                address: processField(fields.address),
+                contactNumber: processField(fields.contactNumber),
+                service: service,
+                priceChartLink: processField(fields.priceChartLink),
+                foodType: foodType,
+                laundryType: laundryType,
+                roomType: roomType,
+                amenities: amenities,
+                pricingValue: pricingValue,
+                landmark: landmark
+            };
+
+            console.log('Session data:', sessionData);
+
             const sessionFileName = `${Date.now()}_session.json`;
             const sessionFilePath = path.join(__dirname, '../frontend/public/uploads/', sessionFileName);
             fs.writeFileSync(sessionFilePath, JSON.stringify(sessionData, null, 2));
+
             res.render('index', { sessionFileName });
         } catch (error) {
             console.error('Error saving session data:', error);
@@ -538,7 +549,6 @@ app.post('/register', (req, res) => {
         }
     });
 });
-
 // ✅ Create Checkout Session
 app.post('/create-checkout-session', async (req, res) => {
     const { sessionFileName } = req.body;
@@ -584,9 +594,15 @@ app.get('/complete', async (req, res) => {
     try {
         const sessionData = JSON.parse(fs.readFileSync(orderFilePath));
 
+        // Log session data before database insertion
+        console.log('Data to insert into DB:', sessionData);
+
         const query = `
-            INSERT INTO services (business_Name, email, password, address, contact_number, service, price_chart_link, food_type, laundry_service, room_type, amenities)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO services (
+                business_name, email, password, address, contact_number, service, 
+                price_chart_link, food_type, laundry_service, room_type, amenities, 
+                pricing_value, landmark
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         pool.query(query, [
             sessionData.businessName,
@@ -599,9 +615,12 @@ app.get('/complete', async (req, res) => {
             sessionData.foodType || null,
             sessionData.laundryType || null,
             sessionData.roomType || null,
-            sessionData.amenities || null
+            sessionData.amenities || null,
+            sessionData.pricingValue || null,
+            sessionData.landmark || null
         ], (err, result) => {
             if (err) {
+                console.error('Database insertion error:', err);
                 return res.status(500).send('Error registering business');
             }
             res.render('success', {
@@ -610,6 +629,7 @@ app.get('/complete', async (req, res) => {
             });
         });
     } catch (error) {
+        console.error('Error completing payment:', error);
         res.status(500).send('Error completing payment');
     }
 });

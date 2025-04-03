@@ -334,89 +334,110 @@ button:hover {
         </form>
     </div>
 </div>    
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const serviceSelect = document.getElementById("service");
+        const extraFieldsContainer = document.getElementById("extra-fields");
+        const registrationForm = document.getElementById("registrationForm");
 
-    <!-- Move script to the end of the body or a separate file -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const serviceSelect = document.getElementById("service");
-            const extraFieldsContainer = document.getElementById("extra-fields");
+        serviceSelect.addEventListener("change", function () {
+            extraFieldsContainer.innerHTML = ""; // Clear previous fields
 
-            serviceSelect.addEventListener("change", function () {
-                extraFieldsContainer.innerHTML = ""; // Clear previous fields
-
-                if (serviceSelect.value === "Food") {
-                    createDropdown(extraFieldsContainer, "foodType", "Select Food Type you offer:", ["Veg", "Non-Veg", "All → Veg, Non-Veg, Jain meal, Chinese"]);
-                } else if (serviceSelect.value === "Laundry") {
-                    createCheckboxGroup(extraFieldsContainer, "laundryType", "Select Laundry Services you offer:", ["Wash & Iron", "Dry Cleaning", "Pickup & Delivery Service", "Subscription Plans", "Express Service"]);
-                } else if (serviceSelect.value === "Broker") {
-                    createCheckboxGroup(extraFieldsContainer, "roomType", "Select available Room Types:", ["Single", "Shared", "Apartment"]);
-                    createCheckboxGroup(extraFieldsContainer, "pricingValue", "Select pricing value of PGs:", ["Low: ₹5000 - 8000", "Medium: ₹8000 - 100000", "High: ₹ 2000"]);
-                    createCheckboxGroup(extraFieldsContainer, "amenities", "Select Amenities Available:", ["Furnished", "Parking", "AC", "Non-AC", "WiFi"]);
-                }
-            });
-
-            function createDropdown(container, id, label, options) {
-                const labelElement = document.createElement("label");
-                labelElement.htmlFor = id;
-                labelElement.textContent = label;
-
-                const selectElement = document.createElement("select");
-                selectElement.id = id;
-                selectElement.name = id;
-                selectElement.required = true; // Make it required to ensure a value is selected
-
-                // Add a default "Please select" option
-                const defaultOption = document.createElement("option");
-                defaultOption.value = "";
-                defaultOption.textContent = "Please select";
-                defaultOption.disabled = true;
-                defaultOption.selected = true;
-                selectElement.appendChild(defaultOption);
-
-                options.forEach(option => {
-                    const optionElement = document.createElement("option");
-                    optionElement.value = option;
-                    optionElement.textContent = option;
-                    selectElement.appendChild(optionElement);
-                });
-
-                container.appendChild(labelElement);
-                container.appendChild(selectElement);
-            }
-
-            function createCheckboxGroup(container, id, label, options) {
-                const labelElement = document.createElement("label");
-                labelElement.textContent = label;
-                container.appendChild(labelElement);
-
-                const checkboxContainer = document.createElement("div");
-                checkboxContainer.id = id;
-                checkboxContainer.classList.add("checkbox-container");
-
-                options.forEach(option => {
-                    const checkboxWrapper = document.createElement("div");
-                    checkboxWrapper.classList.add("checkbox-wrapper");
-
-                    const checkboxElement = document.createElement("input");
-                    checkboxElement.type = "checkbox";
-                    checkboxElement.name = `${id}[]`; // Array notation for multiple selections
-                    checkboxElement.value = option;
-                    checkboxElement.id = `checkbox-${option}`;
-
-                    const checkboxLabel = document.createElement("label");
-                    checkboxLabel.textContent = option;
-                    checkboxLabel.htmlFor = `checkbox-${option}`;
-
-                    checkboxWrapper.appendChild(checkboxElement);
-                    checkboxWrapper.appendChild(checkboxLabel);
-                    checkboxContainer.appendChild(checkboxWrapper);
-                });
-
-                container.appendChild(checkboxContainer);
+            if (serviceSelect.value === "Food") {
+                createDropdown(extraFieldsContainer, "foodType", "Select Food Type you offer:", ["Veg", "Non-Veg", "All → Veg, Non-Veg, Jain meal, Chinese"]);
+            } else if (serviceSelect.value === "Laundry") {
+                createCheckboxGroup(extraFieldsContainer, "laundryType", "Select Laundry Services you offer:", ["Wash & Iron", "Dry Cleaning", "Pickup & Delivery Service", "Subscription Plans", "Express Service"]);
+            } else if (serviceSelect.value === "Broker") {
+                createCheckboxGroup(extraFieldsContainer, "roomType", "Select available Room Types:", ["Single", "Shared", "Apartment"]);
+                createDropdown(extraFieldsContainer, "pricingValue", "Select pricing value of PGs:", ["Low: ₹5000 - 8000", "Medium: ₹8000 - 100000", "High: ₹10000 - 15000"]);
+                createCheckboxGroup(extraFieldsContainer, "amenities", "Select Amenities Available:", ["Furnished", "Parking", "AC", "Non-AC", "WiFi"]);
+                createCheckboxGroup(extraFieldsContainer, "landmark", "Select Available PGs Landmark:", ["Near Railway Station", "Near Market", "Near Metro", "Near Market", "Near Bus Station"]);
             }
         });
-    </script>
-</div>
+
+        function createDropdown(container, id, label, options) {
+            const labelElement = document.createElement("label");
+            labelElement.htmlFor = id;
+            labelElement.textContent = label;
+
+            const selectElement = document.createElement("select");
+            selectElement.id = id;
+            selectElement.name = id;
+            selectElement.required = true;
+
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Please select";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            selectElement.appendChild(defaultOption);
+
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option;
+                optionElement.textContent = option;
+                selectElement.appendChild(optionElement);
+            });
+
+            container.appendChild(labelElement);
+            container.appendChild(selectElement);
+        }
+
+        function createCheckboxGroup(container, id, label, options) {
+            const labelElement = document.createElement("label");
+            labelElement.textContent = label;
+            container.appendChild(labelElement);
+
+            const checkboxContainer = document.createElement("div");
+            checkboxContainer.id = id;
+            checkboxContainer.classList.add("checkbox-container");
+
+            options.forEach(option => {
+                const checkboxWrapper = document.createElement("div");
+                checkboxWrapper.classList.add("checkbox-wrapper");
+
+                const checkboxElement = document.createElement("input");
+                checkboxElement.type = "checkbox";
+                checkboxElement.name = `${id}[]`;
+                checkboxElement.value = option;
+                checkboxElement.id = `checkbox-${option.replace(/\s+/g, '-')}`;
+
+                const checkboxLabel = document.createElement("label");
+                checkboxLabel.textContent = option;
+                checkboxLabel.htmlFor = `checkbox-${option.replace(/\s+/g, '-')}`;
+
+                checkboxWrapper.appendChild(checkboxElement);
+                checkboxWrapper.appendChild(checkboxLabel);
+                checkboxContainer.appendChild(checkboxWrapper);
+            });
+
+            container.appendChild(checkboxContainer);
+        }
+
+        // Form submission handler
+        registrationForm.addEventListener("submit", function (event) {
+            const formData = new FormData(registrationForm);
+            const selectedValues = {};
+
+            // Collect all form data for debugging
+            for (const [key, value] of formData.entries()) {
+                if (key.endsWith('[]')) {
+                    const fieldName = key.slice(0, -2);
+                    if (!selectedValues[fieldName]) {
+                        selectedValues[fieldName] = [];
+                    }
+                    selectedValues[fieldName].push(value);
+                } else {
+                    selectedValues[key] = value;
+                }
+            }
+
+            console.log('Form data before submission:', selectedValues);
+
+            // Form will submit naturally to /register; no need to call submit() manually
+        });
+    });
+</script>
 
     <!-- Modal Structure -->
 <div id="priceChartModal" class="modal-overlay">
