@@ -254,6 +254,12 @@ app.post('/register-user', (req, res) => {
             return res.status(500).send('Error parsing form data');
         }
 
+        // Handle multiple selections by joining arrays with commas
+        const amenities = Array.isArray(fields.amenities) ? fields.amenities.join(', ') : fields.amenities || '';
+        const landmark = Array.isArray(fields.landmark) ? fields.landmark.join(', ') : fields.landmark || '';
+
+        // Process profile image if uploaded
+        let profilePicData = null;
         if (files.profileImage && files.profileImage[0] && files.profileImage[0].size > 0) {
             if (files.profileImage[0].size > 5000000) { 
                 console.error('Image size exceeds limit:', files.profileImage[0].size);
@@ -270,38 +276,50 @@ app.post('/register-user', (req, res) => {
                     return res.status(500).send('Internal Server Error');
                 }
 
-                // Read the image file and store its binary data in the database
+                // Read the image file and store its binary data
                 fs.readFile(newPath, (err, data) => {
                     if (err) {
                         console.error('Error reading image file:', err);
                         return res.status(500).send('Internal Server Error');
                     }
-
-                    const query = `
-                        INSERT INTO STUDENTS (full_name, email, password, address, contact_number, year, branch, about_yourself, profile_pic)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    `;
-                    pool.query(query, [
-                        fields.fullName,
-                        fields.email,
-                        fields.password,
-                        fields.address,
-                        fields.contactNumber,
-                        fields.Year,
-                        fields.Branch,
-                        fields.AboutYourself,
-                        data  
-                    ], (err, result) => {
-                        if (err) {
-                            console.error('Database insertion error:', err);
-                            return res.status(500).send('Error registering student');
-                        }
-                    });
+                    profilePicData = data;
+                    saveToDatabase();
                 });
             });
         } else {
-            console.error('No profile image uploaded or file size is 0');
-            return res.status(400).send('No image uploaded');
+            saveToDatabase();
+        }
+        function saveToDatabase() {
+            const query = `
+                INSERT INTO STUDENTS (
+                    full_name, email, password, address, contact_number, year, branch, 
+                    about_yourself, profile_pic, food_type, room_type, amenities, 
+                    pricing_value, landmark
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
+            
+            pool.query(query, [
+                fields.fullName || '',
+                fields.email || '',
+                fields.password || '',
+                fields.address || '',
+                fields.contactNumber || '',
+                fields.Year || '',
+                fields.Branch || '',
+                fields.AboutYourself || '',
+                profilePicData, 
+                fields.foodType || '',
+                fields.roomType || '',
+                amenities,
+                fields.pricingValue || '',
+                landmark
+            ], (err, result) => {
+                if (err) {
+                    console.error('Database insertion error:', err);
+                    return res.status(500).send('Error registering student');
+                }
+                res.status(200).send('Student registered successfully');
+            });
         }
     });
 });

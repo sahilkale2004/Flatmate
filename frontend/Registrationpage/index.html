@@ -349,6 +349,60 @@ button:hover {
             <label for="AboutYourself">About Yourself:</label>
             <input type="text" placeholder="Describe yourself" id="AboutYourself" name="AboutYourself" required>
         </div>
+        <div class="form-group">
+            <label for="foodType">Select your food type:</label> 
+            <select id="foodType" name="foodType" required>
+                <option value="Veg">Veg</option>
+                <option value="Non-Veg">Non-Veg</option>
+                <option value="Both">Both</option>
+            </select>
+        </div>
+<div class="form-group">
+    <label for="amenities">Select Laundry amenities required:</label>
+    <div id="amenities">
+        <label><input type="checkbox" name="amenities" value="Wash & Iron">Wash & Iron</label>
+        <label><input type="checkbox" name="amenities" value="Dry Cleaning">Dry Cleaning</label>
+        <label><input type="checkbox" name="amenities" value="Pickup & Delivery Service">Pickup & Delivery Service</label>
+        <label><input type="checkbox" name="amenities" value="Subscription Plans">Membership Plans</label>
+        <label><input type="checkbox" name="amenities" value="Express Service">Express Service</label>
+    </div>
+</div>
+<div class="form-group">
+    <label for="roomType">Select room type:</label>
+    <select id="roomType" name="roomType" required>
+        <option value="Single">Single</option>
+        <option value="Shared">Shared</option>
+        <option value="Apartment">Apartment</option>
+    </select>
+</div>
+<div class="form-group">
+    <label for="amenities">Select PG amenities required:</label>
+    <div id="amenities">
+        <label><input type="checkbox" name="amenities" value="Wi-Fi"> Wi-Fi</label>
+        <label><input type="checkbox" name="amenities" value="AC"> AC</label>
+        <label><input type="checkbox" name="amenities" value="Non-AC"> Non-AC</label>
+        <label><input type="checkbox" name="amenities" value="Gym"> Gym</label>
+        <label><input type="checkbox" name="amenities" value="Parking"> Parking</label>
+        <label><input type="checkbox" name="amenities" value="Furnished"> Furnished</label>
+    </div>
+</div>
+<div class="form-group">
+    <label for="pricingValue">Select Price Range:</label>
+    <select id="pricingValue" name="pricingValue" required>
+        <option value="low">₹5000 - 8000</option>
+        <option value="medium">₹8000 - 10000</option>
+        <option value="high">₹10000 - 15000</option>
+    </select>
+</div>
+<div class="form-group">
+    <label for="landmark">Select Landmark:</label>
+    <div id="landmark">
+        <label><input type="checkbox" name="landmark" value="Near Railway Station">Near Railway Station</label>
+        <label><input type="checkbox" name="landmark" value="Near Market">Near Market</label>
+        <label><input type="checkbox" name="landmark" value="Near College">Near College</label>
+        <label><input type="checkbox" name="landmark" value="Near Metro">Near Metro</label>
+    </div>
+</div>
     </div>
     <div class="bottom-section">
     <button onclick="myFunction()" type="submit">Register</button>
@@ -359,7 +413,6 @@ button:hover {
     </div>
     </form>
 </div>
-
 <div class="overlay" id="successModal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal()">&times;</span>
