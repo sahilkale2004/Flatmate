@@ -5,15 +5,22 @@ const fs = require('fs');
 const path = require('path');
 const cookieparser = require('cookie-parser');
 const express = require('express');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const app = express();
+const Razorpay = require('razorpay');
 
-//Set ejs and serve static files
+// Initialize Razorpay instance
+const instance = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID, 
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+});
+
+// Middleware setup
 app.use(cookieparser());
 app.set('view engine', 'ejs'); 
 app.set('views', path.join(__dirname, '../frontend/views')); 
 app.use(express.static(path.join(__dirname, '../frontend/public')));
 app.use(express.urlencoded({ extended: true })); 
+app.use(express.json());
 
 // Route to render the main page with both services and profiles data
 app.get('/mainpage', (req, res) => {
@@ -423,7 +430,6 @@ app.get('/serviceprofile', (req, res) => {
 
             fs.readFile(path.join(__dirname, '../frontend/serviceprofile', 'profile.html'), 'utf8', (err, content) => {
                 if (err) {
-                    console.error(err);
                     return res.status(500).send('Error loading service profile page');
                 }
 
@@ -453,38 +459,34 @@ app.post('/login-service', (req, res) => {
     const query = 'SELECT * FROM services WHERE email = ? AND password = ?';
     pool.query(query, [email, password], (err, results) => {
         if (err) {
-            console.error('SQL Query Error:', err);
             return res.status(500).json({ success: false, message: 'Internal Server Error' });
         }
         if (results.length > 0) {
             res.cookie('email', email, { httpOnly: true });
-            res.cookie('userType', 'provider', { httpOnly: true }); // Set userType for service provider
+            res.cookie('userType', 'provider', { httpOnly: true });
             res.json({ success: true });
         } else {
             res.json({ success: false, message: 'Invalid credentials' });
         }
     });
-});
+})
 
-// Route for service registration
+// ✅ Route for Service Registration
 app.post('/register', (req, res) => {
     const form = new formidable.IncomingForm();
     form.keepExtensions = true;
 
     form.parse(req, async (err, fields, files) => {
         if (err) {
-            console.error('Error parsing form:', err);
             return res.status(500).send('Error processing form');
         }
 
         try {
-            // Parse dynamic fields
             const foodType = fields.service === 'Food' ? (Array.isArray(fields.foodType) ? fields.foodType.join(',') : fields.foodType) : null;
             const laundryType = fields.service === 'Laundry' ? (Array.isArray(fields.laundryType) ? fields.laundryType.join(',') : fields.laundryType) : null;
             const roomType = fields.service === 'Broker' ? (Array.isArray(fields.roomType) ? fields.roomType.join(',') : fields.roomType) : null;
             const amenities = fields.service === 'Broker' ? (Array.isArray(fields.amenities) ? fields.amenities.join(',') : fields.amenities) : null;
 
-            // Prepare session data
             const sessionData = {
                 businessName: fields.businessName,
                 email: fields.email,
@@ -499,75 +501,66 @@ app.post('/register', (req, res) => {
                 amenities
             };
 
-            console.log('Session Data:', sessionData); // Debugging: Check parsed data
-
             const sessionFileName = `${Date.now()}_session.json`;
-            fs.writeFileSync(`../frontend/public/uploads/${sessionFileName}`, JSON.stringify(sessionData));
-
+            const sessionFilePath = path.join(__dirname, '../frontend/public/uploads/', sessionFileName);
+            
+            fs.writeFileSync(sessionFilePath, JSON.stringify(sessionData));
             res.render('index', { sessionFileName });
         } catch (error) {
-            console.error('Error processing registration:', error);
             res.status(500).send('Internal Server Error');
         }
     });
 });
 
-// Stripe checkout after subscription selection
-app.post('/create-checkout-session', (req, res) => {
+// ✅ Create Checkout Session
+app.post('/create-checkout-session', async (req, res) => {
     const { sessionFileName } = req.body;
-
-    fs.readFile(`../frontend/public/uploads/${sessionFileName}`, 'utf-8', async (err, data) => {
+    if (!sessionFileName) {
+        return res.status(400).send('Session file name is missing');
+    }
+    const sessionFilePath = path.resolve(__dirname, '../frontend/public/uploads/', sessionFileName);
+    fs.readFile(sessionFilePath, 'utf-8', async (err, data) => {
         if (err) {
-            console.error('Error reading session file:', err);
-            return res.status(500).send('Error reading session data');
+            return res.status(500).send(`Error reading session data: ${err.message}`);
         }
-
         const sessionData = JSON.parse(data);
         try {
-            const stripeSession = await stripe.checkout.sessions.create({
-                payment_method_types: ['card', 'amazon_pay'],
-                line_items: [
-                    {
-                        price_data: {
-                            currency: 'usd',
-                            product_data: { name: 'Regular Plan' },
-                            unit_amount: 2500
-                        },
-                        quantity: 1
-                    }
-                ],
-                mode: 'payment',
-                success_url: `${process.env.BASE_URL}/complete?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${process.env.BASE_URL}/cancel`
+            const order = await instance.orders.create({
+                amount: 299 * 100, // ₹299
+                currency: 'INR',
+                receipt: `receipt_${Date.now()}`
             });
 
-            fs.writeFileSync(`../frontend/public/uploads/${stripeSession.id}.json`, JSON.stringify(sessionData));
-            res.redirect(stripeSession.url);
+            const orderFilePath = path.resolve(__dirname, '../frontend/public/uploads/', `${order.id}.json`);
+            fs.writeFileSync(orderFilePath, JSON.stringify(sessionData));
+            res.json({
+                key: process.env.RAZORPAY_KEY_ID,
+                amount: order.amount,
+                currency: order.currency,
+                orderId: order.id
+            });
         } catch (error) {
-            console.error(error);
-            res.status(500).send('Error processing payment');
+            console.error('Error creating Razorpay order:', error);
+            res.status(500).send(`Error creating order: ${error.message}`);
         }
     });
 });
 
-// Complete payment and add data to the database
-app.get('/complete', (req, res) => {
-    const session_id = req.query.session_id;
+// ✅ Payment Completion Route
+app.get('/complete', async (req, res) => {
+    const { payment_id, order_id } = req.query;
 
+    if (!payment_id || !order_id) {
+        return res.status(400).send('Invalid payment details');
+    }
+    const orderFilePath = path.resolve(__dirname, '../frontend/public/uploads/', `${order_id}.json`);
     try {
-        const sessionData = JSON.parse(fs.readFileSync(`../frontend/public/uploads/${session_id}.json`));
-
-        // Ensure empty values are handled properly
-        const foodType = sessionData.foodType || null;
-        const laundryType = sessionData.laundryType || null;
-        const roomType = sessionData.roomType || null;
-        const amenities = sessionData.amenities || null;
+        const sessionData = JSON.parse(fs.readFileSync(orderFilePath));
 
         const query = `
             INSERT INTO services (business_Name, email, password, address, contact_number, service, price_chart_link, food_type, laundry_service, room_type, amenities)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
-
         pool.query(query, [
             sessionData.businessName,
             sessionData.email,
@@ -576,23 +569,20 @@ app.get('/complete', (req, res) => {
             sessionData.contactNumber,
             sessionData.service,
             sessionData.priceChartLink,
-            foodType,
-            laundryType,
-            roomType,
-            amenities
+            sessionData.foodType || null,
+            sessionData.laundryType || null,
+            sessionData.roomType || null,
+            sessionData.amenities || null
         ], (err, result) => {
             if (err) {
-                console.error('Error registering business:', err);
                 return res.status(500).send('Error registering business');
             }
-
             res.render('success', {
                 message: 'Your payment was successful, and your business has been registered.',
                 redirectUrl: '/servicelogin'
             });
         });
     } catch (error) {
-        console.error('Error completing payment:', error);
         res.status(500).send('Error completing payment');
     }
 });

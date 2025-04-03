@@ -19,6 +19,7 @@ body{
     font-size: 0.938rem;
     background-color: hsl(250, 100%, 99%);
     color: hsl(250, 12%, 35%);
+    overflow: hidden;
 }
 
 ul{
@@ -228,11 +229,10 @@ img{
 <body>
     <section class="card container grid">
         <div class="card_container grid">
-            <!-- ================= Card 1 =====================-->
             <article class="card_content grid">
                 <div class="card_pricing">
                     <div class="card_pricing-number">
-                        <span class="card_pricing-symbol">$</span>25
+                        <span class="card_pricing-symbol">₹</span>299
                     </div>
                     <span class="card_pricing-month">/month</span>
                 </div>
@@ -259,17 +259,63 @@ img{
                     </li>
                 </ul>
 
-                <!-- Step 3: Checkout form that posts to /create-checkout-session -->
-                <form action="/create-checkout-session" method="post" style="text-align: center;">
-                    <!-- Hidden input to pass sessionFileName (set dynamically with server-side logic) -->
-                    <input type="hidden" name="sessionFileName" value="<%= sessionFileName %>">
-                    <button type="submit" class="button">Choose this Plan</button>
-                </form>
+                <button type="button" onclick="initiatePayment()" class="button">Choose this Plan</button>
+                <input type="hidden" id="sessionFileName" value="<%= sessionFileName || '' %>">    
             </article>
         </div>
     </section>
-</body>
 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        console.log("Hidden Input Value on Load:", document.getElementById('sessionFileName').value);
+
+        async function initiatePayment() {
+            try {
+                const sessionFileName = document.getElementById('sessionFileName').value;
+
+                if (!sessionFileName) {
+                    alert('Session data is missing. Please try again.');
+                    return;
+                }
+
+                const response = await fetch('/create-checkout-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionFileName })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server Error: ${errorText}`);
+                }
+                const data = await response.json();
+                const options = {
+                    key: data.key,
+                    amount: data.amount,
+                    currency: data.currency,
+                    order_id: data.orderId,
+                    name: "Flatmate Platform",
+                    description: "Regular Plan Subscription",
+                    handler: function (response) {
+                        console.log("Payment Success Response:", response);
+                        window.location.href = `/complete?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}`;
+                    },
+                    prefill: {
+                        name: "User Name",
+                        email: "user@example.com",
+                        contact: "9999999999"
+                    },
+                    theme: { color: "#3399cc" }
+                };
+                const rzp = new Razorpay(options);
+                rzp.open();
+            } catch (error) {
+                console.error('Payment Error:', error);
+                alert(error.message);
+            }
+        }
+    </script>
+</body>
 </html>
 
 
