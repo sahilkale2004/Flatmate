@@ -473,40 +473,49 @@ app.post('/login-service', (req, res) => {
 
 // ✅ Route for Service Registration
 app.post('/register', (req, res) => {
-    const form = new formidable.IncomingForm();
-    form.keepExtensions = true;
-
+    const form = new formidable.IncomingForm({
+        multiples: false,
+        keepExtensions: true
+    });
     form.parse(req, async (err, fields, files) => {
         if (err) {
+            console.error('Error processing form:', err);
             return res.status(500).send('Error processing form');
         }
-
         try {
-            const foodType = fields.service === 'Food' ? (Array.isArray(fields.foodType) ? fields.foodType.join(',') : fields.foodType) : null;
-            const laundryType = fields.service === 'Laundry' ? (Array.isArray(fields.laundryType) ? fields.laundryType.join(',') : fields.laundryType) : null;
-            const roomType = fields.service === 'Broker' ? (Array.isArray(fields.roomType) ? fields.roomType.join(',') : fields.roomType) : null;
-            const amenities = fields.service === 'Broker' ? (Array.isArray(fields.amenities) ? fields.amenities.join(',') : fields.amenities) : null;
-
+            const getSingleValue = (field) => (Array.isArray(field) ? field[0] : field);
+            const service = getSingleValue(fields.service);
+            const foodType = service === 'Food' 
+                ? getSingleValue(fields.foodType) || null 
+                : null;
+            const laundryType = service === 'Laundry' 
+                ? (fields.laundryType ? (Array.isArray(fields.laundryType) ? fields.laundryType.join(',') : fields.laundryType) : null) 
+                : null;
+            const roomType = service === 'Broker' 
+                ? (fields.roomType ? (Array.isArray(fields.roomType) ? fields.roomType.join(',') : fields.roomType) : null) 
+                : null;
+            const amenities = service === 'Broker' 
+                ? (fields.amenities ? (Array.isArray(fields.amenities) ? fields.amenities.join(',') : fields.amenities) : null) 
+                : null;
             const sessionData = {
-                businessName: fields.businessName,
-                email: fields.email,
-                password: fields.password,
-                address: fields.address,
-                contactNumber: fields.contactNumber,
-                service: fields.service,
-                priceChartLink: fields.priceChartLink,
+                businessName: getSingleValue(fields.businessName) || '',
+                email: getSingleValue(fields.email) || '',
+                password: getSingleValue(fields.password) || '',
+                address: getSingleValue(fields.address) || '',
+                contactNumber: getSingleValue(fields.contactNumber) || '',
+                service: service || '',
+                priceChartLink: getSingleValue(fields.priceChartLink) || '',
                 foodType,
                 laundryType,
                 roomType,
                 amenities
             };
-
             const sessionFileName = `${Date.now()}_session.json`;
             const sessionFilePath = path.join(__dirname, '../frontend/public/uploads/', sessionFileName);
-            
-            fs.writeFileSync(sessionFilePath, JSON.stringify(sessionData));
+            fs.writeFileSync(sessionFilePath, JSON.stringify(sessionData, null, 2));
             res.render('index', { sessionFileName });
         } catch (error) {
+            console.error('Error saving session data:', error);
             res.status(500).send('Internal Server Error');
         }
     });

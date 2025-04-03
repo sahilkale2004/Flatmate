@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-  * {
+    * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -67,12 +67,12 @@ body {
 }
 
 .registration-container input:focus,
-.container-2 select:focus {
+.registration-container .container-2 select:focus {
     border: 1px solid #f39c12;
     box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
 }
 
-.container-2 select {
+.registration-container .container-2 select {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -83,7 +83,13 @@ body {
 .container-1,
 .container-2 {
     flex: 1;
+    min-width: 0;
     padding: 10px;
+}
+
+#extra-fields {
+    width: 100%;
+    margin-top: 10px;
 }
 
 .bottom-section {
@@ -91,13 +97,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: auto;
+    margin-top: 20px;
 }
+
 button {
     width: 100%;
     max-width: 300px;
     display: block;
-    margin: 0px auto 10px;
+    margin: 0 auto 10px;
     padding: 10px;
     background-color: #007bff;
     color: white;
@@ -141,7 +148,8 @@ button:hover {
     color: #0056b3;
 }
 
-.password-container, .urlContainer {
+.password-container,
+.urlContainer {
     position: relative;
     width: 100%;
 }
@@ -210,7 +218,7 @@ button:hover {
 
 #closeModal:hover {
     background-color: #0056b3;
-} 
+}
 
 .checkbox-container {
     display: flex;
@@ -236,7 +244,6 @@ button:hover {
     cursor: pointer;
 }
 
-/* Responsive Styles */
 @media (max-width: 768px) {
     .registration-container {
         flex-direction: column;
@@ -244,8 +251,10 @@ button:hover {
         height: auto;
     }
 
-    .container-1, .container-2 {
+    .container-1,
+    .container-2 {
         padding: 10px 0;
+        width: 100%;
     }
 
     .registration-container button {
@@ -268,59 +277,144 @@ button:hover {
 
 <body>
 <div class="registration-container">
-        <h1>Enter Details</h1>
-        <div class="container-1">
-            <form action="/register" method="post" id="registrationForm" enctype="multipart/form-data">
+    <h1>Enter Details</h1>
+    <div class="container-1">
+        <form action="/register" method="post" id="registrationForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="businessName">Business name:</label>
+                <input type="text" id="businessName" name="businessName" placeholder="Enter business name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address:</label>
+                <input type="email" placeholder="Enter your Email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <div class="password-container">
+                    <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
+                    <i class="fas fa-eye" id="togglePassword"></i>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address">Business Address:</label>
+                <input type="text" placeholder="Enter your business address" id="address" name="address" required>
+            </div>
+    
+            <div class="container-2">
                 <div class="form-group">
-                    <label for="businessName">Business name:</label>
-                    <input type="text" id="businessName" name="businessName" placeholder="Enter business name" required>
+                    <label for="contactNumber">Contact number:</label>
+                    <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email address:</label>
-                    <input type="email" placeholder="Enter your Email" id="email" name="email" required>
+                    <label for="service">Select Service type:</label>
+                    <select id="service" name="service" required>
+                        <option value="" disabled selected>Select Service</option>
+                        <option value="Food">Food</option>
+                        <option value="Laundry">Laundry</option>
+                        <option value="Broker">Broker</option>
+                    </select>
+                    <!-- Add a dedicated container for extra fields inside the form -->
+                    <div id="extra-fields"></div>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password:</label>
-                    <div class="password-container">
-                        <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
-                        <i class="fas fa-eye" id="togglePassword"></i>
+                    <label for="priceChartLink">Price Chart Link:</label>
+                    <div class="urlContainer">
+                        <input type="url" id="priceChartLink" name="priceChartLink" disabled>
+                        <i class="fas fa-trash" id="trashLink"></i>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="address">Business Address:</label>
-                    <input type="text" placeholder="Enter your business address" id="address" name="address" required>
-                </div>
-        </div>
-        <div class="container-2">
-            <div class="form-group">
-                <label for="contactNumber">Contact number:</label>
-                <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required>
             </div>
-            <div class="form-group">
-                <label for="service">Select Service type:</label>
-                <select id="service" name="service" required>
-                    <option value="" disabled selected>Select Service</option>
-                    <option value="Food">Food</option>
-                    <option value="Laundry">Laundry</option>
-                    <option value="Broker">Broker</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="priceChartLink">Price Chart Link:</label>
-                <div class="urlContainer">
-                    <input type="url" id="priceChartLink" name="priceChartLink" disabled>
-                    <i class="fas fa-trash" id="trashLink"></i>
+            <div class="bottom-section">
+                <button type="submit">Register</button>
+                <div class="registered-user">
+                    <p>Already registered?</p>
+                    <a href="/servicelogin">Login</a>
                 </div>
             </div>
-        </div>
-        <div class="bottom-section">
-          <button type="submit">Register</button>
-            <div class="registered-user">
-                <p>Already registered?</p>
-                <a href="/servicelogin">Login</a>
-            </div>
-        </div>
-      </form>
+        </form>
+    </div>
+</div>    
+
+    <!-- Move script to the end of the body or a separate file -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const serviceSelect = document.getElementById("service");
+            const extraFieldsContainer = document.getElementById("extra-fields");
+
+            serviceSelect.addEventListener("change", function () {
+                extraFieldsContainer.innerHTML = ""; // Clear previous fields
+
+                if (serviceSelect.value === "Food") {
+                    createDropdown(extraFieldsContainer, "foodType", "Select Food Type you offer:", ["Veg", "Non-Veg", "All → Veg, Non-Veg, Jain meal, Chinese"]);
+                } else if (serviceSelect.value === "Laundry") {
+                    createCheckboxGroup(extraFieldsContainer, "laundryType", "Select Laundry Services you offer:", ["Wash & Iron", "Dry Cleaning", "Pickup & Delivery Service", "Subscription Plans", "Express Service"]);
+                } else if (serviceSelect.value === "Broker") {
+                    createCheckboxGroup(extraFieldsContainer, "roomType", "Select available Room Types:", ["Single", "Shared", "Apartment"]);
+                    createCheckboxGroup(extraFieldsContainer, "amenities", "Select Amenities Available:", ["Furnished", "Parking", "AC", "Non-AC", "WiFi"]);
+                }
+            });
+
+            function createDropdown(container, id, label, options) {
+                const labelElement = document.createElement("label");
+                labelElement.htmlFor = id;
+                labelElement.textContent = label;
+
+                const selectElement = document.createElement("select");
+                selectElement.id = id;
+                selectElement.name = id;
+                selectElement.required = true; // Make it required to ensure a value is selected
+
+                // Add a default "Please select" option
+                const defaultOption = document.createElement("option");
+                defaultOption.value = "";
+                defaultOption.textContent = "Please select";
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                selectElement.appendChild(defaultOption);
+
+                options.forEach(option => {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = option;
+                    optionElement.textContent = option;
+                    selectElement.appendChild(optionElement);
+                });
+
+                container.appendChild(labelElement);
+                container.appendChild(selectElement);
+            }
+
+            function createCheckboxGroup(container, id, label, options) {
+                const labelElement = document.createElement("label");
+                labelElement.textContent = label;
+                container.appendChild(labelElement);
+
+                const checkboxContainer = document.createElement("div");
+                checkboxContainer.id = id;
+                checkboxContainer.classList.add("checkbox-container");
+
+                options.forEach(option => {
+                    const checkboxWrapper = document.createElement("div");
+                    checkboxWrapper.classList.add("checkbox-wrapper");
+
+                    const checkboxElement = document.createElement("input");
+                    checkboxElement.type = "checkbox";
+                    checkboxElement.name = `${id}[]`; // Array notation for multiple selections
+                    checkboxElement.value = option;
+                    checkboxElement.id = `checkbox-${option}`;
+
+                    const checkboxLabel = document.createElement("label");
+                    checkboxLabel.textContent = option;
+                    checkboxLabel.htmlFor = `checkbox-${option}`;
+
+                    checkboxWrapper.appendChild(checkboxElement);
+                    checkboxWrapper.appendChild(checkboxLabel);
+                    checkboxContainer.appendChild(checkboxWrapper);
+                });
+
+                container.appendChild(checkboxContainer);
+            }
+        });
+    </script>
 </div>
 
     <!-- Modal Structure -->
@@ -374,78 +468,6 @@ closeModalBtn.addEventListener('click', function () {
   modalOverlay.classList.remove('modal-open'); 
   priceChartLink.removeAttribute('disabled');
   priceChartLink.focus();
-});
-
-// dropdown menu for service type
-document.addEventListener("DOMContentLoaded", function () {
-    const serviceSelect = document.getElementById("service");
-    const extraFieldsContainer = document.createElement("div");
-    extraFieldsContainer.id = "extra-fields";
-    serviceSelect.parentNode.appendChild(extraFieldsContainer);
-
-    serviceSelect.addEventListener("change", function () {
-        extraFieldsContainer.innerHTML = "";
-
-        if (serviceSelect.value === "Food") {
-            createDropdown(extraFieldsContainer, "foodType", "Select Food Type you offer:", ["Veg", "Non-Veg", "All → Veg, Non-Veg, Jain meal, Chinese"]);
-        } else if (serviceSelect.value === "Laundry") {
-            createCheckboxGroup(extraFieldsContainer, "laundryType", "Select Laundry Services you offer:", ["Wash & Iron", "Dry Cleaning", "Pickup & Delivery Service", "Subscription Plans", "Express Service"]);
-        }  else if (serviceSelect.value === "Broker") {
-            createCheckboxGroup(extraFieldsContainer, "roomType", "Select available Room Types:", ["Single", "Shared", "Apartment"]);
-            createCheckboxGroup(extraFieldsContainer, "amenities", "Select Amenities Available:", ["Furnished", "Parking", "AC", "Non-AC", "WiFi"]);
-        }
-    });
-
-    function createDropdown(container, id, label, options) {
-        const labelElement = document.createElement("label");
-        labelElement.htmlFor = id;
-        labelElement.textContent = label;
-
-        const selectElement = document.createElement("select");
-        selectElement.id = id;
-        selectElement.name = id;
-
-        options.forEach(option => {
-            const optionElement = document.createElement("option");
-            optionElement.value = option;
-            optionElement.textContent = option;
-            selectElement.appendChild(optionElement);
-        });
-
-        container.appendChild(labelElement);
-        container.appendChild(selectElement);
-    }
-
-    function createCheckboxGroup(container, id, label, options) {
-    const labelElement = document.createElement("label");
-    labelElement.textContent = label;
-    container.appendChild(labelElement);
-
-    const checkboxContainer = document.createElement("div");
-    checkboxContainer.id = id;
-    checkboxContainer.classList.add("checkbox-container");
-
-    options.forEach(option => {
-        const checkboxWrapper = document.createElement("div");
-        checkboxWrapper.classList.add("checkbox-wrapper");
-
-        const checkboxElement = document.createElement("input");
-        checkboxElement.type = "checkbox";
-        checkboxElement.name = `${id}[]`; // Use array format for checkboxes
-        checkboxElement.value = option;
-        checkboxElement.id = `checkbox-${option}`;
-
-        const checkboxLabel = document.createElement("label");
-        checkboxLabel.textContent = option;
-        checkboxLabel.htmlFor = `checkbox-${option}`;
-
-        checkboxWrapper.appendChild(checkboxElement);
-        checkboxWrapper.appendChild(checkboxLabel);
-        checkboxContainer.appendChild(checkboxWrapper);
-    });
-
-    container.appendChild(checkboxContainer);
-}
 });
 </script>
 </body>
