@@ -15,6 +15,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Oleo+Script&family=Spicy+Rice&display=swap"
         rel="stylesheet">
+
+        
 <style>
     body {
             margin: 0;
@@ -850,9 +852,6 @@ h2 {
         <button id="applyFilters" style="background-color: #D0B8A8; padding: 5px; margin-top: 10px; width: 100%; cursor: pointer; border-radius: 5px;">Apply Filters</button>
     </div>
 
-    <!-- Include Swiper CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-
     <div class="swiper profilesSwiper container">
         <div class="swiper-wrapper content">
             <% profiles.forEach(user => { %>
@@ -880,7 +879,6 @@ h2 {
             <% }) %>
         </div>
     </div>
-
     <!-- Pagination and navigation -->
     <div class="swiper-button-next profiles-next"></div>
     <div class="swiper-button-prev profiles-prev"></div>

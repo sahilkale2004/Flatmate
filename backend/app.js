@@ -8,12 +8,6 @@ const express = require('express');
 const app = express();
 const Razorpay = require('razorpay');
 
-// Initialize Razorpay instance
-const instance = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID, 
-    key_secret: process.env.RAZORPAY_KEY_SECRET
-});
-
 // Middleware setup
 app.use(cookieparser());
 app.set('view engine', 'ejs'); 
@@ -21,6 +15,12 @@ app.set('views', path.join(__dirname, '../frontend/views'));
 app.use(express.static(path.join(__dirname, '../frontend/public')));
 app.use(express.urlencoded({ extended: true })); 
 app.use(express.json());
+
+// Initialize Razorpay instance
+const instance = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID, 
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+});
 
 // Route to render the main page with both services and profiles data
 app.get('/mainpage', (req, res) => {
