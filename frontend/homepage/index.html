@@ -808,7 +808,48 @@ h2 {
         height: auto;
     }
 }
+.service-providers-section {
+            font-family: Arial, sans-serif;
+            width: 100%;
+            padding: 20px;
+            background-color: #f4f4f4;
+            box-sizing: border-box;
+            margin-top: 20px;
+        }
 
+        .service-providers-section h2 {
+            font-size: 24px;
+            color: #333;
+            font-weight: bold;
+            margin: 0 0 20px 10%;
+        }
+
+        .service-providers-table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .service-providers-table th, 
+        .service-providers-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .service-providers-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .service-providers-table tr:hover {
+            background-color: #f1f1f1;
+            transition: 0.3s;
+        }
 </style>
 </head>
 <body>
@@ -887,7 +928,7 @@ h2 {
         <span>🌟🔍 Recommended Service Providers Tailored Just for You!</span>
         <button class="close-btn">&times;</button>
     </div>
-    <div class="chat-icon">
+    <div class="chat-icon" onclick="scrollToSection()">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
             <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
         </svg>
@@ -989,6 +1030,70 @@ h2 {
   <div class="swiper-pagination profiles-pagination"></div>
 </section>
 
+<section id="service-providers-section" class="service-providers-section">
+        <h2>🔍 Curated Service Providers for Your Convenience</h2>
+        <table class="service-providers-table">
+            <thead>
+                <tr>
+                    <th>PG ID</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Landmark</th>
+                    <th>Price</th>
+                    <th>Food Type</th>
+                    <th>Amenities</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Sunrise PG</td>
+                    <td>Location A</td>
+                    <td>College</td>
+                    <td>5000</td>
+                    <td>Veg</td>
+                    <td>WiFi, AC, Laundry</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Green Haven PG</td>
+                    <td>Location B</td>
+                    <td>Tech Park</td>
+                    <td>7000</td>
+                    <td>Veg & Non-Veg</td>
+                    <td>WiFi, Gym, Parking</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>City Nest PG</td>
+                    <td>Location C</td>
+                    <td>Main Market</td>
+                    <td>4500</td>
+                    <td>Veg</td>
+                    <td>WiFi, Laundry, Study Room</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Elite Stay PG</td>
+                    <td>Location D</td>
+                    <td>Railway Station</td>
+                    <td>6000</td>
+                    <td>Non-Veg</td>
+                    <td>AC, WiFi, Home Delivery</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Peaceful Abode PG</td>
+                    <td>Location E</td>
+                    <td>Hospital</td>
+                    <td>5500</td>
+                    <td>Veg</td>
+                    <td>WiFi, AC, 24/7 Security</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
 <section id="services" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: 50px;">
   <h1 style="position: relative; left: 685px; top: -35px;">Services</h1>
   <h3 style="position: relative; left: 720px; top: -20px;">Food</h3>
@@ -1030,6 +1135,12 @@ h2 {
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script>
+// Function to scroll to the service providers section   
+ function scrollToSection() {
+            document.getElementById('service-providers-section').scrollIntoView({ 
+                behavior: 'smooth'
+            });
+        }   
 // Show the popping text on page load
     window.addEventListener('load', function() {
         const poppingText = document.querySelector('.popping-text');
@@ -1039,10 +1150,7 @@ h2 {
         const poppingText = document.querySelector('.popping-text');
         poppingText.style.display = 'none';
     });
-    document.querySelector('.chat-icon').addEventListener('click', function() {
-        console.log('Navigating to: ../ServiceProviders/service_providers.html');
-        window.location.href = '../ServiceProviders/service_providers.html';
-    });
+
 // search-input script for searching profiles and services
 document.getElementById('search-button').addEventListener('click', function () {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();

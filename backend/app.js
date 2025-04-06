@@ -136,7 +136,7 @@ app.get('/data', (req, res) => {
     });
 });
 
-// Route for profile page
+// Route for student profile page
 app.get('/profilepage', (req, res) => {
 
     const email = req.query.email || req.cookies.email; 
@@ -221,7 +221,6 @@ app.get('/profilepage', (req, res) => {
 app.post('/login', (req, res) => {
     const email = req.body.email.trim();
     const password = req.body.password.trim();
-
     const query = 'SELECT * FROM STUDENTS WHERE email = ? AND password = ?';
     pool.query(query, [email, password], (err, results) => {
         if (err) {
@@ -238,7 +237,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-// route for register functionality
+// route for student register functionality
 app.post('/register-user', (req, res) => {
     const form = new formidable.IncomingForm();
     form.uploadDir = path.join(__dirname, '../frontend/public', 'uploads');
@@ -503,22 +502,20 @@ app.post('/register', (req, res) => {
         }
 
         try {
-            console.log('Raw fields:', fields);
-
             const processField = (field) => {
-                if (Array.isArray(field) && field.length > 0) {
+                if (Array.isArray(field)) {
                     return field.join(', ');
                 }
-                return field || '';
+                return typeof field === 'string' ? field : '';
             };
 
             const service = processField(fields.service);
             const foodType = service === 'Food' ? processField(fields.foodType) : '';
-            const laundryType = service === 'Laundry' ? processField(fields.laundryType) : '';
-            const roomType = service === 'Broker' ? processField(fields.roomType) : '';
-            const amenities = service === 'Broker' ? processField(fields.amenities) : '';
+            const laundryType = service === 'Laundry' ? processField(fields['laundryType[]']) : '';
+            const roomType = service === 'Broker' ? processField(fields['roomType[]']) : '';
+            const amenities = service === 'Broker' ? processField(fields['amenities[]']) : '';
             const pricingValue = service === 'Broker' ? processField(fields.pricingValue) : '';
-            const landmark = service === 'Broker' ? processField(fields.landmark) : '';
+            const landmark = service === 'Broker' ? processField(fields['landmark[]']) : '';
 
             const sessionData = {
                 businessName: processField(fields.businessName),
@@ -536,19 +533,17 @@ app.post('/register', (req, res) => {
                 landmark: landmark
             };
 
-            console.log('Session data:', sessionData);
-
             const sessionFileName = `${Date.now()}_session.json`;
             const sessionFilePath = path.join(__dirname, '../frontend/public/uploads/', sessionFileName);
             fs.writeFileSync(sessionFilePath, JSON.stringify(sessionData, null, 2));
 
             res.render('index', { sessionFileName });
         } catch (error) {
-            console.error('Error saving session data:', error);
             res.status(500).send('Internal Server Error');
         }
     });
 });
+
 // ✅ Create Checkout Session
 app.post('/create-checkout-session', async (req, res) => {
     const { sessionFileName } = req.body;
@@ -577,7 +572,6 @@ app.post('/create-checkout-session', async (req, res) => {
                 orderId: order.id
             });
         } catch (error) {
-            console.error('Error creating Razorpay order:', error);
             res.status(500).send(`Error creating order: ${error.message}`);
         }
     });
@@ -593,10 +587,6 @@ app.get('/complete', async (req, res) => {
     const orderFilePath = path.resolve(__dirname, '../frontend/public/uploads/', `${order_id}.json`);
     try {
         const sessionData = JSON.parse(fs.readFileSync(orderFilePath));
-
-        // Log session data before database insertion
-        console.log('Data to insert into DB:', sessionData);
-
         const query = `
             INSERT INTO services (
                 business_name, email, password, address, contact_number, service, 
@@ -620,7 +610,6 @@ app.get('/complete', async (req, res) => {
             sessionData.landmark || null
         ], (err, result) => {
             if (err) {
-                console.error('Database insertion error:', err);
                 return res.status(500).send('Error registering business');
             }
             res.render('success', {
@@ -629,7 +618,6 @@ app.get('/complete', async (req, res) => {
             });
         });
     } catch (error) {
-        console.error('Error completing payment:', error);
         res.status(500).send('Error completing payment');
     }
 });

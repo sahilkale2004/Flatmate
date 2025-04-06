@@ -216,58 +216,57 @@
     <!-- Modal structure for invalid credentials message -->
     <div id="errorModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <span class="close-btn" onclick="closeModal()">×</span>
             <h3>Invalid Credentials</h3>
             <p><a href="/loginpage" onclick="closeModal()">Try again</a> or
                <a href="/registrationpage">Register</a></p>
         </div>
     </div>
+
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault(); 
+            event.preventDefault();
 
-    // Create URL-encoded body data
-    const formData = new URLSearchParams(new FormData(event.target));
+            const formData = new URLSearchParams(new FormData(event.target));
 
-    fetch('/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            window.location.href = '/homepage';
-        } else {
-            showErrorModal();
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData,
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/homepage'; // Redirect to homepage on successful login
+                } else {
+                    showErrorModal();
+                }
+            })
+            .catch(error => {
+                console.error('Error during login:', error);
+            });
+        });
+
+        function showErrorModal() {
+            document.getElementById('errorModal').style.display = 'block';
         }
-    })
-    .catch(error => {
-        console.error('Error during login:', error);
-    });
-});
 
-function showErrorModal() {
-    document.getElementById('errorModal').style.display = 'block';
-}
-
-function closeModal() {
-    document.getElementById('errorModal').style.display = 'none';
-}
+        function closeModal() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
 
         const togglePassword = document.querySelector('#togglePassword');
-            const passwordInput = document.querySelector('#password');
+        const passwordInput = document.querySelector('#password');
 
-            togglePassword.addEventListener('click', () => {
-            
-                const type = passwordInput.type === 'password' ? 'text' : 'password';
-                passwordInput.type = type;
-
-                togglePassword.classList.toggle('fa-eye');
-                togglePassword.classList.toggle('fa-eye-slash');
-            });
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            togglePassword.classList.toggle('fa-eye');
+            togglePassword.classList.toggle('fa-eye-slash');
+        });
     </script>
 </body>
 </html>
