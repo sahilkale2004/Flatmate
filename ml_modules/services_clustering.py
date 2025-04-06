@@ -1,14 +1,20 @@
+import os
+import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.cluster import KMeans
 import mysql.connector
+from dotenv import load_dotenv
+
+# Load env variables
+load_dotenv()
 
 # Database connection
 conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="123456",
-    database="FLATMATES"
+    host=os.getenv('host'),
+    user=os.getenv('user'),
+    password=os.getenv('password'),
+    database=os.getenv('database'),
 )
 cursor = conn.cursor()
 
@@ -78,9 +84,8 @@ if not broker_df.empty:
     broker_df = encode_and_cluster(broker_df, ['room_type', 'amenities', 'pricing_value', 'landmark'])
     for _, row in broker_df.iterrows():
         cursor.execute("UPDATE services SET cluster = %s WHERE email = %s", (int(row['cluster']), row['email']))
-
 conn.commit()
 cursor.close()
 conn.close()
 
-print("Clusters assigned successfully to students and each type of service provider.")
+print("✅ Clusters updated successfully for both students and services!")

@@ -71,7 +71,7 @@ app.get('/mainpage', (req, res) => {
         res.status(500).send('Internal Server Error');
     });
 });
-// Server teamprofiles page
+// Serve teamprofiles page
 app.get('/teampage', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/teampage', 'index.html'));
 });
@@ -142,6 +142,38 @@ app.get('/service-recommendations', (req, res) => {
                 console.error(error);
                 res.status(500).json({ success: false, message: 'Error fetching recommendations' });
             });
+    });
+});
+
+// Serve roommate recommendations based on student cluster
+app.get('/roommate-recommendations', (req, res) => {
+    const email = req.cookies.email;
+    if (!email) return res.status(401).json({ success: false });
+
+    const getClusterQuery = 'SELECT cluster FROM students WHERE email = ?';
+    pool.query(getClusterQuery, [email], (err, result) => {
+        if (err || result.length === 0) return res.status(500).json({ success: false });
+
+        const studentCluster = result[0].cluster;
+        const roommateQuery = `
+            SELECT fULL_name, email, contact_number, food_type, room_type, amenities, profile_pic 
+            FROM students 
+            WHERE cluster = ? AND email != ?`;
+
+        pool.query(roommateQuery, [studentCluster, email], (err, results) => {
+            if (err) return res.status(500).json({ success: false });
+
+            const roommates = results.map(user => {
+                return {
+                    ...user,
+                    profile_pic: user.profile_pic
+                        ? `data:image/png;base64,${Buffer.from(user.profile_pic).toString('base64')}`
+                        : 'default.jpg'
+                };
+            });
+
+            res.json({ success: true, roommates });
+        });
     });
 });
 

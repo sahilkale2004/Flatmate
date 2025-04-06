@@ -872,7 +872,6 @@ h2 {
 .service-providers-table td a:hover {
     text-decoration: underline;
 }
-
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .service-providers-section h2 {
@@ -894,6 +893,51 @@ h2 {
     .service-providers-table td {
         padding: 10px 12px;
     }
+}
+
+.roommate-section {
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #eef4ff;
+    border-radius: 10px;
+    width: 90%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.roommate-section h2 {
+    text-align: center;
+    font-size: 26px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+}
+
+.roommate-section .card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 260px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+}
+
+.roommate-section .card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
 }
 </style>
 </head>
@@ -1075,6 +1119,11 @@ h2 {
   <div class="swiper-pagination profiles-pagination"></div>
 </section>
 
+<section class="roommate-section">
+    <h2>🧑‍🤝‍🧑 Preferable Roommate Matches</h2>
+    <div id="roommate-cards-container" class="cards-wrapper"></div>
+</section>
+
 <section id="service-providers-section" class="service-providers-section">
     <h2>🍱 Food Services</h2>
     <div class="service-providers-table-container">
@@ -1196,7 +1245,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Failed to load recommendations');
                 return;
             }
-
             populateTable('food-table-body', data.foodServices, ['business_Name', 'email', 'contact_number', 'food_type', 'price_chart_link']);
             populateTable('laundry-table-body', data.laundryServices, ['business_Name', 'email', 'contact_number', 'laundry_service', 'price_chart_link']);
             populateTable('broker-table-body', data.brokerServices, ['business_Name', 'email', 'contact_number', 'room_type', 'amenities', 'pricing_value', 'landmark', 'price_chart_link']);
@@ -1223,6 +1271,31 @@ function populateTable(tableId, data, keys) {
         tbody.appendChild(tr);
     });
 }    
+
+// function to show the matching students profiles using K-Means clustering
+window.addEventListener('DOMContentLoaded', () => {
+    fetch('/roommate-recommendations', { credentials: 'include' })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            const container = document.getElementById('roommate-cards-container');
+            container.innerHTML = '';
+            data.roommates.forEach(user => {
+                const card = `
+                    <div class="card">
+                        <img src="${user.profile_pic}" alt="Profile Picture">
+                        <h3>${user.fULL_name}</h3>
+                        <p><strong>Email:</strong> ${user.email}</p>
+                        <p><strong>Phone:</strong> ${user.contact_number}</p>
+                        <p><strong>Food:</strong> ${user.food_type}</p>
+                        <p><strong>Room Type:</strong> ${user.room_type}</p>
+                        <p><strong>Amenities:</strong> ${user.amenities}</p>
+                    </div>`;
+                container.innerHTML += card;
+            });
+        }
+    });
+});
 
 // search-input script for searching profiles and services
 document.getElementById('search-button').addEventListener('click', function () {
