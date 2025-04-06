@@ -808,48 +808,93 @@ h2 {
         height: auto;
     }
 }
+
 .service-providers-section {
-            font-family: Arial, sans-serif;
-            width: 100%;
-            padding: 20px;
-            background-color: #f4f4f4;
-            box-sizing: border-box;
-            margin-top: 20px;
-        }
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    margin-top: 30px;
+}
 
-        .service-providers-section h2 {
-            font-size: 24px;
-            color: #333;
-            font-weight: bold;
-            margin: 0 0 20px 10%;
-        }
+.service-providers-section h2 {
+    font-size: 28px;
+    color: #222;
+    font-weight: 600;
+    margin: 20px auto;
+    text-align: center;
+}
 
-        .service-providers-table {
-            width: 80%;
-            margin: 0 auto;
-            border-collapse: collapse;
-            background: white;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
+.service-providers-table-container {
+    overflow-x: auto;
+    margin: 0 auto;
+    width: 90%;
+}
 
-        .service-providers-table th, 
-        .service-providers-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+.service-providers-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    min-width: 600px;
+}
 
-        .service-providers-table th {
-            background-color: #007bff;
-            color: white;
-        }
+.service-providers-table th,
+.service-providers-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 15px;
+}
 
-        .service-providers-table tr:hover {
-            background-color: #f1f1f1;
-            transition: 0.3s;
-        }
+.service-providers-table th {
+    background-color: #007bff;
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.service-providers-table tr:hover {
+    background-color: #f5faff;
+    transition: background-color 0.3s ease;
+}
+
+.service-providers-table td a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.service-providers-table td a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .service-providers-section h2 {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    .service-providers-table-container {
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .service-providers-table {
+        font-size: 14px;
+        min-width: unset;
+    }
+
+    .service-providers-table th,
+    .service-providers-table td {
+        padding: 10px 12px;
+    }
+}
 </style>
 </head>
 <body>
@@ -1031,68 +1076,57 @@ h2 {
 </section>
 
 <section id="service-providers-section" class="service-providers-section">
-        <h2>🔍 Curated Service Providers for Your Convenience</h2>
+    <h2>🍱 Food Services</h2>
+    <div class="service-providers-table-container">
         <table class="service-providers-table">
             <thead>
                 <tr>
-                    <th>PG ID</th>
                     <th>Name</th>
-                    <th>Location</th>
-                    <th>Landmark</th>
-                    <th>Price</th>
+                    <th>Email</th>
+                    <th>Phone</th>
                     <th>Food Type</th>
-                    <th>Amenities</th>
+                    <th>Price Chart</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Sunrise PG</td>
-                    <td>Location A</td>
-                    <td>College</td>
-                    <td>5000</td>
-                    <td>Veg</td>
-                    <td>WiFi, AC, Laundry</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Green Haven PG</td>
-                    <td>Location B</td>
-                    <td>Tech Park</td>
-                    <td>7000</td>
-                    <td>Veg & Non-Veg</td>
-                    <td>WiFi, Gym, Parking</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>City Nest PG</td>
-                    <td>Location C</td>
-                    <td>Main Market</td>
-                    <td>4500</td>
-                    <td>Veg</td>
-                    <td>WiFi, Laundry, Study Room</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Elite Stay PG</td>
-                    <td>Location D</td>
-                    <td>Railway Station</td>
-                    <td>6000</td>
-                    <td>Non-Veg</td>
-                    <td>AC, WiFi, Home Delivery</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Peaceful Abode PG</td>
-                    <td>Location E</td>
-                    <td>Hospital</td>
-                    <td>5500</td>
-                    <td>Veg</td>
-                    <td>WiFi, AC, 24/7 Security</td>
-                </tr>
-            </tbody>
+            <tbody id="food-table-body"></tbody>
         </table>
-    </section>
+    </div>
+
+    <h2>🧺 Laundry Services</h2>
+    <div class="service-providers-table-container">
+        <table class="service-providers-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Service Type</th>
+                    <th>Price Chart</th>
+                </tr>
+            </thead>
+            <tbody id="laundry-table-body"></tbody>
+        </table>
+    </div>
+
+    <h2>🏠 Broker Services</h2>
+    <div class="service-providers-table-container">
+        <table class="service-providers-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Room Type</th>
+                    <th>Amenities</th>
+                    <th>Price</th>
+                    <th>Landmark</th>
+                    <th>Price Chart</th>
+                </tr>
+            </thead>
+            <tbody id="broker-table-body"></tbody>
+        </table>
+    </div>
+</section>
 
 <section id="services" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: 50px;">
   <h1 style="position: relative; left: 685px; top: -35px;">Services</h1>
@@ -1135,12 +1169,14 @@ h2 {
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script>
+    
 // Function to scroll to the service providers section   
  function scrollToSection() {
             document.getElementById('service-providers-section').scrollIntoView({ 
                 behavior: 'smooth'
             });
         }   
+
 // Show the popping text on page load
     window.addEventListener('load', function() {
         const poppingText = document.querySelector('.popping-text');
@@ -1150,6 +1186,43 @@ h2 {
         const poppingText = document.querySelector('.popping-text');
         poppingText.style.display = 'none';
     });
+
+// Script to handle data fetching of service providers
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/service-recommendations', { credentials: 'include' })
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) {
+                alert('Failed to load recommendations');
+                return;
+            }
+
+            populateTable('food-table-body', data.foodServices, ['business_Name', 'email', 'contact_number', 'food_type', 'price_chart_link']);
+            populateTable('laundry-table-body', data.laundryServices, ['business_Name', 'email', 'contact_number', 'laundry_service', 'price_chart_link']);
+            populateTable('broker-table-body', data.brokerServices, ['business_Name', 'email', 'contact_number', 'room_type', 'amenities', 'pricing_value', 'landmark', 'price_chart_link']);
+        })
+        .catch(err => {
+            console.error('Error fetching recommendations:', err);
+        });
+});
+function populateTable(tableId, data, keys) {
+    const tbody = document.getElementById(tableId);
+    tbody.innerHTML = '';
+
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+        keys.forEach(key => {
+            const td = document.createElement('td');
+            if (key === 'price_chart_link') {
+                td.innerHTML = `<a href="${row[key]}" target="_blank">View Chart</a>`;
+            } else {
+                td.textContent = row[key] || '';
+            }
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    });
+}    
 
 // search-input script for searching profiles and services
 document.getElementById('search-button').addEventListener('click', function () {

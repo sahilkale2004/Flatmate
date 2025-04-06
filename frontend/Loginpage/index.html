@@ -240,7 +240,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    window.location.href = '/homepage'; // Redirect to homepage on successful login
+                    window.location.href = '/homepage';
                 } else {
                     showErrorModal();
                 }

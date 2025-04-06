@@ -80,6 +80,71 @@ app.get('/homepage', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/homepage', 'index.html'));
 });
 
+// Serve service recommendations based on student cluster
+app.get('/service-recommendations', (req, res) => {
+    const studentEmail = req.cookies.email;
+
+    if (!studentEmail) {
+        return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
+
+    const getStudentCluster = 'SELECT cluster FROM students WHERE email = ?';
+    pool.query(getStudentCluster, [studentEmail], (err, result) => {
+        if (err || result.length === 0) {
+            return res.status(500).json({ success: false, message: 'Error fetching cluster' });
+        }
+
+        const studentCluster = result[0].cluster;
+
+        const queries = {
+            food: `SELECT business_Name, email, contact_number, food_type, price_chart_link 
+                   FROM services 
+                   WHERE service = 'food' AND cluster = ?`,
+            laundry: `SELECT business_Name, email, contact_number, laundry_service, price_chart_link 
+                      FROM services 
+                      WHERE service = 'laundry' AND cluster = ?`,
+            broker: `SELECT business_Name, email, contact_number, room_type, amenities, pricing_value, landmark, price_chart_link 
+                     FROM services 
+                     WHERE service = 'broker' AND cluster = ?`
+        };
+
+        const foodPromise = new Promise((resolve, reject) => {
+            pool.query(queries.food, [studentCluster], (err, results) => {
+                if (err) reject(err);
+                else resolve(results);
+            });
+        });
+
+        const laundryPromise = new Promise((resolve, reject) => {
+            pool.query(queries.laundry, [studentCluster], (err, results) => {
+                if (err) reject(err);
+                else resolve(results);
+            });
+        });
+
+        const brokerPromise = new Promise((resolve, reject) => {
+            pool.query(queries.broker, [studentCluster], (err, results) => {
+                if (err) reject(err);
+                else resolve(results);
+            });
+        });
+
+        Promise.all([foodPromise, laundryPromise, brokerPromise])
+            .then(([foodServices, laundryServices, brokerServices]) => {
+                res.json({
+                    success: true,
+                    foodServices,
+                    laundryServices,
+                    brokerServices
+                });
+            })
+            .catch(error => {
+                console.error(error);
+                res.status(500).json({ success: false, message: 'Error fetching recommendations' });
+            });
+    });
+});
+
 // Serve login page
 app.get('/loginpage', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/loginpage', 'index.html'));
