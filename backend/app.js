@@ -619,6 +619,7 @@ app.post('/register', (req, res) => {
             const laundryType = service === 'Laundry' ? processField(fields['laundryType[]']) : '';
             const roomType = service === 'Broker' ? processField(fields['roomType[]']) : '';
             const amenities = service === 'Broker' ? processField(fields['amenities[]']) : '';
+            const roomAvailability = service === 'Broker' ? processField(fields.roomAvailability) : '';
             const pricingValue = service === 'Broker' ? processField(fields.pricingValue) : '';
             const landmark = service === 'Broker' ? processField(fields['landmark[]']) : '';
 
@@ -634,6 +635,7 @@ app.post('/register', (req, res) => {
                 laundryType: laundryType,
                 roomType: roomType,
                 amenities: amenities,
+                roomAvailability: roomAvailability,
                 pricingValue: pricingValue,
                 landmark: landmark
             };
@@ -696,8 +698,8 @@ app.get('/complete', async (req, res) => {
             INSERT INTO services (
                 business_name, email, password, address, contact_number, service, 
                 price_chart_link, food_type, laundry_service, room_type, amenities, 
-                pricing_value, landmark
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                availability, pricing_value, landmark
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         pool.query(query, [
             sessionData.businessName,
@@ -711,6 +713,7 @@ app.get('/complete', async (req, res) => {
             sessionData.laundryType || null,
             sessionData.roomType || null,
             sessionData.amenities || null,
+            sessionData.roomAvailability || null,
             sessionData.pricingValue || null,
             sessionData.landmark || null
         ], (err, result) => {

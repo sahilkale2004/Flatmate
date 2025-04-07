@@ -362,9 +362,10 @@ button:hover {
                 createCheckboxGroup(extraFieldsContainer, "laundryType", "Select Laundry Services you offer:", ["Wash & Iron", "Dry Cleaning", "Pickup & Delivery Service", "Subscription Plans", "Express Service"]);
             } else if (serviceSelect.value === "Broker") {
                 createCheckboxGroup(extraFieldsContainer, "roomType", "Select available Room Types:", ["Single", "Shared", "Apartment"]);
+                createDropdown(extraFieldsContainer, "roomAvailability", "Select Availability of Rooms:", ["Available", "Not Available"]);
                 createDropdown(extraFieldsContainer, "pricingValue", "Select pricing value of PGs:", ["Low: ₹5000 - 8000", "Medium: ₹8000 - 100000", "High: ₹10000 - 15000"]);
-                createCheckboxGroup(extraFieldsContainer, "amenities", "Select Amenities Available:", ["Furnished", "Parking", "AC", "Non-AC", "WiFi", "TV"]);
-                createCheckboxGroup(extraFieldsContainer, "landmark", "Select Available PGs Landmark:", ["Near Railway Station", "Near Market", "Near Metro", "Near College", "Near Bus Station"]);
+                createCheckboxGroup(extraFieldsContainer, "amenities", "Select Amenities available in your PGs:", ["Furnished", "Parking", "AC", "Non-AC", "WiFi", "TV"]);
+                createCheckboxGroup(extraFieldsContainer, "landmark", "Select available PGs Landmark:", ["Near Railway Station", "Near Market", "Near Metro", "Near College", "Near Bus Station"]);
             }
         });
 
