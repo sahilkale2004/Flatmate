@@ -14,9 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Oleo+Script&family=Spicy+Rice&display=swap"
-        rel="stylesheet">
-
-        
+        rel="stylesheet">        
 <style>
     body {
             margin: 0;
@@ -816,7 +814,7 @@ h2 {
                    Join us today and start your hassle-free journey to 
                    finding your next home!
                 </p>
-                <button class="learn-more">Learn More</button>
+                <button class="learn-more" onclick="window.location.href='https://drive.google.com/file/d/11ublwVwbwZjxBtR6AOUO6mcdZAMQ4OKi/view?usp=drive_link'">Learn More</button>
             </div>
         </div>
 </section>
@@ -1089,6 +1087,39 @@ document.getElementById('clear-button').addEventListener('click', function () {
             document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
         }
 
+// Initialize the tabs to show the register pages for students and service providers        
+const rentTab = document.querySelector('button[onclick="showTab(\'rent\')"]');
+const findTab = document.querySelector('button[onclick="showTab(\'find\')"]');
+const getStartedBtn = document.querySelector('.get-started');
+const rentContent = document.querySelector('.tab-content.rent');
+const findContent = document.querySelector('.tab-content.find');
+
+// Function to show tab content and update active states
+function showTab(tabName) {
+    rentTab.classList.remove('active');
+    findTab.classList.remove('active');
+    rentContent.classList.remove('active');
+    findContent.classList.remove('active');
+
+    // Add active class to selected tab and content
+    if (tabName === 'rent') {
+        rentTab.classList.add('active');
+        rentContent.classList.add('active');
+    } else if (tabName === 'find') {
+        findTab.classList.add('active');
+        findContent.classList.add('active');
+    }
+}
+// Add click event to Get Started button
+getStartedBtn.addEventListener('click', function() {
+    if (rentTab.classList.contains('active')) {
+        window.location.href = '/registrationpage';
+    } else if (findTab.classList.contains('active')) {
+        window.location.href = '/serviceregister';
+    }
+});
+showTab('rent');
+
 // Initialize Swiper Sliders script
 document.addEventListener('DOMContentLoaded', function () {
     const profilesSwiper = new Swiper(".profilesSwiper", {
@@ -1291,6 +1322,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </footer>
 <button id="scrollTopBtn" class="scroll-top-btn">⬆</button>
 </section>
+
 <script>
 (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="xCaWqrLm8qcQ-LK2nfnNd";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
 </script>

@@ -872,6 +872,27 @@ h2 {
 .service-providers-table td a:hover {
     text-decoration: underline;
 }
+
+.decorated-heading {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  font-weight: bold;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.decorated-heading::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #007bff;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .service-providers-section h2 {
@@ -894,7 +915,6 @@ h2 {
         padding: 10px 12px;
     }
 }
-
 .roommate-section {
     margin: 40px auto;
     padding: 20px;
@@ -923,22 +943,57 @@ h2 {
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     width: 260px;
-    padding: 20px;
+    overflow: hidden;
     text-align: center;
     transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 15px;
+    position: relative;
+    min-height: 300px;
 }
 
 .card:hover {
     transform: translateY(-6px);
 }
 
-.roommate-section .card img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 15px;
+.image-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 120px;
+    background-color: #d2b8a6;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
+
+.image-container img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    background-color: #fff;
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.card h3 {
+    margin: 190px 0 10px;
+    font-size: 20px;
+    color: #333;
+}
+
+.card p {
+    font-size: 14px;
+    color: #444;
+    margin: 5px 10px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
 </style>
 </head>
 <body>
@@ -1003,8 +1058,8 @@ h2 {
               cursor: pointer;">No</button>
             </div>
           </div> 
-        <button onclick="location.href='/'" class="icon-link bell-icon"><i class="fas fa-bell fa-lg"></i></button>   
         <button onclick="document.getElementById('services').scrollIntoView({ behavior: 'smooth' });">Services</button>
+        <button onclick="location.href='/'" class="icon-link bell-icon"><i class="fas fa-bell fa-lg"></i></button>   
         <button onclick="location.href='/profilepage'" class="icon-link profile-icon" ><i class="fas fa-user fa-lg"></i></button>
 </div>
 </div>
@@ -1122,6 +1177,7 @@ h2 {
 </section>
 
 <section id="service-providers-section" class="service-providers-section">
+<h1 class="decorated-heading">🌐 Recommended Service Providers for You</h1>
     <h2>🍱 Food Services</h2>
     <div class="service-providers-table-container">
         <table class="service-providers-table">
@@ -1259,7 +1315,7 @@ function populateTable(tableId, data, keys) {
         keys.forEach(key => {
             const td = document.createElement('td');
             if (key === 'price_chart_link') {
-                td.innerHTML = `<a href="${row[key]}" target="_blank">View Chart</a>`;
+                td.innerHTML = `<a href="${row[key]}">View Chart</a>`;
             } else {
                 td.textContent = row[key] || '';
             }
@@ -1279,19 +1335,22 @@ window.addEventListener('DOMContentLoaded', () => {
             container.innerHTML = '';
             data.roommates.forEach(user => {
                 const card = `
-                    <div class="card">
-                        <img src="${user.profile_pic}" alt="Profile Picture">
-                        <h3>${user.fULL_name}</h3>
-                        <p><strong>Email:</strong> ${user.email}</p>
-                        <p><strong>Phone:</strong> ${user.contact_number}</p>
-                        <p><strong>Food:</strong> ${user.food_type}</p>
-                        <p><strong>Room Type:</strong> ${user.room_type}</p>
-                        <p><strong>Amenities:</strong> ${user.amenities}</p>
-                    </div>`;
-                container.innerHTML += card;
-            });
-        }
-    });
+    <div class="card">
+        <div class="image-container">
+            <img src="${user.profile_pic}" alt="Profile Picture">
+        </div>
+        <h3>${user.fULL_name}</h3>
+        <p><strong>Email:</strong> ${user.email}</p>
+        <p><strong>Phone:</strong> ${user.contact_number}</p>
+        <p><strong>Food:</strong> ${user.food_type}</p>
+        <p><strong>Room Type:</strong> ${user.room_type}</p>
+        <p><strong>Amenities:</strong> ${user.amenities}</p>
+    </div>
+`;
+container.innerHTML += card;
+});
+}
+});
 });
 
 // search-input script for searching profiles and services

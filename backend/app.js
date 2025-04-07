@@ -164,11 +164,19 @@ app.get('/roommate-recommendations', (req, res) => {
             if (err) return res.status(500).json({ success: false });
 
             const roommates = results.map(user => {
+                let profilePicData = 'default.jpg';
+                if (user.profile_pic) {
+                    const base64Image = Buffer.from(user.profile_pic).toString('base64');
+                    profilePicData = `data:image/*;base64,${base64Image}`;
+                }
                 return {
-                    ...user,
-                    profile_pic: user.profile_pic
-                        ? `data:image/png;base64,${Buffer.from(user.profile_pic).toString('base64')}`
-                        : 'default.jpg'
+                    fULL_name: user.fULL_name,
+                    email: user.email,
+                    contact_number: user.contact_number,
+                    food_type: user.food_type,
+                    room_type: user.room_type,
+                    amenities: user.amenities,
+                    profile_pic: profilePicData
                 };
             });
 
