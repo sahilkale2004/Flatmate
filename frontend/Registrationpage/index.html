@@ -62,6 +62,15 @@ body {
 }
 
 .registration-container input,
+.container-1 select {
+    width: 100%;
+    padding: 10px;
+    margin: 7px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+.registration-container input,
 .container-2 select {
     width: 100%;
     padding: 10px;
@@ -69,6 +78,12 @@ body {
     border: 1px solid #ccc;
     border-radius: 5px;
     transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.registration-container input:focus,
+.container-1 select:focus {
+    border: 1px solid #f39c12;
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
 }
 
 .registration-container input:focus,
@@ -147,6 +162,32 @@ button:hover {
     color: #0056b3;
 }
 
+#amenities,
+#landmark {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#amenities div,
+#landmark div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#amenities input[type="checkbox"],
+#landmark input[type="checkbox"] {
+  margin-left: -190px;
+}
+
+#amenities label,
+#landmark label {
+  font-weight: 100;  
+  margin: 0;
+  white-space: nowrap;
+}
+
 .overlay {
      position: fixed;
     top: 0;
@@ -221,7 +262,6 @@ button:hover {
         width: 80%;
     }
 }
-
 @media (max-width: 480px) {
     .registration-container {
         padding: 15px;
@@ -320,35 +360,6 @@ button:hover {
                     <i class="fas fa-trash" id="trashImage"></i>
                 </div>
             </div>
-    </div>
-    <div class="container-2">
-        <div class="form-group">
-            <label for="contactNumber">Contact number:</label>
-            <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required>
-        </div>
-        <div class="form-group">
-            <label for="Year">Select your Year:</label>
-            <select id="Year" name="Year" required>
-                <option value="FE">First Year (FE)</option>
-                <option value="SE">Second Year (SE)</option>
-                <option value="TE">Third Year (TE)</option>
-                <option value="BE">Fourth Year (BE)</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="Branch">Select your Branch:</label>
-            <select id="Branch" name="Branch" required>
-                <option value="CMPN">Computer Science</option>
-                <option value="INFT">Information Technology</option>
-                <option value="EXTC">Electronics & Telecommunication</option>
-                <option value="ELEC">Electrical</option>
-                <option value="ECS">Electronics & CS</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="AboutYourself">About Yourself:</label>
-            <input type="text" placeholder="Describe yourself" id="AboutYourself" name="AboutYourself" required>
-        </div>
         <div class="form-group">
             <label for="foodType">Select your food type:</label> 
             <select id="foodType" name="foodType" required>
@@ -356,7 +367,7 @@ button:hover {
                 <option value="Non-Veg">Non-Veg</option>
                 <option value="Both">Both</option>
             </select>
-        </div>
+        </div>            
 <div class="form-group">
     <label for="amenities">Select Laundry amenities required:</label>
     <div id="amenities">
@@ -367,6 +378,35 @@ button:hover {
         <label><input type="checkbox" name="amenities" value="Express Service">Express Service</label>
     </div>
 </div>
+</div>
+    <div class="container-2">
+        <div class="form-group">
+            <label for="contactNumber">Contact number:</label>
+            <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required>
+        </div>
+<div class="form-group">
+            <label for="Year">Select your Year:</label>
+            <select id="Year" name="Year" required>
+                <option value="FE">First Year (FE)</option>
+                <option value="SE">Second Year (SE)</option>
+                <option value="TE">Third Year (TE)</option>
+                <option value="BE">Fourth Year (BE)</option>
+            </select>
+</div>
+<div class="form-group">
+            <label for="Branch">Select your Branch:</label>
+            <select id="Branch" name="Branch" required>
+                <option value="CMPN">Computer Science</option>
+                <option value="INFT">Information Technology</option>
+                <option value="EXTC">Electronics & Telecommunication</option>
+                <option value="ELEC">Electrical</option>
+                <option value="ECS">Electronics & CS</option>
+            </select>
+</div>
+<div class="form-group">
+            <label for="AboutYourself">About Yourself:</label>
+            <input type="text" placeholder="Describe yourself" id="AboutYourself" name="AboutYourself" required>
+</div>
 <div class="form-group">
     <label for="roomType">Select room type:</label>
     <select id="roomType" name="roomType" required>
@@ -374,17 +414,6 @@ button:hover {
         <option value="Shared">Shared</option>
         <option value="Apartment">Apartment</option>
     </select>
-</div>
-<div class="form-group">
-    <label for="amenities">Select PG amenities required:</label>
-    <div id="amenities">
-        <label><input type="checkbox" name="amenities" value="Wi-Fi"> Wi-Fi</label>
-        <label><input type="checkbox" name="amenities" value="AC"> AC</label>
-        <label><input type="checkbox" name="amenities" value="Non-AC"> Non-AC</label>
-        <label><input type="checkbox" name="amenities" value="Gym"> Gym</label>
-        <label><input type="checkbox" name="amenities" value="Parking"> Parking</label>
-        <label><input type="checkbox" name="amenities" value="Furnished"> Furnished</label>
-    </div>
 </div>
 <div class="form-group">
     <label for="pricingValue">Select Price Range of PGs:</label>
@@ -421,7 +450,6 @@ button:hover {
         <p>Your details have been submitted successfully.</p>
     </div>
 </div>
-
 <script>
   const togglePassword = document.querySelector('#togglePassword');
   const passwordInput = document.querySelector('#password');

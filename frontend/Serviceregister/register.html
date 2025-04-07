@@ -274,7 +274,6 @@ button:hover {
 }
 </style>
 </head>
-
 <body>
 <div class="registration-container">
     <h1>Enter Details</h1>
@@ -334,8 +333,22 @@ button:hover {
         </form>
     </div>
 </div>    
+<!-- Modal Structure -->
+<div id="priceChartModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Steps to Share Your Price Chart</h3>
+    <ol>
+      <li>Create the price chart</li>
+      <li>Upload it to Google Drive</li>
+      <li>Get the shareable link and set it to "Anyone with the link can view"</li>
+    </ol>
+    <button id="closeModal">Close</button>
+  </div>
+</div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+// JavaScript to dynamically add extra fields based on service type selection
+  document.addEventListener("DOMContentLoaded", function () {
         const serviceSelect = document.getElementById("service");
         const extraFieldsContainer = document.getElementById("extra-fields");
         const registrationForm = document.getElementById("registrationForm");
@@ -431,28 +444,9 @@ button:hover {
                     selectedValues[key] = value;
                 }
             }
-
-            console.log('Form data before submission:', selectedValues);
-
-            // Form will submit naturally to /register; no need to call submit() manually
         });
     });
-</script>
 
-<!-- Modal Structure -->
-<div id="priceChartModal" class="modal-overlay">
-  <div class="modal">
-    <h3>Steps to Share Your Price Chart</h3>
-    <ol>
-      <li>Create the price chart</li>
-      <li>Upload it to Google Drive</li>
-      <li>Get the shareable link and set it to "Anyone with the link can view"</li>
-    </ol>
-    <button id="closeModal">Close</button>
-  </div>
-</div>
-
-<script>
   const togglePassword = document.querySelector('#togglePassword');
   const passwordInput = document.querySelector('#password');
 
