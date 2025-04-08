@@ -12,7 +12,7 @@
     body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow-x: hidden;
     width: 100%;
     background-image: url(/img/loginpage.jpg);
     background-size: cover;
@@ -157,9 +157,31 @@ h1 {
         width: 100%;
     }
 }
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+.checkbox-wrapper label {
+    font-size: 14px;
+    cursor: pointer;
+}
 </style>
 </head>
-
 <body>
 <h1>Edit Business</h1>
 <div class="profile-class">
@@ -197,10 +219,12 @@ h1 {
             <div class="form-group">
                 <label for="service">Select Service type:</label>
                 <select id="service" name="service" required disabled>
+                    <option value="" disabled selected>Select Service</option>
                     <option value="Food">Food</option>
                     <option value="Laundry">Laundry</option>
                     <option value="Broker">Broker</option>
                 </select>
+                <div id="extra-fields"></div>
             </div>
 
             <div class="form-group">
@@ -214,65 +238,223 @@ h1 {
         </form>
     </div>
 </div>
-<!-- JavaScript for Profile Handling -->
+
 <script>
-        document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
+    const serviceData = {
+        business_Name: '{{businessName}}',
+        email: '{{email}}',
+        address: '{{address}}',
+        contact_number: '{{contactNumber}}',
+        service: '{{service}}',
+        password: '{{password}}',
+        price_chart_link: '{{priceChartLink}}',
+        extraFields: '{{extraFields}}' // Expecting a JSON string with relevant fields
+    };
 
-            const service = {
-                business_Name: '{{businessName}}',
-                email: '{{email}}',
-                address: '{{address}}',
-                contact_number: '{{contactNumber}}',
-                service: '{{service}}',
-                password: '{{password}}',
-                price_chart_link: '{{priceChartLink}}' 
-            };
+    // Log the raw extraFields value for debugging
+    console.log('Raw extraFields:', serviceData.extraFields);
 
-            console.log(service);
+    // Populate the fields
+    document.getElementById('businessName').value = serviceData.business_Name || '';
+    document.getElementById('email').value = serviceData.email || '';
+    document.getElementById('address').value = serviceData.address || '';
+    document.getElementById('contactNumber').value = serviceData.contact_number || '';
+    document.getElementById('service').value = serviceData.service || '';
+    document.getElementById('password').value = serviceData.password || '';
+    document.getElementById('priceChartLink').value = serviceData.price_chart_link || '';
 
-            // Populate the fields
-            document.getElementById('businessName').value = service.business_Name || '';
-            document.getElementById('email').value = service.email || '';
-            document.getElementById('address').value = service.address || '';
-            document.getElementById('contactNumber').value = service.contact_number || '';
-            document.getElementById('service').value = service.service || '';
-            document.getElementById('password').value = service.password || '';
-            document.getElementById('priceChartLink').value = service.price_chart_link || '';
+    const editBtn = document.getElementById('editBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const profileForm1 = document.getElementById('profileForm1');
+    const profileForm2 = document.getElementById('profileForm2');
+    const serviceSelect = document.getElementById('service');
+    const extraFieldsContainer = document.getElementById('extra-fields');
+
+    // Safely parse extraFields with error handling
+    let extraFields = {};
+    if (serviceData.extraFields) {
+        try {
+            extraFields = JSON.parse(serviceData.extraFields);
+        } catch (e) {
+            console.error('Error parsing extraFields:', e);
+            console.log('Using empty object as fallback');
+            extraFields = {};
+        }
+    }
+
+    // Populate extra fields on page load based on the current service
+    populateExtraFields(serviceData.service, extraFields);
+
+    editBtn.addEventListener('click', function () {
+        console.log('Edit button clicked');
+        // Enable all fields in both forms
+        Array.from(profileForm1.elements).forEach(el => {
+            el.disabled = false;
+            console.log(`${el.name} enabled`);
         });
-                const editBtn = document.getElementById('editBtn');
-                const saveBtn = document.getElementById('saveBtn');
-                const profileForm1 = document.getElementById('profileForm1');
-                const profileForm2 = document.getElementById('profileForm2');
+        Array.from(profileForm2.elements).forEach(el => {
+            el.disabled = false;
+            console.log(`${el.name} enabled`);
+        });
+        // Enable dynamically added fields in extra-fields
+        Array.from(extraFieldsContainer.querySelectorAll('input, select')).forEach(el => {
+            el.disabled = false;
+            console.log(`Extra field ${el.name || el.id} enabled`);
+        });
+    });
 
-                editBtn.addEventListener('click', function () {
-                    Array.from(profileForm1.elements).forEach(el => el.disabled = false);
-                    Array.from(profileForm2.elements).forEach(el => el.disabled = false);
-                });
+    saveBtn.addEventListener('click', function () {
+        console.log('Save button clicked');
+        const formData = new FormData();
 
-                saveBtn.addEventListener('click', function () {
-                    const formData = new FormData();
+        // Add fields from both forms
+        Array.from(profileForm1.elements).forEach(el => {
+            if (el.name) formData.append(el.name, el.value);
+        });
+        Array.from(profileForm2.elements).forEach(el => {
+            if (el.name && el.type !== 'checkbox') formData.append(el.name, el.value);
+        });
 
-                    Array.from(profileForm1.elements).forEach(el => formData.append(el.name, el.value));
-                    Array.from(profileForm2.elements).forEach(el => formData.append(el.name, el.value));
+        // Collect updated extra fields based on the current service
+        const updatedExtraFields = {};
+        if (serviceSelect.value === 'Food') {
+            updatedExtraFields.food_type = document.getElementById('food_type')?.value || '';
+        } else if (serviceSelect.value === 'Laundry') {
+            updatedExtraFields.laundry_service = document.getElementById('laundry_service')?.value || '';
+        } else if (serviceSelect.value === 'Broker') {
+            updatedExtraFields.room_type = document.getElementById('room_type')?.value || '';
+            updatedExtraFields.amenities = Array.from(document.querySelectorAll('input[name="amenities[]"]:checked'))
+                .map(cb => cb.value);
+            updatedExtraFields.pricing_value = document.getElementById('pricing_value')?.value || '';
+            updatedExtraFields.landmark = Array.from(document.querySelectorAll('input[name="landmark[]"]:checked'))
+                .map(cb => cb.value);
+            updatedExtraFields.availability = document.getElementById('availability')?.value || '';
+        }
 
-                    // Send data to the server
-                    fetch('/profile-update', {
-                        method: 'POST',
-                        body: formData, 
-                    })
-                        .then(response => response.text())
-                        .then(data => {
-                            if (data === 'Profile updated successfully') {
-                                alert('Profile updated successfully!');
+        formData.append('extra_fields', JSON.stringify(updatedExtraFields));
 
-                                Array.from(profileForm1.elements).forEach(el => el.disabled = true);
-                                Array.from(profileForm2.elements).forEach(el => el.disabled = true);
-                            } else {
-                                alert('Failed to update profile.');
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                });
+        // Log form data for debugging
+        console.log('Form Data:', [...formData]);
+
+        // Send data to the server
+        fetch('/profile-update', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.text();
+        })
+        .then(data => {
+            console.log('Server Response:', data);
+            if (data === 'Profile updated successfully') {
+                alert('Profile updated successfully!');
+                // Disable all fields after saving
+                Array.from(profileForm1.elements).forEach(el => el.disabled = true);
+                Array.from(profileForm2.elements).forEach(el => el.disabled = true);
+                Array.from(extraFieldsContainer.querySelectorAll('input, select')).forEach(el => el.disabled = true);
+            } else {
+                alert('Failed to update profile: ' + data);
+            }
+        })
+        .catch(error => {
+            console.error('Fetch Error:', error);
+            alert('Error saving profile. Check the console for details.');
+        });
+    });
+
+    serviceSelect.addEventListener('change', function () {
+        extraFieldsContainer.innerHTML = ''; // Clear previous fields
+        populateExtraFields(serviceSelect.value, {});
+    });
+
+    function populateExtraFields(serviceType, existingData) {
+        if (serviceType === 'Food') {
+            createDropdown(extraFieldsContainer, 'food_type', 'Select Food Type you offer:', 
+                ['Veg', 'Non-Veg', 'All → Veg, Non-Veg, Jain meal, Chinese'], existingData.food_type);
+        } else if (serviceType === 'Laundry') {
+            createDropdown(extraFieldsContainer, 'laundry_service', 'Select Laundry Services you offer:', 
+                ['Wash & Iron', 'Dry Cleaning', 'Pickup & Delivery Service', 'Subscription Plans', 'Express Service'], 
+                existingData.laundry_service);
+        } else if (serviceType === 'Broker') {
+            createDropdown(extraFieldsContainer, 'room_type', 'Select available Room Types:', 
+                ['Single', 'Shared', 'Apartment'], existingData.room_type);
+            createCheckboxGroup(extraFieldsContainer, 'amenities', 'Select Amenities available in your PGs:', 
+                ['Furnished', 'Parking', 'AC', 'Non-AC', 'WiFi', 'TV'], existingData.amenities || []);
+            createDropdown(extraFieldsContainer, 'pricing_value', 'Select pricing value of PGs:', 
+                ['Low: ₹5000 - 8000', 'Medium: ₹8000 - 100000', 'High: ₹10000 - 15000'], existingData.pricing_value);
+            createCheckboxGroup(extraFieldsContainer, 'landmark', 'Select available PGs Landmark:', 
+                ['Near Railway Station', 'Near Market', 'Near Metro', 'Near College', 'Near Bus Station'], existingData.landmark || []);
+            createDropdown(extraFieldsContainer, 'availability', 'Select Availability of Rooms:', 
+                ['Available', 'Not Available'], existingData.availability);
+        }
+    }
+
+    function createDropdown(container, id, label, options, selectedValue) {
+        const labelElement = document.createElement('label');
+        labelElement.htmlFor = id;
+        labelElement.textContent = label;
+
+        const selectElement = document.createElement('select');
+        selectElement.id = id;
+        selectElement.name = id;
+        selectElement.required = true;
+        selectElement.disabled = true; // Initially disabled
+
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Please select';
+        defaultOption.disabled = true;
+        selectElement.appendChild(defaultOption);
+
+        options.forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option;
+            optionElement.textContent = option;
+            if (option === selectedValue) optionElement.selected = true;
+            selectElement.appendChild(optionElement);
+        });
+
+        container.appendChild(labelElement);
+        container.appendChild(selectElement);
+    }
+
+    function createCheckboxGroup(container, id, label, options, checkedValues = []) {
+        const labelElement = document.createElement('label');
+        labelElement.textContent = label;
+        container.appendChild(labelElement);
+
+        const checkboxContainer = document.createElement('div');
+        checkboxContainer.id = id;
+        checkboxContainer.classList.add('checkbox-container');
+
+        options.forEach(option => {
+            const checkboxWrapper = document.createElement('div');
+            checkboxWrapper.classList.add('checkbox-wrapper');
+
+            const checkboxElement = document.createElement('input');
+            checkboxElement.type = 'checkbox';
+            checkboxElement.name = `${id}[]`;
+            checkboxElement.value = option;
+            checkboxElement.id = `checkbox-${option.replace(/\s+/g, '-')}`;
+            checkboxElement.disabled = true; // Initially disabled
+            if (Array.isArray(checkedValues) && checkedValues.includes(option)) checkboxElement.checked = true;
+
+            const checkboxLabel = document.createElement('label');
+            checkboxLabel.textContent = option;
+            checkboxLabel.htmlFor = `checkbox-${option.replace(/\s+/g, '-')}`;
+
+            checkboxWrapper.appendChild(checkboxElement);
+            checkboxWrapper.appendChild(checkboxLabel);
+            checkboxContainer.appendChild(checkboxWrapper);
+        });
+        container.appendChild(checkboxContainer);
+    }
+});
+</script> 
+        
+<script>        
     // toggle password functionality
         const togglePassword = document.querySelector('#togglePassword');
         const passwordInput = document.querySelector('#password');

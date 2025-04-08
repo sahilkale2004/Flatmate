@@ -532,47 +532,6 @@ app.get('/serviceregister', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/serviceregister', 'register.html'));
 });
 
-//Route for profile page of services 
-app.get('/serviceprofile', (req, res) => {
-    const email = req.query.email || req.cookies.email;
-
-    if (!email) {
-        return res.status(400).send('Missing email parameter');
-    }
-
-    const query = 'SELECT * FROM services WHERE email = ?';
-    pool.query(query, [email], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Error fetching profile data');
-        }
-
-        if (result.length > 0) {
-            const service = result[0];
-
-            fs.readFile(path.join(__dirname, '../frontend/serviceprofile', 'profile.html'), 'utf8', (err, content) => {
-                if (err) {
-                    return res.status(500).send('Error loading service profile page');
-                }
-
-                // Replace placeholders in the HTML content
-                const modifiedContent = content
-                    .replace('{{businessName}}', service.business_Name)
-                    .replace('{{email}}', service.email)
-                    .replace('{{address}}', service.address)
-                    .replace('{{contactNumber}}', service.contact_number)
-                    .replace('{{service}}', service.service)
-                    .replace('{{password}}', service.password)
-                    .replace('{{priceChartLink}}', service.price_chart_link);
-
-                return res.status(200).send(modifiedContent);
-            });
-        } else {
-            return res.status(404).send('Service provider not found');
-        }
-    });
-});
-
 // Login Route for Service Providers
 app.post('/login-service', (req, res) => {
     const email = req.body.email.trim();
@@ -738,17 +697,31 @@ app.get('/cancel', (req, res) => {
 // update the service profile
 app.post('/profile-update', (req, res) => {
     const form = new formidable.IncomingForm();
+
     form.parse(req, (err, fields, files) => {
         if (err) {
             console.error('Error parsing form:', err);
             return res.status(500).send('Error processing form');
         }
-        const email = fields.email; 
+
+        const email = fields.email;
         if (!email) {
             return res.status(400).send('Email is required');
         }
 
-        const query = `
+        // Parse extra_fields to determine which fields to update
+        let extraFields = {};
+        if (fields.extra_fields) {
+            try {
+                extraFields = JSON.parse(fields.extra_fields);
+            } catch (parseErr) {
+                console.error('Error parsing extra_fields:', parseErr);
+                return res.status(400).send('Invalid extra_fields format');
+            }
+        }
+
+        // Construct the query dynamically based on service type
+        let query = `
             UPDATE services
             SET business_Name = ?, 
                 password = ?,
@@ -756,30 +729,127 @@ app.post('/profile-update', (req, res) => {
                 address = ?,
                 service = ?,
                 price_chart_link = ?
-            WHERE email = ?
         `;
 
-        // Execute the query with updated data
-        pool.query(
-            query, 
-            [
-                fields.businessName,
-                fields.password,
-                fields.contactNumber,
-                fields.address,
-                fields.service,
-                fields.priceChartLink,
-                email
-            ],
-            (err, result) => {
-                if (err) {
-                    console.error('Error updating profile:', err);
-                    return res.status(500).send('Error updating profile');
-                }
+        const params = [
+            fields.businessName || null,
+            fields.password || null,
+            fields.contactNumber || null,
+            fields.address || null,
+            fields.service || null,
+            fields.priceChartLink || null
+        ];
 
-                return res.send('Profile updated successfully'); 
+        switch (fields.service) {
+            case 'Food':
+                query += ', food_type = ?';
+                params.push(extraFields.food_type || null);
+                break;
+            case 'Laundry':
+                query += ', laundry_service = ?';
+                params.push(extraFields.laundry_service || null);
+                break;
+            case 'Broker':
+                query += ', room_type = ?, amenities = ?, pricing_value = ?, landmark = ?, availability = ?';
+                params.push(extraFields.room_type || null);
+                params.push(extraFields.amenities || null);
+                params.push(extraFields.pricing_value || null);
+                params.push(extraFields.landmark || null);
+                params.push(extraFields.availability || null);
+                break;
+        }
+
+        query += ' WHERE email = ?';
+        params.push(email);
+
+        // Use callback-based pool.query
+        pool.query(query, params, (err, result) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).send(`Error updating profile: ${err.message}`);
             }
-        );
+
+            if (result.affectedRows === 0) {
+                return res.status(404).send('No profile found with the given email');
+            }
+            return res.send('Profile updated successfully');
+        });
+    });
+});
+
+//Route for data fetching of services providers profile
+app.get('/serviceprofile', (req, res) => {
+    const email = req.query.email || req.cookies.email;
+
+    if (!email) {
+        return res.status(400).send('Missing email parameter');
+    }
+
+    const query = 'SELECT * FROM services WHERE email = ?';
+    pool.query(query, [email], (err, result) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).send('Error fetching profile data');
+        }
+
+        if (!result || result.length === 0) {
+            return res.status(404).send('Service provider not found');
+        }
+
+        const service = result[0];
+
+        // Determine which extra fields to send based on service type
+        let extraFields = {};
+        switch (service.service) {
+            case 'Food':
+                extraFields.food_type = service.food_type || '';
+                break;
+            case 'Laundry':
+                extraFields.laundry_service = service.laundry_service || '';
+                break;
+            case 'Broker':
+                extraFields.room_type = service.room_type || '';
+                extraFields.amenities = service.amenities || '';
+                extraFields.pricing_value = service.pricing_value || '';
+                extraFields.landmark = service.landmark || '';
+                extraFields.availability = service.availability || '';
+                break;
+            default:
+                extraFields = {};
+        }
+
+        // Prepare data with default values
+        const data = {
+            businessName: service.business_Name || '',
+            email: service.email || '',
+            address: service.address || '',
+            contactNumber: service.contact_number || '',
+            service: service.service || '',
+            password: service.password || '',
+            priceChartLink: service.price_chart_link || '',
+            extraFields: JSON.stringify(extraFields) // Convert to JSON string for client
+        };
+
+        // Read the HTML file
+        fs.readFile(path.join(__dirname, '../frontend/serviceprofile', 'profile.html'), 'utf8', (err, content) => {
+            if (err) {
+                console.error('File read error:', err);
+                return res.status(500).send('Error loading service profile page');
+            }
+
+            // Replace placeholders in the HTML content
+            const modifiedContent = content
+                .replace('{{businessName}}', data.businessName)
+                .replace('{{email}}', data.email)
+                .replace('{{address}}', data.address)
+                .replace('{{contactNumber}}', data.contactNumber)
+                .replace('{{service}}', data.service)
+                .replace('{{password}}', data.password)
+                .replace('{{priceChartLink}}', data.priceChartLink)
+                .replace('{{extraFields}}', data.extraFields);
+
+            return res.status(200).send(modifiedContent);
+        });
     });
 });
 
