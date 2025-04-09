@@ -697,30 +697,36 @@ app.get('/cancel', (req, res) => {
 // update the service profile
 app.post('/profile-update', (req, res) => {
     const form = new formidable.IncomingForm();
-
     form.parse(req, (err, fields, files) => {
         if (err) {
             console.error('Error parsing form:', err);
             return res.status(500).send('Error processing form');
         }
 
-        const email = fields.email;
-        if (!email) {
-            return res.status(400).send('Email is required');
-        }
+        console.log('Received fields:', fields);
 
-        // Parse extra_fields to determine which fields to update
+        // Since formidable gives values as arrays, extract single values
+        const email = fields.email?.[0];
+        if (!email) return res.status(400).send('Email is required');
+
+        const businessName = fields.businessName?.[0];
+        const password = fields.password?.[0];
+        const contactNumber = fields.contactNumber?.[0];
+        const address = fields.address?.[0];
+        const service = fields.service?.[0];
+        const priceChartLink = fields.priceChartLink?.[0];
+
         let extraFields = {};
-        if (fields.extra_fields) {
+        if (fields.extra_fields?.[0]) {
             try {
-                extraFields = JSON.parse(fields.extra_fields);
-            } catch (parseErr) {
-                console.error('Error parsing extra_fields:', parseErr);
+                extraFields = JSON.parse(fields.extra_fields[0]);
+                console.log('Parsed extraFields:', extraFields);
+            } catch (err) {
+                console.error('Invalid JSON in extra_fields:', err);
                 return res.status(400).send('Invalid extra_fields format');
             }
         }
 
-        // Construct the query dynamically based on service type
         let query = `
             UPDATE services
             SET business_Name = ?, 
@@ -730,17 +736,15 @@ app.post('/profile-update', (req, res) => {
                 service = ?,
                 price_chart_link = ?
         `;
-
         const params = [
-            fields.businessName || null,
-            fields.password || null,
-            fields.contactNumber || null,
-            fields.address || null,
-            fields.service || null,
-            fields.priceChartLink || null
+            businessName,
+            password,
+            contactNumber,
+            address,
+            service,
+            priceChartLink
         ];
-
-        switch (fields.service) {
+        switch (service) {
             case 'Food':
                 query += ', food_type = ?';
                 params.push(extraFields.food_type || null);
@@ -750,29 +754,29 @@ app.post('/profile-update', (req, res) => {
                 params.push(extraFields.laundry_service || null);
                 break;
             case 'Broker':
-                query += ', room_type = ?, amenities = ?, pricing_value = ?, landmark = ?, availability = ?';
+                query += `, room_type = ?, amenities = ?, pricing_value = ?, landmark = ?, availability = ?`;
                 params.push(extraFields.room_type || null);
-                params.push(extraFields.amenities || null);
+                params.push(Array.isArray(extraFields.amenities) ? extraFields.amenities.join(',') : null);
                 params.push(extraFields.pricing_value || null);
-                params.push(extraFields.landmark || null);
+                params.push(Array.isArray(extraFields.landmark) ? extraFields.landmark.join(',') : null);
                 params.push(extraFields.availability || null);
                 break;
+            default:
+                console.warn('Unknown service type:', service);
         }
-
         query += ' WHERE email = ?';
         params.push(email);
 
-        // Use callback-based pool.query
-        pool.query(query, params, (err, result) => {
-            if (err) {
-                console.error('Database error:', err);
-                return res.status(500).send(`Error updating profile: ${err.message}`);
+        console.log('Executing query:\n', query, '\nWith params:', params);
+
+        db.query(query, params, (dbErr, result) => {
+            if (dbErr) {
+                console.error('Database update error:', dbErr);
+                return res.status(500).send('Database error');
             }
 
-            if (result.affectedRows === 0) {
-                return res.status(404).send('No profile found with the given email');
-            }
-            return res.send('Profile updated successfully');
+            console.log('Update result:', result);
+            res.send('Profile updated successfully');
         });
     });
 });
@@ -817,7 +821,6 @@ app.get('/serviceprofile', (req, res) => {
             default:
                 extraFields = {};
         }
-
         // Prepare data with default values
         const data = {
             businessName: service.business_Name || '',
@@ -829,14 +832,12 @@ app.get('/serviceprofile', (req, res) => {
             priceChartLink: service.price_chart_link || '',
             extraFields: JSON.stringify(extraFields) // Convert to JSON string for client
         };
-
         // Read the HTML file
         fs.readFile(path.join(__dirname, '../frontend/serviceprofile', 'profile.html'), 'utf8', (err, content) => {
             if (err) {
                 console.error('File read error:', err);
                 return res.status(500).send('Error loading service profile page');
             }
-
             // Replace placeholders in the HTML content
             const modifiedContent = content
                 .replace('{{businessName}}', data.businessName)
