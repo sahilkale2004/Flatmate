@@ -1,5 +1,5 @@
 require('dotenv').config();
-const pool = require('./database'); 
+const pool = require('./config/database'); 
 const formidable = require('formidable');
 const fs = require('fs');
 const path = require('path');
